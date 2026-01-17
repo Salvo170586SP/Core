@@ -59,7 +59,14 @@ class User extends Authenticatable
         return Str::of($this->name)
             ->explode(' ')
             ->take(2)
-            ->map(fn ($word) => Str::substr($word, 0, 1))
+            ->map(fn($word) => Str::substr($word, 0, 1))
             ->implode('');
+    }
+
+
+    // l'istruttore ha un profilo professionale
+    public function professionalProfile()
+    {
+        return $this->hasOne(ProfessionalProfile::class, 'teacher_id');
     }
 }

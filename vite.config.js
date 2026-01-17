@@ -13,6 +13,8 @@ export default defineConfig({
         tailwindcss(),
     ],
     server: {
+        port: 5173,
+        strictPort: false, // Trova automaticamente una porta disponibile se 5173 è occupata
         cors: true,
         watch: {
             ignored: ['**/storage/framework/views/**'],

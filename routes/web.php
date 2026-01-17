@@ -1,5 +1,8 @@
 <?php
 
+use App\Livewire\Admin\Teachers\TeachersCreate;
+use App\Livewire\Admin\Teachers\TeachersEdit;
+use App\Livewire\Admin\Teachers\TeachersIndex;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 use Livewire\Volt\Volt;
@@ -13,6 +16,10 @@ Route::view('dashboard', 'dashboard')
     ->name('dashboard');
 
 Route::middleware(['auth', 'role:amministratore'])->group(function () {
+    Volt::route('professori',TeachersIndex::class)->name('teachers');
+    Volt::route('professori/crea',TeachersCreate::class)->name('teachers.create');
+    Volt::route('professori/{id}/modifica',TeachersEdit::class)->name('teachers.edit');
+
     Route::redirect('settings', 'settings/profile');
 
     Volt::route('settings/profile', 'settings.profile')->name('profile.edit');
