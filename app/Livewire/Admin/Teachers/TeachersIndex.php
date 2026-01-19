@@ -13,12 +13,12 @@ class TeachersIndex extends Component
         $teacher->professionalProfile->direct_collaboration = !$teacher->professionalProfile->direct_collaboration;
         $teacher->professionalProfile->save();
     }
-
+/* 
     public function getLevelLabel($levelId)
     {
         $level = collect(config('Core.levels'))->firstWhere('id', $levelId);
         return $level['label'] ?? '-';
-    }
+    } */
 
     public function render()
     {

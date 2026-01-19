@@ -32,7 +32,7 @@
                 <td class="px-1">T-#{{$item->id}}</td>
                 <td class="px-1">{{$item->name}}</td>
                 <td class="px-1 text-center">
-                    {{ $this->getLevelLabel($item->professionalProfile?->level_coach) }}
+                    {{ $item->getLevelLabel($item->professionalProfile?->level_coach) }}
                 </td>
                 <td class="px-1">
                     <div class="flex justify-center items-center">
@@ -49,7 +49,7 @@
                 <td class="px-1 text-center">--</td>
                 <td class="px-1">
                     <div class="flex justify-end gap-2">
-                        <flux:button wire:navigate icon="eye" variant="ghost" size="sm" class="cursor-pointer">
+                        <flux:button wire:navigate icon="eye" variant="ghost" size="sm" class="cursor-pointer" href="/professori/{{$item->id}}/dettagli">
                         </flux:button>
                         <flux:button wire:navigate icon="pencil" variant="ghost" size="sm" class="cursor-pointer"
                             href="/professori/{{$item->id}}/modifica">

@@ -25,10 +25,7 @@ class TeachersCreate extends Component
             $this->teacherDetailsStep->validate();
         } else if ($this->currentStep == 1) {
             $this->professionalProfileStep->validate();
-        } /* else if ($this->currentStep == 2) {
-            $this->specializationStep->validate();
-        } */
-
+        }  
         $this->currentStep++;
     }
 

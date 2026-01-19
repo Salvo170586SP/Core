@@ -71,10 +71,19 @@ class User extends Authenticatable
     }
 
 
+    // l'istruttore ha una o più specializzazioni
     public function specializations()
     {
         return $this->belongsToMany(Specialization::class, 'specialization_teacher', 'teacher_id', 'specialization_id')
             ->withPivot('year')
             ->withTimestamps();
+    }
+
+
+    // prendo livello professionale
+    public function getLevelLabel($levelId)
+    {
+        $level = collect(config('Core.levels'))->firstWhere('id', $levelId);
+        return $level['label'] ?? '-';
     }
 }

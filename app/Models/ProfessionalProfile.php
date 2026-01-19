@@ -18,7 +18,7 @@ class ProfessionalProfile extends Model
         'hour_start',
         'hour_end',
     ];
-    
+
     protected function casts(): array
     {
         return [
@@ -38,4 +38,6 @@ class ProfessionalProfile extends Model
         Carbon::setLocale('it');
         return Carbon::parse($this->updated_at)->isoFormat('D MMM YYYY');
     }
+
+   
 }
