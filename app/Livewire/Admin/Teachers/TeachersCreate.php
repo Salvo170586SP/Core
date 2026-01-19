@@ -3,7 +3,9 @@
 namespace App\Livewire\Admin\Teachers;
 
 use App\Livewire\Forms\Admin\Teachers\ProfessionalProfile;
+use App\Livewire\Forms\Admin\Teachers\Specializations;
 use App\Livewire\Forms\Admin\Teachers\TeacherDetails;
+use App\Models\Specialization;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -12,7 +14,8 @@ class TeachersCreate extends Component
     use WithFileUploads;
     public TeacherDetails $teacherDetailsStep;
     public ProfessionalProfile $professionalProfileStep;
-    public $currentStep = 0;
+    public Specializations $specializationStep;
+    public $currentStep = 2;
 
     public function addStep()
     {
@@ -20,7 +23,11 @@ class TeachersCreate extends Component
 
         if ($this->currentStep == 0) {
             $this->teacherDetailsStep->validate();
-        }
+        } else if ($this->currentStep == 1) {
+            $this->professionalProfileStep->validate();
+        } /* else if ($this->currentStep == 2) {
+            $this->specializationStep->validate();
+        } */
 
         $this->currentStep++;
     }
@@ -37,12 +44,26 @@ class TeachersCreate extends Component
         return $level['label'] ?? '-';
     }
 
+    public function openNewSpecialization()
+    {
+        $this->specializationStep->openNewSpecialization();
+    }
+
+    public function closeNewSpecialization($index)
+    {
+        $this->specializationStep->closeNewSpecialization($index);
+    }
+
     public function submit()
     {
-        $this->professionalProfileStep->validate();
+       // Valida solo se ci sono specializzazioni aperte
+    if (!empty($this->specializationStep->newSpecialization)) {
+        $this->specializationStep->validate();
+    }
 
         $teacher_id =  $this->teacherDetailsStep->save();
         $this->professionalProfileStep->save($teacher_id);
+        $this->specializationStep->save($teacher_id);
 
         return  $this->redirect('/professori', navigate: true);
     }
@@ -51,6 +72,8 @@ class TeachersCreate extends Component
     public function render()
     {
         $levels = config('Core.levels');
-         return view('livewire.admin.teachers.teachers-create', compact('levels'));
+        $specializations = Specialization::all();
+
+        return view('livewire.admin.teachers.teachers-create', compact('levels', 'specializations'));
     }
 }

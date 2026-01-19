@@ -69,4 +69,12 @@ class User extends Authenticatable
     {
         return $this->hasOne(ProfessionalProfile::class, 'teacher_id');
     }
+
+
+    public function specializations()
+    {
+        return $this->belongsToMany(Specialization::class, 'specialization_teacher', 'teacher_id', 'specialization_id')
+            ->withPivot('year')
+            ->withTimestamps();
+    }
 }

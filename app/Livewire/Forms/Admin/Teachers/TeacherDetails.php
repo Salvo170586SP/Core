@@ -9,9 +9,9 @@ use Livewire\Form;
 
 class TeacherDetails extends Form
 {
-    public $name = '';
-    public $email = '';
-    public $password = '';
+    public $name = 'Ciccio Pastioccio';
+    public $email = 'ciccio@ciccio';
+    public $password = 'password';
     public $teacherId = null;
 
 
