@@ -7,6 +7,9 @@
         </flux:button>
     </div>
 
+    <!-- Div con conteggio elementi selezionati -->
+    <x-div-selection :selected="$selected" function="deleteSelection" />
+
     <div class="w-full rounded-lg mt-5">
         <div class="flex items-center mb-5">
             <div class="font-semibold text-sm text-zinc-500 dark:text-zinc-400 me-3">
@@ -17,7 +20,6 @@
 
 
         <x-table :headers="[
-        ['label' => '--'],
         ['label' => 'ID Istruttore'],
         ['label' => 'Nome Istruttore'],
         ['label' => 'Livello Istruttore', 'align' => 'text-center'],
@@ -25,16 +27,23 @@
         ['label' => 'Centro', 'align' => 'text-center'],
         ['label' => 'Specializzazioni', 'align' => 'text-center'],
         ['label' => '']
-    ]">
+    ]" :show-checkbox="true">
+
+            @slot('checkboxHeader')
+            <flux:checkbox class="ps-3" wire:model.live="selectAll" />
+            @endslot
+
             @foreach($teachers as $item)
             <tr wire:key="teacher-{{$item->id}}" class="border-b dark:border-zinc-700 h-[60px]">
-                <td class="px-2">--</td>
-                <td class="px-1">T-#{{$item->id}}</td>
-                <td class="px-1">{{$item->name}}</td>
-                <td class="px-1 text-center">
+                <td class="ps-5">
+                    <flux:checkbox wire:model.live="selected" value="{{ $item->id }}" />
+                </td>
+                <td class="px-3 font-bold text-sm">T-#{{$item->id}}</td>
+                <td class="px-3">{{$item->name}}</td>
+                <td class="px-3 text-center">
                     {{ $item->getLevelLabel($item->professionalProfile?->level_coach) }}
                 </td>
-                <td class="px-1">
+                <td class="px-3">
                     <div class="flex justify-center items-center">
                         <flux:button wire:click="toggle({{$item->id}})" variant="ghost" class="cursor-pointer">
                             @if($item->professionalProfile && $item->professionalProfile->direct_collaboration)
@@ -45,11 +54,12 @@
                         </flux:button>
                     </div>
                 </td>
-                <td class="px-1 text-center">{{$item->professionalProfile?->center ?? '-' }}</td>
-                <td class="px-1 text-center">--</td>
-                <td class="px-1">
+                <td class="px-3 text-center">{{$item->professionalProfile?->center ?? '-' }}</td>
+                <td class="px-3 text-center">--</td>
+                <td class="px-3">
                     <div class="flex justify-end gap-2">
-                        <flux:button wire:navigate icon="eye" variant="ghost" size="sm" class="cursor-pointer" href="/professori/{{$item->id}}/dettagli">
+                        <flux:button wire:navigate icon="eye" variant="ghost" size="sm" class="cursor-pointer"
+                            href="/professori/{{$item->id}}/dettagli">
                         </flux:button>
                         <flux:button wire:navigate icon="pencil" variant="ghost" size="sm" class="cursor-pointer"
                             href="/professori/{{$item->id}}/modifica">
@@ -63,9 +73,13 @@
                                     <flux:heading size="xl">Attenzione</flux:heading>
                                     <flux:text class="mt-2">Sei sicuro di eliminare l'elemento?</flux:text>
                                 </div>
-                                <div class="flex">
+                                <div class="flex gap-2">
                                     <flux:spacer />
-                                    <flux:button variant="danger" class="cursor-pointer">Elimina</flux:button>
+                                    <flux:modal.close>
+                                        <flux:button variant="ghost">Cancel</flux:button>
+                                    </flux:modal.close>
+                                    <flux:button wire:click="delete({{$item->id}})" variant="danger"
+                                        class="cursor-pointer">Elimina</flux:button>
                                 </div>
                             </div>
                         </flux:modal>

@@ -1,10 +1,16 @@
-@props(['headers'])
+@props(['headers','showCheckbox' => false])
 
 <table class="w-full border border-zinc-200 dark:border-zinc-700">
     <thead class="bg-zinc-100 dark:bg-zinc-800 h-[44px] border-b dark:border-zinc-700">
         <tr>
+            @if($showCheckbox)
+            <th scope="col" class="text-black dark:text-white text-[13px] font-semibold px-2 text-start w-12">
+                {{ $checkboxHeader ?? '' }}
+            </th>
+            @endif
             @foreach($headers as $header)
-            <th scope="col" class="text-black dark:text-white text-[13px] font-semibold px-2 {{ $header['align'] ?? 'text-start' }}">
+            <th scope="col"
+                class="text-black dark:text-white text-[13px] font-semibold px-2 {{ $header['align'] ?? 'text-start' }}">
                 {{ $header['label'] }}
             </th>
             @endforeach

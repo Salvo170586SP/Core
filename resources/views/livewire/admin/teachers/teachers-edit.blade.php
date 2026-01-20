@@ -8,7 +8,7 @@
     </div>
 
     <div class="w-full rounded-lg mt-5">
-        <div class="border dark:border-zinc-700 rounded-2xl p-5 space-y-6">
+        <div class="border bg-white dark:border-zinc-700 rounded-2xl p-5 space-y-6">
             <div>
                 <h3 class="text-lg font-semibold mb-4">Dati Anagrafici</h3>
                 <div class="space-y-3">
