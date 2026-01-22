@@ -1,14 +1,14 @@
 <div class="p-1 mt-5">
     <div class="flex justify-between items-center">
         <h2 class="font-bold text-lg uppercase">Professori / Modifica</h2>
-        <flux:button variant="primary" class="font-semibold cursor-pointer" icon="arrow-left" wire:navigate
+        <flux:button variant="filled" class="font-semibold cursor-pointer" icon="arrow-left" wire:navigate
             href="/professori">
             Torna Indietro
         </flux:button>
     </div>
 
-    <div class="w-full rounded-lg mt-5">
-        <div class="border bg-white dark:border-zinc-700 rounded-2xl p-5 space-y-6">
+    <div class="w-full mt-5">
+        <div class="border border-zinc-300 bg-white dark:border-zinc-700 rounded shadow p-5 space-y-6">
             <div>
                 <h3 class="text-lg font-semibold mb-4">Dati Anagrafici</h3>
                 <div class="space-y-3">
@@ -65,6 +65,13 @@
                             <span class="text-red-500 text-sm">{{ $message }}</span>
                         @enderror
                     </div>
+                       <div class="mt-5">
+                <flux:checkbox.group label="Materie" wire:model="subjects_selected" class="flex gap-10 my-2">
+                    @foreach($subjects as $s)
+                    <flux:checkbox wire:key="{{$s->id}}" value="{{$s->id}}" label="{{$s->name}}" />
+                    @endforeach
+                </flux:checkbox.group>
+            </div>
                 </div>
             </div>
 

@@ -4,11 +4,13 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Spatie\Permission\Traits\HasRoles;
+use App\Models\Course;
 
 class User extends Authenticatable
 {
@@ -70,20 +72,35 @@ class User extends Authenticatable
         return $this->hasOne(ProfessionalProfile::class, 'teacher_id');
     }
 
-
-    // l'istruttore ha una o più specializzazioni
-    public function specializations()
+    public function subjects()
     {
-        return $this->belongsToMany(Specialization::class, 'specialization_teacher', 'teacher_id', 'specialization_id')
-            ->withPivot('year')
-            ->withTimestamps();
+        return $this->belongsToMany(Subject::class, 'subject_teacher', 'teacher_id', 'subject_id');
     }
 
+    public function courses()
+    {
+        return $this->belongsToMany(Course::class, 'course_teacher', 'teacher_id', 'course_id');
+    }
 
     // prendo livello professionale
     public function getLevelLabel($levelId)
     {
         $level = collect(config('Core.levels'))->firstWhere('id', $levelId);
         return $level['label'] ?? '-';
+    }
+
+    /**
+     * Recupera i corsi in cui l'insegnante insegna tramite le materie
+     */
+    public function getCoursesViaSubjects()
+    {
+        return Course::query()
+            ->join('course_subject', 'courses.id', '=', 'course_subject.course_id')
+            ->join('subjects', 'course_subject.subject_id', '=', 'subjects.id')
+            ->join('subject_teacher', 'subjects.id', '=', 'subject_teacher.subject_id')
+            ->where('subject_teacher.teacher_id', $this->id)
+            ->select('courses.*')
+            ->distinct()
+            ->get();
     }
 }

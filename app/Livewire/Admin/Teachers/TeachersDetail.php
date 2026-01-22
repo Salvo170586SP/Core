@@ -12,7 +12,12 @@ class TeachersDetail extends Component
 
     public function mount()
     {
-        $this->teacher = User::with('professionalProfile')->findOrFail($this->id);
+        $this->teacher = User::with('professionalProfile', 'subjects')->findOrFail($this->id);
+    }
+
+    public function getCoursesProperty()
+    {
+        return $this->teacher->getCoursesViaSubjects();
     }
 
     public function render()

@@ -1,13 +1,17 @@
 <div class="p-1 mt-5">
+    <div class="text-end mb-5">
+        <flux:button variant="filled" class="font-semibold cursor-pointer" icon="arrow-left" wire:navigate
+            href="/professori">
+            Torna indietro
+        </flux:button>
+    </div>
     <div class="flex gap-5">
-
-
         <div class="w-100 space-y-3">
-            <div class="border bg-white p-3 rounded-lg text-sm">
+            <div class="border border-zinc-300 bg-white p-3 rounded shadow text-sm">
                 <h3 class="font-semibold mb-2">Dati Anagrafici</h3>
                 <div class="flex flex-col justify-center">
                     <div class="font-semibold text-xl">
-                        {{ $teacher->name }}
+                        Prof. {{ $teacher->name }}
                     </div>
                     <div>
                         {{ $teacher->email }}
@@ -15,35 +19,20 @@
                 </div>
             </div>
 
-            <div class=" border bg-white p-3 rounded-lg   text-sm">
-                <h3 class="font-semibold mb-2">Specializzazioni</h3>
-                @if($teacher->specializations->count() > 0)
-                <table>
-                    <thead>
-                        <tr>
-                            <th scope="col" class="text-black dark:text-white text-[13px] font-semibold pe-2">
-                                Specializzazione
-                            </th>
-                            <th scope="col" class="text-black dark:text-white text-[13px] font-semibold pe-2">
-                                Consguita nel
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($teacher->specializations as $key => $value)
-                        <tr>
-                            <td class="pe-2">{{ $value->name }}</td>
-                            <td class="pe-2">{{ $value->pivot->year }}</td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+            <div class="border border-zinc-300 bg-white p-3 rounded shadow text-sm">
+                <h3 class="font-semibold mb-2">Materie</h3>
+                @if($teacher->subjects->count() > 0)
+                <div class="flex flex-wrap gap-1">
+                    @foreach($teacher->subjects as $key => $value)
+                    <flux:badge variant="primary">{{ $value->name }}</flux:badge>
+                    @endforeach
+                </div>
                 @else
-                Nessuna specializzazione
+                Nessuna materia
                 @endif
             </div>
 
-            <div class="border bg-white p-3 rounded-lg text-sm">
+            <div class="border border-zinc-300 bg-white p-3 rounded shadow text-sm">
                 <h3 class="font-semibold mb-2 textcenter">Profilo Professionale</h3>
                 <div class="space-y-1">
                     <div class="flex items-center justify-between">
@@ -91,21 +80,43 @@
             </div>
         </div>
 
-        <div class="w-full">
-            <div class="border bg-white p-3 rounded-lg text-sm">
-                <div class="text-end">
-                    <flux:button variant="primary" class="font-semibold cursor-pointer" icon="arrow-left" wire:navigate
-                        href="/professori">
-                        Torna indietro
-                    </flux:button>
-                </div>
-
-                <div class="mt-5">
+        <div class="w-full border border-zinc-300 bg-white rounded shadow">
+            <div class="p-3 text-sm mt-5">
+                <p>
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit repellat exercitationem obcaecati
                     reiciendis praesentium eum beatae nulla a eaque. Nam consequatur modi, quas itaque laudantium nisi
                     accusantium enim animi molestiae.
+                </p>
+            </div>
+
+            <div class="p-3 text-sm mt-5">
+                <h3 class="font-semibold mb-2">Insegna nei seguenti Corsi</h3>
+                @if($this->courses->count() > 0)
+                <div class="space-y-2">
+                    @foreach($this->courses as $course)
+                    <div class="border border-zinc-200 rounded p-2 bg-zinc-50">
+                        <div class="font-semibold text-zinc-800 uppercase">{{ $course->name }}</div>
+                        <div class="text-xs text-zinc-600 mt-1">
+                            @forelse($course->subjects->whereIn('id', $teacher->subjects->pluck('id')) as $subject)
+                            <div class="inline-block mr-2">
+                                <flux:badge size="sm" variant="secondary">{{ $subject->name }}</flux:badge>
+                            </div>
+                            @empty
+                            <span class="text-zinc-400 italic">Nessuna materia</span>
+                            @endforelse
+                        </div>
+                    </div>
+                    @endforeach
                 </div>
+                @else
+                <div class="text-zinc-500 italic">Nessun corso assegnato</div>
+                @endif
             </div>
         </div>
+    </div>
+    <div class="text-end mt-5">
+        <flux:button wire:navigate icon="pencil" variant="primary" size="sm" class="cursor-pointer"
+            href="/professori/{{$teacher->id}}/modifica">Modifica
+        </flux:button>
     </div>
 </div>

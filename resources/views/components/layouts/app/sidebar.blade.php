@@ -6,7 +6,7 @@
 </head>
 
 <body class="min-h-screen bg-zinc-50 dark:bg-zinc-900">
-    <flux:sidebar sticky stashable class="border-e border-zinc-200 bg-white dark:border-zinc-700 dark:bg-zinc-800">
+    <flux:sidebar sticky stashable class="border-e  border-zinc-300 shadow bg-white dark:border-zinc-700 dark:bg-zinc-800">
         <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
 
         <div class="w-full -mb-5 -mt-5 px-4 py-3 flex justify-center">
@@ -25,7 +25,7 @@
             </flux:navlist.group>
           
             <flux:navlist.group :heading="__('Corsi')" class="grid">
-                <flux:navlist.item icon="home" {{-- :href="route('teachers')" :current="request()->routeIs('teachers')" --}}
+                <flux:navlist.item icon="home" :href="route('courses')" :current="request()->routeIs('courses')"
                     wire:navigate>{{ __('Tutti I Corsi') }}</flux:navlist.item>
                 <flux:navlist.item icon="home" {{-- :href="route('teachers')" :current="request()->routeIs('teachers')"
                     --}} wire:navigate>{{ __('Corsi Serali') }}</flux:navlist.item>

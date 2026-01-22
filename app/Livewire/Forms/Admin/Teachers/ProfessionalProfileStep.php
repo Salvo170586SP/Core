@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Storage;
 use Livewire\Form;
 use Livewire\WithFileUploads;
 
-class ProfessionalProfile extends Form
+class ProfessionalProfileStep extends Form
 {
     use WithFileUploads;
 

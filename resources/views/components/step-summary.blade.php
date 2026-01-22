@@ -1,7 +1,7 @@
 @props(['title'])
 
 <div class="flex flex-col">
-    <div class="space-y-3 my-3 border p-5 rounded-2xl bg-white dark:bg-zinc-800 dark:border-zinc-700">
+    <div class="space-y-3 my-3 border border-zinc-300 p-5 rounded bg-white dark:bg-zinc-800 dark:border-zinc-700 shadow">
         <h2 class="text-sm font-bold">{{ $title }}</h2>
         
         @if ($errors->any())

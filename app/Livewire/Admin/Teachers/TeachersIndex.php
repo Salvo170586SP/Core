@@ -35,6 +35,7 @@ class TeachersIndex extends Component
     public function clearSelection()
     {
         $this->selected = [];
+        $this->selectAll = false;
     }
 
     public function deleteSelection()

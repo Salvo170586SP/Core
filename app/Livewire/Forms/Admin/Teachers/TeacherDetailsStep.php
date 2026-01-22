@@ -7,7 +7,7 @@ use Illuminate\Validation\Rule;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 
-class TeacherDetails extends Form
+class TeacherDetailsStep extends Form
 {
     public $name = 'Ciccio Pastioccio';
     public $email = 'ciccio@ciccio';

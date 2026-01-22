@@ -1,16 +1,16 @@
 <div class="p-1 mt-5">
     <div class="flex justify-between items-center">
         <h2 class="font-bold text-lg uppercase">Professori / Crea</h2>
-        <flux:button variant="primary" class="font-semibold cursor-pointer" icon="arrow-left" wire:navigate
+        <flux:button variant="filled" class="font-semibold cursor-pointer" icon="arrow-left" wire:navigate
             href="/professori">
             Torna Indietro
         </flux:button>
     </div>
 
     <x-counter-step :currentStep="$currentStep"
-        :titles="['1. Dati Anagrafici', ' 2. Profilo Professionale', '3. Specializzazioni', ' 4. Riepilogo']" />
+        :titles="['1. Dati Anagrafici', ' 2. Profilo Professionale', '3. Materie', ' 4. Riepilogo']" />
 
-    <div class="w-full rounded-lg mt-5">
+    <div class="w-full mt-5">
 
         @if ($currentStep == 0)
 
@@ -85,31 +85,31 @@
             </x-slot:actions>
         </x-step-container>
         @elseif($currentStep == 2)
-        <x-step-container title="Specializzazioni">
+        <x-step-container title="Materie">
             <div class="">
                 <div class="flex justify-between items-center gap-3 mb-3">
                     <div class="font-medium text-sm">
-                        Specializzazioni aggiunte
+                        Materie aggiunte
                         <span
                             class="inline-flex justify-center items-center ms-2 w-5 h-5 bg-zinc-600 text-white rounded-full">{{
-                            count($specializationStep->newSpecialization) }}</span>
+                            count($subjectsStep->newSubject) }}</span>
                     </div>
-                    <flux:button icon="plus-circle" variant="filled" class="cursor-pointer"
-                        wire:click="openNewSpecialization">Aggiungi Specializzazione</flux:button>
+                    <flux:button icon="plus-circle" variant="filled" class="cursor-pointer" wire:click="openNewSubject">
+                        Aggiungi Materia</flux:button>
                 </div>
 
                 {{-- Lista Specializzazioni --}}
-                @if (count($specializationStep->newSpecialization) > 0)
+                @if (count($subjectsStep->newSubject) > 0)
                 <div
                     class="w-1/2 mx-auto h-[330px] border bg-white dark:bg-zinc-800 dark:border-zinc-500 p-5 rounded-lg overflow-y-auto">
-                    @foreach ($specializationStep->newSpecialization as $index => $specialization)
-                    <div wire:key="newSpecialization-{{ $index }}-{{ str()->random(10) }}"
+                    @foreach ($subjectsStep->newSubject as $index => $specialization)
+                    <div wire:key="newSubject-{{ $index }}-{{ str()->random(10) }}"
                         class="w-full border dark:border-zinc-600 rounded-lg p-5 space-y-5 bg-zinc-100/50 dark:bg-zinc-700/50 mt-3 border-zinc-300 ">
                         <div class="flex items-center justify-between">
                             <flux:button icon="minus-circle" size="sm" variant="primary" color="red"
                                 class="cursor-pointer" wire:confirm="Sei sicuro di voler eliminare questo appartamento?"
-                                wire:click="closeNewSpecialization({{ $index }})">Elimina
-                                Specializzazione
+                                wire:click="closeNewSubject({{ $index }})">Elimina
+                                Materia
                             </flux:button>
                             <div
                                 class="bg-black text-white rounded-full w-5 h-5 font-bold flex justify-center items-center">
@@ -117,26 +117,25 @@
                             </div>
                         </div>
 
-                        <flux:select id="name" wire:model="specializationStep.newSpecialization.{{ $index }}.name"
-                            label="Specializzazione">
+                        <flux:select id="name" wire:model="subjectsStep.newSubject.{{ $index }}.subject_id"
+                            label="Materia">
                             <flux:select.option value="">-</flux:select.option>
-                            @foreach ($specializations as $s)
+                            @foreach ($subjects as $s)
                             <flux:select.option wire:key="s-{{ $s->id }}-{{$index}}" value="{{ $s->id }}">
                                 {{ $s->name}}
                             </flux:select.option>
                             @endforeach
                         </flux:select>
 
-                        <flux:input type="number" id="year"
-                            wire:model="specializationStep.newSpecialization.{{ $index }}.year" label="Anno" min="1900"
-                            max="2155" placeholder="Anno" required />
+                        {{-- <flux:input type="number" id="year" wire:model="subjectsStep.newSubject.{{ $index }}.year"
+                            label="Anno" min="1900" max="2155" placeholder="Anno" required /> --}}
                     </div>
                     @endforeach
                 </div>
                 @else
                 <div class="text-center py-8 text-zinc-500 dark:text-zinc-400">
-                    <p>Nessuna specializzazione aggiunta.</p>
-                    <p class="text-sm mt-2">Clicca su "Aggiungi Specializzazione" per iniziare.</p>
+                    <p>Nessuna materia aggiunta.</p>
+                    <p class="text-sm mt-2">Clicca su "Aggiungi Materia" per iniziare.</p>
                 </div>
                 @endif
             </div>
@@ -243,28 +242,26 @@
                     </div>
                 </div>
                 <div class="w-full border dark:border-zinc-700 rounded-2xl p-5">
-                    <h2 class="text-sm font-bold">Specializzazioni</h2>
+                    <h2 class="text-sm font-bold">Materie</h2>
                     <div class="space-y-2 grid grid-cols-2 mt-3">
-                        @if (count($specializationStep->newSpecialization) > 0)
+                        @if (count($subjectsStep->newSubject) > 0)
                         <ul class="space-y-2">
-                            @foreach ($specializationStep->newSpecialization as $index => $spec)
+                            @foreach ($subjectsStep->newSubject as $index => $sub)
                             @php
-                            $specialization = $specializations->firstWhere('id', $spec['name']);
+                            $subject = App\Models\Subject::find($sub['subject_id']);
                             @endphp
                             <li class="flex items-center justify-between p-2 bg-zinc-50 dark:bg-zinc-700/30 rounded">
                                 <span class="font-medium text-sm">
                                     <span class="text-zinc-500 dark:text-zinc-400">{{ $index + 1 }}.</span>
-                                    {{ $specialization?->name ?? '-' }}
+                                    {{ $subject->name ?? '-' }}
                                 </span>
-                                <span class="text-sm text-zinc-600 dark:text-zinc-400">
-                                    Anno {{ $spec['year'] ?? '-' }}
-                                </span>
+
                             </li>
                             @endforeach
                         </ul>
                         @else
                         <p class="text-sm text-zinc-500 dark:text-zinc-400 italic">
-                            Nessuna specializzazione aggiunta
+                            Nessuna materia aggiunta
                         </p>
                         @endif
                     </div>

@@ -1,14 +1,13 @@
 <div class="p-1 mt-5">
-    <div class="flex justify-between items-center">
+    <div class="flex justify-between items-center h-20">
         <h2 class="font-bold text-lg uppercase">Professori</h2>
+        <x-div-selection :selected="$selected" function="deleteSelection" />
         <flux:button variant="primary" class="font-semibold cursor-pointer" icon="plus" wire:navigate
             href="professori/crea">
             Aggiungi Professore
         </flux:button>
     </div>
 
-    <!-- Div con conteggio elementi selezionati -->
-    <x-div-selection :selected="$selected" function="deleteSelection" />
 
     <div class="w-full rounded-lg mt-5">
         <div class="flex items-center mb-5">
@@ -20,12 +19,13 @@
 
 
         <x-table :headers="[
-        ['label' => 'ID Istruttore'],
+        ['label' => 'ID'],
         ['label' => 'Nome Istruttore'],
         ['label' => 'Livello Istruttore', 'align' => 'text-center'],
         ['label' => 'Collaborazione Diretta', 'align' => 'text-center'],
         ['label' => 'Centro', 'align' => 'text-center'],
-        ['label' => 'Specializzazioni', 'align' => 'text-center'],
+        ['label' => 'Materie', 'align' => 'text-center'],
+        ['label' => 'Allegato', 'align' => 'text-center'],
         ['label' => '']
     ]" :show-checkbox="true">
 
@@ -34,14 +34,16 @@
             @endslot
 
             @foreach($teachers as $item)
-            <tr wire:key="teacher-{{$item->id}}" class="border-b dark:border-zinc-700 h-[60px]">
+            <tr wire:key="teacher-{{$item->id}}" class="border-b dark:border-zinc-700 h-[60px] text-sm">
                 <td class="ps-5">
                     <flux:checkbox wire:model.live="selected" value="{{ $item->id }}" />
                 </td>
                 <td class="px-3 font-bold text-sm">T-#{{$item->id}}</td>
                 <td class="px-3">{{$item->name}}</td>
                 <td class="px-3 text-center">
-                    {{ $item->getLevelLabel($item->professionalProfile?->level_coach) }}
+                    <flux:badge color="purple" size="sm">
+                        {{ $item->getLevelLabel($item->professionalProfile?->level_coach) }}
+                    </flux:badge>
                 </td>
                 <td class="px-3">
                     <div class="flex justify-center items-center">
@@ -54,8 +56,22 @@
                         </flux:button>
                     </div>
                 </td>
-                <td class="px-3 text-center">{{$item->professionalProfile?->center ?? '-' }}</td>
-                <td class="px-3 text-center">--</td>
+                <td class="px-3 text-center">
+                    {{$item->professionalProfile?->center ?? '-' }}</td>
+                <td class="px-3 text-center">
+                    <flux:badge color="purple" size="sm">
+                        {{$item->subjects?->count() }}
+                    </flux:badge>
+                </td>
+                <td class="px-3 text-center">
+                    @if($item->professionalProfile?->file_professional)
+                    <flux:button download size="sm" variant="ghost"
+                        href="{{asset('storage/'. $item->professionalProfile->file_professional )}}"
+                        icon="arrow-down-tray" />
+                    @else
+                    -
+                    @endif
+                </td>
                 <td class="px-3">
                     <div class="flex justify-end gap-2">
                         <flux:button wire:navigate icon="eye" variant="ghost" size="sm" class="cursor-pointer"

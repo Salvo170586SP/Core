@@ -5,7 +5,7 @@
     
     @if(count($selected) > 0)
     <div
-        class="flex items-center gap-3 mt-5 p-4 bg-blue-50 dark:bg-blue-950 rounded-lg border border-blue-200 dark:border-blue-800">
+        class="flex items-center gap-3 mt-5 p-4 bg-blue-50 dark:bg-blue-950 rounded  border border-blue-300 dark:border-blue-800">
         <flux:icon.check-circle variant="mini" class="text-blue-600 dark:text-blue-400" />
         <span class="text-sm font-semibold text-blue-800 dark:text-blue-200">
             {{ count($selected) }} {{ count($selected) === 1 ? 'elemento selezionato' : 'elementi selezionati' }}

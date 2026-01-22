@@ -2,20 +2,20 @@
 
 namespace App\Livewire\Admin\Teachers;
 
-use App\Livewire\Forms\Admin\Teachers\ProfessionalProfile;
-use App\Livewire\Forms\Admin\Teachers\Specializations;
-use App\Livewire\Forms\Admin\Teachers\TeacherDetails;
-use App\Models\Specialization;
+use App\Livewire\Forms\Admin\Teachers\ProfessionalProfileStep;
+use App\Livewire\Forms\Admin\Teachers\SubjectsStep;
+use App\Livewire\Forms\Admin\Teachers\TeacherDetailsStep;
+use App\Models\Subject;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
 class TeachersCreate extends Component
 {
     use WithFileUploads;
-    public TeacherDetails $teacherDetailsStep;
-    public ProfessionalProfile $professionalProfileStep;
-    public Specializations $specializationStep;
-    public $currentStep = 2;
+    public TeacherDetailsStep $teacherDetailsStep;
+    public ProfessionalProfileStep $professionalProfileStep;
+    public SubjectsStep $subjectsStep;
+    public $currentStep = 0;
 
     public function addStep()
     {
@@ -41,26 +41,26 @@ class TeachersCreate extends Component
         return $level['label'] ?? '-';
     }
 
-    public function openNewSpecialization()
+    public function openNewSubject()
     {
-        $this->specializationStep->openNewSpecialization();
+        $this->subjectsStep->openNewSubject();
     }
 
-    public function closeNewSpecialization($index)
+    public function closeNewSubject($index)
     {
-        $this->specializationStep->closeNewSpecialization($index);
+        $this->subjectsStep->closeNewSubject($index);
     }
 
     public function submit()
     {
        // Valida solo se ci sono specializzazioni aperte
-    if (!empty($this->specializationStep->newSpecialization)) {
-        $this->specializationStep->validate();
+    if (!empty($this->subjectsStep->newSubject)) {
+        $this->subjectsStep->validate();
     }
 
         $teacher_id =  $this->teacherDetailsStep->save();
         $this->professionalProfileStep->save($teacher_id);
-        $this->specializationStep->save($teacher_id);
+        $this->subjectsStep->save($teacher_id);
 
         return  $this->redirect('/professori', navigate: true);
     }
@@ -69,8 +69,8 @@ class TeachersCreate extends Component
     public function render()
     {
         $levels = config('Core.levels');
-        $specializations = Specialization::all();
+        $subjects = Subject::all();
 
-        return view('livewire.admin.teachers.teachers-create', compact('levels', 'specializations'));
+        return view('livewire.admin.teachers.teachers-create', compact('levels', 'subjects'));
     }
 }
