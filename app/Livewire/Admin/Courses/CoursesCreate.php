@@ -8,8 +8,6 @@ use Livewire\Component;
 
 class CoursesCreate extends Component
 {
-
-
     public $name = 'Grafica';
     public $code;
     public $level;
@@ -90,6 +88,7 @@ class CoursesCreate extends Component
         $course = Course::create([
             'code' => $this->generateUniqueCode(),
             'name' => $this->name,
+            'type' => 'all',
             'description' => $this->description,
             'level' => $this->level,
             'duration_hours' => $this->duration_hours,
@@ -109,8 +108,6 @@ class CoursesCreate extends Component
 
         return $this->redirect('/tutti-corsi', navigate: true);
     }
-
-
 
     public function render()
     {

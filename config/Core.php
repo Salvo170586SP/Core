@@ -1,6 +1,16 @@
 <?php
 
 return  [
+    "types_course" => [
+        [
+            "id" => "all",
+            "label" => "Tutti"
+        ],
+        [
+            "id" => "evening",
+            "label" => "Serali"
+        ]
+    ],
     "levels" => [
         [
             "id" => "first",

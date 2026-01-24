@@ -20,11 +20,11 @@
 
 
         <x-table :headers="[
-        ['label' => 'ID'],
-        ['label' => 'Nome Allievo'],
-         ['label' => 'Corsi', 'align' => 'text-center'],
-         ['label' => '']
-    ]" :show-checkbox="true">
+            ['label' => ''],
+            ['label' => 'Nome Allievo'],
+            ['label' => 'Corsi', 'align' => 'text-center'],
+            ['label' => '']
+            ]" :show-checkbox="true">
 
             @slot('checkboxHeader')
             <flux:checkbox class="ps-3" wire:model.live="selectAll" />
@@ -37,7 +37,7 @@
                     <flux:checkbox wire:model.live="selected" value="{{ $item->id }}" />
                 </td>
                 <td class="px-3 font-bold text-sm">{{$item->code}}</td>
-                <td class="px-3">{{$item->name}}</td>
+                <td class="px-3 uppercase">{{$item->name}}</td>
 
                 <td class="px-3">
                     <div class="flex justify-center items-center">
@@ -47,14 +47,16 @@
 
                 <td class="px-3">
                     <div class="flex justify-end gap-2">
-                        <flux:button wire:navigate icon="eye" variant="ghost" size="sm" class="cursor-pointer"
-                            href="/allievi/{{$item->id}}">
+
+                        <flux:button wire:navigate icon="eye" variant="filled" size="sm" class="cursor-pointer"
+                            href="/allievi/{{$item->id}}"> Dettagli
                         </flux:button>
-                        <flux:button wire:navigate icon="pencil" variant="ghost" size="sm" class="cursor-pointer"
-                            href="/allievi/{{$item->id}}/modifica">
+                        <flux:button wire:navigate icon="pencil" variant="filled" size="sm" class="cursor-pointer"
+                            href="/allievi/{{$item->id}}/modifica">Modifica
                         </flux:button>
                         <flux:modal.trigger name="delete-profile-{{$item->id}}">
-                            <flux:button icon="trash" variant="ghost" size="sm" class="cursor-pointer"></flux:button>
+                            <flux:button icon="trash" variant="danger" size="sm" class="cursor-pointer">Elimina
+                            </flux:button>
                         </flux:modal.trigger>
                         <flux:modal name="delete-profile-{{$item->id}}" class="md:w-96">
                             <div class="space-y-6">
@@ -72,6 +74,7 @@
                                 </div>
                             </div>
                         </flux:modal>
+
                     </div>
                 </td>
             </tr>
@@ -81,6 +84,9 @@
             </tr>
             @endforelse
         </x-table>
+        <div class="mt-5 px-2">
+            {{$students->links()}}
+        </div>
 
     </div>
 </div>

@@ -133,7 +133,7 @@
                         <div class="flex justify-between items-center h-20">
                             <div class="space-y-3">
                                 <h3 class="text-lg font-medium">Allievi iscritti</h3>
-                                @if($course->status  == 'recruitment_closed' || $course->students->count() == 3) <div
+                                @if($course->status == 'recruitment_closed' || $course->students->count() == 3) <div
                                     class="text-red-600 rounded-lg flex gap-1 text-base font-bold">
                                     Iscrizioni chiuse
                                     <flux:icon.lock-closed />
@@ -245,6 +245,4 @@
     <flux:button wire:navigate icon="pencil" variant="primary" size="sm" href="/tutti-corsi/{{$course->id}}/modifica">
         Modifica
     </flux:button>
-</div>
-</div>
 </div>

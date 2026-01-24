@@ -42,7 +42,7 @@
                     <flux:checkbox wire:model.live="selected" value="{{ $course->id }}" />
                 </td>
                 <td class="px-3 font-bold text-sm">{{ $course->code }}</td>
-                <td class="px-1 font-semibold">{{ $course->name }}</td>
+                <td class="px-1 font-semibold uppercase">{{ $course->name }}</td>
                 <td class="px-1 text-center">
                     <flux:badge color="{{ $course->getLevelColor($course->level) }}" size="sm">
                         {{ $course->getLevelLabel($course->level) }}
@@ -71,14 +71,14 @@
                 </td>
                 <td class="px-1">
                     <div class="flex justify-end gap-2">
-                        <flux:button wire:navigate icon="eye" variant="ghost" size="sm"
-                            href="/tutti-corsi/{{$course->id}}">
+                        <flux:button wire:navigate icon="eye" variant="filled" size="sm"
+                            href="/tutti-corsi/{{$course->id}}">Dettagli
                         </flux:button>
-                        <flux:button wire:navigate icon="pencil" variant="ghost" size="sm"
-                            href="/tutti-corsi/{{$course->id}}/modifica">
+                        <flux:button wire:navigate icon="pencil" variant="filled" size="sm"
+                            href="/tutti-corsi/{{$course->id}}/modifica">Modifica
                         </flux:button>
                         <flux:modal.trigger name="delete-course-{{$course->id}}">
-                            <flux:button icon="trash" variant="ghost" size="sm" class="cursor-pointer"></flux:button>
+                            <flux:button icon="trash" variant="danger" size="sm" class="cursor-pointer">Elimina</flux:button>
                         </flux:modal.trigger>
                         <flux:modal name="delete-course-{{$course->id}}" class="md:w-96">
                             <div class="space-y-6">
@@ -101,6 +101,9 @@
             </tr>
             @endforeach
         </x-table>
+        <div class="mt-5 px-2">
+            {{$courses->links()}}
+        </div>
 
     </div>
 </div>

@@ -27,8 +27,8 @@
             <flux:navlist.group :heading="__('Corsi')" class="grid">
                 <flux:navlist.item icon="home" :href="route('courses')" :current="request()->routeIs('courses')"
                     wire:navigate>{{ __('Tutti I Corsi') }}</flux:navlist.item>
-                <flux:navlist.item icon="home" {{-- :href="route('teachers')" :current="request()->routeIs('teachers')"
-                    --}} wire:navigate>{{ __('Corsi Serali') }}</flux:navlist.item>
+                <flux:navlist.item icon="home" :href="route('evening_courses')" :current="request()->routeIs('evening_courses')"
+                    wire:navigate>{{ __('Corsi Serali') }}</flux:navlist.item>
             </flux:navlist.group>
 
 

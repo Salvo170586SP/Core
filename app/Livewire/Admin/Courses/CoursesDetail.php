@@ -16,7 +16,7 @@ class CoursesDetail extends Component
 
     public function updatedSelected()
     {
-        $totalStudents = Course::count();
+        $totalStudents = User::role('allievo')->count();
         $this->selectAll = count($this->selected) === $totalStudents && $totalStudents > 0;
     }
 

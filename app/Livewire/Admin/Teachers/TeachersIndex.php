@@ -4,9 +4,11 @@ namespace App\Livewire\Admin\Teachers;
 
 use App\Models\User;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class TeachersIndex extends Component
 {
+    use WithPagination;
     public $selected = [];
     public $selectAll = false;
 
@@ -58,7 +60,7 @@ class TeachersIndex extends Component
 
     public function render()
     {
-        $teachers = User::role('istruttore')->latest()->get();
+        $teachers = User::role('istruttore')->latest()->paginate(10);
 
         return view('livewire.admin.teachers.teachers-index', compact('teachers'));
     }

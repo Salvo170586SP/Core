@@ -74,14 +74,14 @@
                 </td>
                 <td class="px-3">
                     <div class="flex justify-end gap-2">
-                        <flux:button wire:navigate icon="eye" variant="ghost" size="sm" class="cursor-pointer"
-                            href="/professori/{{$item->id}}">
+                        <flux:button wire:navigate icon="eye" variant="filled" size="sm" class="cursor-pointer"
+                            href="/professori/{{$item->id}}">Dettagli
                         </flux:button>
-                        <flux:button wire:navigate icon="pencil" variant="ghost" size="sm" class="cursor-pointer"
-                            href="/professori/{{$item->id}}/modifica">
+                        <flux:button wire:navigate icon="pencil" variant="filled" size="sm" class="cursor-pointer"
+                            href="/professori/{{$item->id}}/modifica">Modifica
                         </flux:button>
                         <flux:modal.trigger name="delete-profile-{{$item->id}}">
-                            <flux:button icon="trash" variant="ghost" size="sm" class="cursor-pointer"></flux:button>
+                            <flux:button icon="trash" variant="danger" size="sm" class="cursor-pointer">Elimina</flux:button>
                         </flux:modal.trigger>
                         <flux:modal name="delete-profile-{{$item->id}}" class="md:w-96">
                             <div class="space-y-6">
@@ -104,6 +104,9 @@
             </tr>
             @endforeach
         </x-table>
+        <div class="mt-5 px-2">
+            {{$teachers->links()}}
+        </div>
 
     </div>
 </div>

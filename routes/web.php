@@ -4,6 +4,10 @@ use App\Livewire\Admin\Courses\CoursesCreate;
 use App\Livewire\Admin\Courses\CoursesDetail;
 use App\Livewire\Admin\Courses\CoursesEdit;
 use App\Livewire\Admin\Courses\CoursesIndex;
+use App\Livewire\Admin\EveningCourses\EveningCoursesCreate;
+use App\Livewire\Admin\EveningCourses\EveningCoursesDetail;
+use App\Livewire\Admin\EveningCourses\EveningCoursesEdit;
+use App\Livewire\Admin\EveningCourses\EveningCoursesIndex;
 use App\Livewire\Admin\Students\StudentsCreate;
 use App\Livewire\Admin\Students\StudentsDetail;
 use App\Livewire\Admin\Students\StudentsEdit;
@@ -35,6 +39,11 @@ Route::middleware(['auth', 'role:amministratore'])->group(function () {
     Volt::route('tutti-corsi/crea',CoursesCreate::class)->name('courses.create');
     Volt::route('tutti-corsi/{id}',CoursesDetail::class)->name('courses.detail');
     Volt::route('tutti-corsi/{id}/modifica',CoursesEdit::class)->name('courses.edit');
+   
+    Volt::route('corsi-serali',EveningCoursesIndex::class)->name('evening_courses');
+    Volt::route('corsi-serali/crea',EveningCoursesCreate::class)->name('evening_courses.create');
+    Volt::route('corsi-serali/{id}',EveningCoursesDetail::class)->name('evening_courses.detail');
+    Volt::route('corsi-serali/{id}/modifica',EveningCoursesEdit::class)->name('evening_courses.edit');
 
     Volt::route('allievi',StudentsIndex::class)->name('students');
     Volt::route('allievi/crea',StudentsCreate::class)->name('students.create');
