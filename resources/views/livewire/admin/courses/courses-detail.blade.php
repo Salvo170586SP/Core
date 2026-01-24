@@ -15,6 +15,9 @@
                     <div>
                         Cod. <span class="text-sm font-medium"> {{ $course->code }} </span>
                     </div>
+                    <div>
+                        Allievi iscritti <span class="text-black font-bold ms-2"> {{$course->students->count()}} </span>
+                    </div>
                 </div>
             </div>
 
@@ -69,9 +72,9 @@
         </div>
 
 
-        <div class="w-full shadow">
-            <div x-cloak x-data="{isOpen: 'info'}" class="border border-zinc-300 bg-white p-5 rounded-lg text-sm">
-
+        <div class="w-full">
+            <div x-cloak x-data="{isOpen: 'allievi'}"
+                class="border border-zinc-300 bg-white p-5 rounded shadow text-sm">
 
                 <div class="space-x-3">
                     <button @click="isOpen = 'info'"
@@ -125,113 +128,123 @@
                     </div>
                 </div>
 
-                <div x-cloak  x-show="isOpen === 'allievi'">
-                    <div class="mt-5 space-y-2 border-b border-zinc-300 ">
-                        <h3 class="text-lg font-medium mb-5">Allievi iscritti</h3>
+                <div x-cloak x-show="isOpen === 'allievi'">
+                    <div class="mt-5 space-y-2">
+                        <div class="flex justify-between items-center h-20">
+                            <div class="space-y-3">
+                                <h3 class="text-lg font-medium">Allievi iscritti</h3>
+                                @if($course->status  == 'recruitment_closed' || $course->students->count() == 3) <div
+                                    class="text-red-600 rounded-lg flex gap-1 text-base font-bold">
+                                    Iscrizioni chiuse
+                                    <flux:icon.lock-closed />
+                                </div>
+                                @endif
+                            </div>
+                            <!-- Div con conteggio elementi selezionati -->
+                            <x-div-selection :selected="$selected" function="detachSelectedStudentCourse" />
 
-                        <x-table :headers="[
-        ['label' => 'ID'],
-        ['label' => 'Nome Allievo'],
-        ['label' => 'Livello Istruttore', 'align' => 'text-center'],
-        ['label' => 'Collaborazione Diretta', 'align' => 'text-center'],
-        ['label' => 'Centro', 'align' => 'text-center'],
-        ['label' => 'Specializzazioni', 'align' => 'text-center'],
-        ['label' => 'Allegato', 'align' => 'text-center'],
-        ['label' => '']
-    ]" :show-checkbox="false">
-
-                            {{-- @slot('checkboxHeader')
-                            <flux:checkbox class="ps-3" wire:model.live="selectAll" />
-                            @endslot --}}
-
-                            {{-- @foreach($teachers as $item) --}}
-                            <tr {{-- wire:key="teacher-{{$item->id}}" --}}
-                                class="border-b dark:border-zinc-700 h-[60px] text-sm">
-                                <td class="ps-5">
-                                    {{--
-                                    <flux:checkbox wire:model.live="selected" value="{{ $item->id }}" /> --}}
-                                </td>
-                                <td class="px-3 font-bold text-sm">{{-- T-#{{$item->id}} --}}</td>
-                                <td class="px-3">{{-- {{$item->name}} --}}</td>
-                                <td class="px-3 text-center">
-                                    {{-- <flux:badge color="purple" size="sm">
-                                        {{ $item->getLevelLabel($item->professionalProfile?->level_coach) }}
-                                    </flux:badge> --}}
-                                </td>
-                                <td class="px-3">
-                                    {{-- <div class="flex justify-center items-center">
-                                        <flux:button wire:click="toggle({{$item->id}})" variant="ghost"
-                                            class="cursor-pointer">
-                                            @if($item->professionalProfile &&
-                                            $item->professionalProfile->direct_collaboration)
-                                            <flux:icon.check-circle color="blue" variant="mini" />
-                                            @else
-                                            <flux:icon.x-circle color="red" variant="mini" />
-                                            @endif
-                                        </flux:button>
-                                    </div> --}}
-                                </td>
-                                <td class="px-3 text-center">
-                                    {{-- {{$item->professionalProfile?->center ?? '-' }} --}}</td>
-                                <td class="px-3 text-center">
-                                    {{-- <flux:badge color="purple" size="sm">
-                                        {{$item->subjects?->count() }}
-                                    </flux:badge> --}}
-                                </td>
-                                <td class="px-3 text-center">
-                                    {{-- @if($item->professionalProfile?->file_professional)
-                                    <flux:button download size="sm" variant="ghost"
-                                        href="{{asset('storage/'. $item->professionalProfile->file_professional )}}"
-                                        icon="arrow-down-tray" />
-                                    @else
-                                    -
-                                    @endif --}}
-                                </td>
-                                <td class="px-3">
-                                    <div class="flex justify-end gap-2">
-                                        <flux:button wire:navigate icon="eye" variant="ghost" size="sm"
-                                            class="cursor-pointer" {{-- href="/professori/{{$item->id}}/dettagli" --}}>
-                                        </flux:button>
-                                        <flux:button wire:navigate icon="pencil" variant="ghost" size="sm"
-                                            class="cursor-pointer" {{-- href="/professori/{{$item->id}}/modifica" --}}>
-                                        </flux:button>
-                                        <flux:modal.trigger {{-- name="delete-profile-{{$item->id}}" --}}>
-                                            <flux:button icon="trash" variant="ghost" size="sm" class="cursor-pointer">
-                                            </flux:button>
-                                        </flux:modal.trigger>
-                                        <flux:modal {{-- name="delete-profile-{{$item->id}}" --}} class="md:w-96">
-                                            <div class="space-y-6">
-                                                <div>
-                                                    <flux:heading size="xl">Attenzione</flux:heading>
-                                                    <flux:text class="mt-2">Sei sicuro di eliminare l'elemento?
-                                                    </flux:text>
-                                                </div>
-                                                <div class="flex gap-2">
-                                                    <flux:spacer />
-                                                    <flux:modal.close>
-                                                        <flux:button variant="ghost">Cancel</flux:button>
-                                                    </flux:modal.close>
-                                                    <flux:button {{-- wire:click="delete({{$item->id}})" --}}
-                                                        variant="danger" class="cursor-pointer">Elimina</flux:button>
-                                                </div>
-                                            </div>
-                                        </flux:modal>
+                            @if($course->status == 'recruitment' || $course->students->count() < 3) <div>
+                                <flux:modal.trigger name="add-allievo-{{$course->id}}">
+                                    <flux:button icon="plus" variant="primary" size="sm" class="cursor-pointer">
+                                        Aggiungi Allievo
+                                    </flux:button>
+                                </flux:modal.trigger>
+                                <flux:modal name="add-allievo-{{$course->id}}" class="md:w-96">
+                                    <div class="space-y-6">
+                                        <div>
+                                            <flux:heading size="md">Aggiungi Allievo</flux:heading>
+                                            <flux:text class="mt-2">
+                                                <flux:select id="student_id" wire:model="student_id">
+                                                    <flux:select.option value="">-</flux:select.option>
+                                                    @foreach ($students as $student)
+                                                    <flux:select.option wire:key="student-{{ $student->id }}"
+                                                        value="{{ $student->id }}">
+                                                        {{ $student->name }}
+                                                    </flux:select.option>
+                                                    @endforeach
+                                                </flux:select>
+                                            </flux:text>
+                                        </div>
+                                        <div class="flex gap-2">
+                                            <flux:spacer />
+                                            <flux:modal.close>
+                                                <flux:button variant="ghost">Cancel</flux:button>
+                                            </flux:modal.close>
+                                            <flux:modal.close>
+                                                <flux:button wire:click="attachStudentCourse" variant="primary"
+                                                    class="cursor-pointer">Aggiungi al corso
+                                                </flux:button>
+                                            </flux:modal.close>
+                                        </div>
                                     </div>
-                                </td>
-                            </tr>
-                            {{-- @endforeach --}}
-                        </x-table>
+                                </flux:modal>
+                        </div>
 
+                        @endif
                     </div>
+
+                    @if($course->students->count() > 0)
+                    <x-table :headers="[
+                                ['label' => 'ID'],
+                                ['label' => 'Nome Allievo'],
+                                ['label' => 'Allegato', 'align' => 'text-center'],
+                                ['label' => '']
+                            ]" :show-checkbox="true">
+                        @foreach($course->students as $student)
+                        <tr wire:key="student-course-{{$student->id}}-{{$course->id}}"
+                            class="border-b dark:border-zinc-700 h-[60px] text-sm">
+                            <td class="ps-5">
+                                <flux:checkbox wire:model.live="selected" value="{{ $student->id }}" />
+                            </td>
+                            <td class="px-3 font-bold text-sm">{{$student->code}}</td>
+                            <td class="px-3">{{$student->name}}</td>
+                            <td class="px-3 text-center">
+
+                            </td>
+                            <td class="px-3">
+                                <div class="flex justify-end gap-2">
+                                    <flux:button wire:navigate icon="eye" variant="ghost" size="sm"
+                                        class="cursor-pointer" href="/allievi/{{$student->id}}">
+                                    </flux:button>
+                                    <flux:modal.trigger name="delete-allievo-{{$student->id}}">
+                                        <flux:button icon="trash" variant="ghost" size="sm" class="cursor-pointer">
+                                        </flux:button>
+                                    </flux:modal.trigger>
+                                    <flux:modal name="delete-allievo-{{$student->id}}" class="md:w-96">
+                                        <div class="space-y-6">
+                                            <div>
+                                                <flux:heading size="xl">Attenzione</flux:heading>
+                                                <flux:text class="mt-2">Sei sicuro di eliminare l'elemento?
+                                                </flux:text>
+                                            </div>
+                                            <div class="flex gap-2">
+                                                <flux:spacer />
+                                                <flux:modal.close>
+                                                    <flux:button variant="ghost">Cancel</flux:button>
+                                                </flux:modal.close>
+                                                <flux:button wire:click="detachStudentCourse({{$student->id}})"
+                                                    variant="danger" class="cursor-pointer">Elimina</flux:button>
+                                            </div>
+                                        </div>
+                                    </flux:modal>
+                                </div>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </x-table>
+                    @else
+                    <div>Non ci sono studenti iscritti</div>
+                    @endif
                 </div>
             </div>
-
         </div>
+
     </div>
-    <div class="text-end mt-5">
-        <flux:button wire:navigate icon="pencil" variant="primary" size="sm"
-            href="/tutti-corsi/{{$course->id}}/modifica"> Modifica
-        </flux:button>
-    </div>
+</div>
+<div class="text-end mt-5">
+    <flux:button wire:navigate icon="pencil" variant="primary" size="sm" href="/tutti-corsi/{{$course->id}}/modifica">
+        Modifica
+    </flux:button>
+</div>
 </div>
 </div>

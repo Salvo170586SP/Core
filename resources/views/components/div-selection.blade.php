@@ -5,14 +5,14 @@
     
     @if(count($selected) > 0)
     <div
-        class="flex items-center gap-3 mt-5 p-4 bg-blue-50 dark:bg-blue-950 rounded  border border-blue-300 dark:border-blue-800">
+        class="flex items-center gap-3 {{-- mt-5 --}} p-4 bg-blue-50 dark:bg-blue-950 rounded  border border-blue-300 dark:border-blue-800">
         <flux:icon.check-circle variant="mini" class="text-blue-600 dark:text-blue-400" />
         <span class="text-sm font-semibold text-blue-800 dark:text-blue-200">
             {{ count($selected) }} {{ count($selected) === 1 ? 'elemento selezionato' : 'elementi selezionati' }}
         </span>
         <flux:spacer />
         <flux:modal.trigger name="delete-profile">
-            <flux:button variant="danger">Elimna Selezione</flux:button>
+            <flux:button variant="danger" class="font-medium">Elimna Selezione</flux:button>
         </flux:modal.trigger>
 
         <flux:modal name="delete-profile" class="min-w-[22rem]">

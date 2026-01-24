@@ -23,6 +23,7 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
+        'code',
         'name',
         'email',
         'password',
@@ -72,14 +73,22 @@ class User extends Authenticatable
         return $this->hasOne(ProfessionalProfile::class, 'teacher_id');
     }
 
+    //materie degli insegnanti
     public function subjects()
     {
         return $this->belongsToMany(Subject::class, 'subject_teacher', 'teacher_id', 'subject_id');
     }
-
+    
+    //corsi degli insegnanti
     public function courses()
     {
         return $this->belongsToMany(Course::class, 'course_teacher', 'teacher_id', 'course_id');
+    }
+   
+    //corsi degli studenti
+    public function coursesStudents()
+    {
+        return $this->belongsToMany(Course::class, 'course_student', 'student_id', 'course_id');
     }
 
     // prendo livello professionale

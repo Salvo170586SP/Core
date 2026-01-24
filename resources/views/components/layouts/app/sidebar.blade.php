@@ -20,8 +20,8 @@
             <flux:navlist.group :heading="__('Anagrafiche')" class="grid">
                 <flux:navlist.item icon="home" :href="route('teachers')" :current="request()->routeIs('teachers')"
                     wire:navigate>{{ __('Professori') }}</flux:navlist.item>
-                <flux:navlist.item icon="home" {{-- :href="route('teachers')" :current="request()->routeIs('teachers')"
-                    --}} wire:navigate>{{ __('Studenti') }}</flux:navlist.item>
+                <flux:navlist.item icon="home" :href="route('students')" :current="request()->routeIs('students')"
+                    wire:navigate>{{ __('Allievi') }}</flux:navlist.item>
             </flux:navlist.group>
           
             <flux:navlist.group :heading="__('Corsi')" class="grid">

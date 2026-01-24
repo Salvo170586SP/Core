@@ -55,8 +55,13 @@ return  [
         ],
         [
             "id" => "recruitment",
-            "label" => "Reclutamento",
+            "label" => "Iscrizioni aperte",
             "color" => "zinc",
+        ],
+        [
+            "id" => "recruitment_closed",
+            "label" => "Iscrizioni chiuse",
+            "color" => "orange",
         ],
         [
             "id" => "cancel",

@@ -9,12 +9,15 @@
         <div class="w-100 space-y-3">
             <div class="border border-zinc-300 bg-white p-3 rounded shadow text-sm">
                 <h3 class="font-semibold mb-2">Dati Anagrafici</h3>
-                <div class="flex flex-col justify-center">
+                <div class="flex flex-col justify-center space-y-2">
                     <div class="font-semibold text-xl">
                         Prof. {{ $teacher->name }}
                     </div>
                     <div>
                         {{ $teacher->email }}
+                    </div>
+                    <div>
+                        Cod. {{$teacher->code ?? '*'}}
                     </div>
                 </div>
             </div>
@@ -34,13 +37,14 @@
 
             <div class="border border-zinc-300 bg-white p-3 rounded shadow text-sm">
                 <h3 class="font-semibold mb-2 textcenter">Profilo Professionale</h3>
-                <div class="space-y-1">
+                <div class="space-y-2">
                     <div class="flex items-center justify-between">
-                        <span class="font-medium">Livello Professionale:</span>
-                        <span>{{ $teacher->getLevelLabel($teacher->professionalProfile?->level_coach) }}</span>
+                        <span>Livello Professionale:</span>
+                        <span class="font-medium">{{
+                            $teacher->getLevelLabel($teacher->professionalProfile?->level_coach) }}</span>
                     </div>
                     <div class="flex items-center  justify-between">
-                        <span class="font-medium">Collaborazione diretta:</span>
+                        <span>Collaborazione diretta:</span>
                         @if($teacher->professionalProfile && $teacher->professionalProfile->direct_collaboration)
                         <flux:icon.check-circle color="blue" variant="mini" />
                         @else
@@ -48,20 +52,20 @@
                         @endif
                     </div>
                     <div class="flex items-center justify-between">
-                        <span class="font-medium">Centro Scolastico:</span>
-                        {{ $teacher->professionalProfile->center ?? '-' }}
+                        <span>Centro Scolastico:</span>
+                        <span class="font-medium">{{ $teacher->professionalProfile->center ?? '-' }}</span>
                     </div>
                     <div class="flex items-center justify-between gap-2">
-                        <span class="font-medium">Giorni di lezione:</span>
-                        <span>{{ $teacher->professionalProfile->day_course ?? '-' }}</span>
+                        <span>Giorni di lezione:</span>
+                        <span class="font-medium">{{ $teacher->professionalProfile->day_course ?? '-' }}</span>
                     </div>
                     <div class="flex items-center justify-between">
-                        <span class="font-medium">Orario inizio:</span>
-                        <span>{{ $teacher->professionalProfile->hour_start ?? '-' }}</span>
+                        <span>Orario inizio:</span>
+                        <span class="font-medium">{{ $teacher->professionalProfile->hour_start ?? '-' }}</span>
                     </div>
                     <div class="flex items-center justify-between">
-                        <span class="font-medium">Orario fine:</span>
-                        <span>{{ $teacher->professionalProfile->hour_end ?? '-' }}</span>
+                        <span>Orario fine:</span>
+                        <span class="font-medium">{{ $teacher->professionalProfile->hour_end ?? '-' }}</span>
                     </div>
                     @if($teacher->professionalProfile->file_professional )
                     <div class="flex flex-col justify-between mt-5">

@@ -19,17 +19,18 @@
         </div>
 
         <x-table :headers="[
-    ['label' => 'ID'],
-    ['label' => 'Nome Corso'],
-    ['label' => 'Livello', 'align' => 'text-center'],
-    ['label' => 'Durata (ore)', 'align' => 'text-center'],
-    ['label' => 'Studenti', 'align' => 'text-center'],
-    ['label' => 'Data Inizio', 'align' => 'text-center'],
-    ['label' => 'Data Fine', 'align' => 'text-center'],
-    ['label' => 'Stato', 'align' => 'text-center'],
-    ['label' => 'Materie', 'align' => 'text-center'],
-     ['label' => '']
-]" :show-checkbox="true">
+            ['label' => 'ID'],
+            ['label' => 'Nome Corso'],
+            ['label' => 'Livello', 'align' => 'text-center'],
+            ['label' => 'Durata (ore)', 'align' => 'text-center'],
+            ['label' => 'Studenti', 'align' => 'text-center'],
+            ['label' => 'Data Inizio', 'align' => 'text-center'],
+            ['label' => 'Data Fine', 'align' => 'text-center'],
+            ['label' => 'Stato', 'align' => 'text-center'],
+            ['label' => 'Materie', 'align' => 'text-center'],
+            ['label' => 'Allievi Iscritti', 'align' => 'text-center'],
+            ['label' => '']
+            ]" :show-checkbox="true">
 
             @slot('checkboxHeader')
             <flux:checkbox class="ps-3" wire:model.live="selectAll" />
@@ -61,6 +62,11 @@
                 <td class="px-1 text-center">
                     <flux:badge color="purple" size="sm">
                         {{ $course->subjects->count() }}
+                    </flux:badge>
+                </td>
+                <td class="px-1 text-center">
+                    <flux:badge color="purple" size="sm">
+                        {{ $course->students->count() }}
                     </flux:badge>
                 </td>
                 <td class="px-1">

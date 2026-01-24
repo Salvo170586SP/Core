@@ -33,14 +33,7 @@ class Course extends Model
         'certification' => 'boolean',
     ];
 
-    // Relazione con le materie
-    /* public function subjects(): BelongsToMany
-    {
-        return $this->belongsToMany(Subject::class, 'course_subject')
-            ->withPivot('hours', 'order', 'start_date', 'end_date')
-            ->withTimestamps()
-            ->orderBy('course_subject.order');
-    } */
+ 
 
     public function subjects()
     {
@@ -51,16 +44,12 @@ class Course extends Model
     {
         return $this->belongsToMany(User::class,'course_teacher', 'course_id', 'teacher_id');
     }
-
-    // Tutti i professori del corso (attraverso le materie)
-    /*   public function teachers(): BelongsToMany
+    
+    public function students()
     {
-        return $this->belongsToMany(User::class, 'course_subject', 'course_id', 'teacher_id')
-            ->withPivot('subject_id', 'hours', 'order', 'start_date', 'end_date')
-            ->withTimestamps()
-            ->distinct();
-    } */
-
+        return $this->belongsToMany(User::class,'course_student', 'course_id', 'student_id');
+    }
+ 
     // prendo   livello  del corso
     public function getLevelLabel($levelId)
     {

@@ -19,7 +19,7 @@
 
 
         <x-table :headers="[
-        ['label' => 'ID'],
+        ['label' => ''],
         ['label' => 'Nome Istruttore'],
         ['label' => 'Livello Istruttore', 'align' => 'text-center'],
         ['label' => 'Collaborazione Diretta', 'align' => 'text-center'],
@@ -38,7 +38,7 @@
                 <td class="ps-5">
                     <flux:checkbox wire:model.live="selected" value="{{ $item->id }}" />
                 </td>
-                <td class="px-3 font-bold text-sm">T-#{{$item->id}}</td>
+                <td class="px-3 font-bold text-sm">{{$item->code ?? '*'}}</td>
                 <td class="px-3">{{$item->name}}</td>
                 <td class="px-3 text-center">
                     <flux:badge color="purple" size="sm">
@@ -75,7 +75,7 @@
                 <td class="px-3">
                     <div class="flex justify-end gap-2">
                         <flux:button wire:navigate icon="eye" variant="ghost" size="sm" class="cursor-pointer"
-                            href="/professori/{{$item->id}}/dettagli">
+                            href="/professori/{{$item->id}}">
                         </flux:button>
                         <flux:button wire:navigate icon="pencil" variant="ghost" size="sm" class="cursor-pointer"
                             href="/professori/{{$item->id}}/modifica">
