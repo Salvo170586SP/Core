@@ -18,6 +18,7 @@ class TeacherDetailsStep extends Form
     protected function rules()
     {
         $rules = [
+            'code' => 'unique:courses',
             'name' => 'required',
             'email' => ['required', 'email',  Rule::unique('users', 'email')->ignore($this->teacherId ?? null)],
         ];
@@ -32,6 +33,7 @@ class TeacherDetailsStep extends Form
     }
 
     protected $messages = [
+        'code.unique' => 'Il codice esiste già',
         'name.required' => 'Il campo è obbligatorio',
         'email.required' => 'Il campo è obbligatorio',
         'email.email' => 'la mail deve essere valida',
@@ -39,11 +41,30 @@ class TeacherDetailsStep extends Form
         'password.required' => 'Il campo è obbligatorio',
     ];
 
+    public function generateUniqueCode()
+    {
+        $exists = true;
+        $code = "";
+
+        while ($exists) {
+            // Genera un codice alfanumerico casuale di 8 caratteri
+            $randomPart = strtoupper(bin2hex(random_bytes(4)));
+            $code = "#-S" . $randomPart;
+
+            // Verifica se esiste già nel database
+            $exists = User::where('code', $code)->exists();
+        }
+
+        return $code;
+    }
+
+
     public function save()
     {
         $this->validate();
 
         $teacher = User::create([
+            'code' => $this->generateUniqueCode(),
             'name' => $this->name,
             'email' => $this->email,
             'password' => bcrypt($this->password),
@@ -59,7 +80,7 @@ class TeacherDetailsStep extends Form
 
         $teacher = User::findOrFail($teacherId);
         $teacher->name = $this->name;
- 
+
         // Aggiorna la password solo se fornita
         if (!empty($this->password)) {
             $teacher->password = bcrypt($this->password);

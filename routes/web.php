@@ -31,24 +31,25 @@ Route::view('dashboard', 'dashboard')
 Route::middleware(['auth', 'role:amministratore'])->group(function () {
     
     Volt::route('professori',TeachersIndex::class)->name('teachers');
-    Volt::route('professori/crea',TeachersCreate::class)->name('teachers.create');
-    Volt::route('professori/{id}',TeachersDetail::class)->name('teachers.detail');
-    Volt::route('professori/{id}/modifica',TeachersEdit::class)->name('teachers.edit');
+    Volt::route('professori/crea',TeachersCreate::class)->name('teachers-create');
+    Volt::route('professori/{id}',TeachersDetail::class)->name('teachers-detail');
+    Volt::route('professori/{id}/modifica',TeachersEdit::class)->name('teachers-edit');
     
+    Volt::route('allievi',StudentsIndex::class)->name('students');
+    Volt::route('allievi/crea',StudentsCreate::class)->name('students-create');
+    Volt::route('allievi/{id}',StudentsDetail::class)->name('students-detail');
+    Volt::route('allievi/{id}/modifica',StudentsEdit::class)->name('students-edit');
+ 
     Volt::route('tutti-corsi',CoursesIndex::class)->name('courses');
-    Volt::route('tutti-corsi/crea',CoursesCreate::class)->name('courses.create');
-    Volt::route('tutti-corsi/{id}',CoursesDetail::class)->name('courses.detail');
-    Volt::route('tutti-corsi/{id}/modifica',CoursesEdit::class)->name('courses.edit');
+    Volt::route('tutti-corsi/crea',CoursesCreate::class)->name('courses-create');
+    Volt::route('tutti-corsi/{id}',CoursesDetail::class)->name('courses-detail');
+    Volt::route('tutti-corsi/{id}/modifica',CoursesEdit::class)->name('courses-edit');
    
     Volt::route('corsi-serali',EveningCoursesIndex::class)->name('evening_courses');
-    Volt::route('corsi-serali/crea',EveningCoursesCreate::class)->name('evening_courses.create');
-    Volt::route('corsi-serali/{id}',EveningCoursesDetail::class)->name('evening_courses.detail');
-    Volt::route('corsi-serali/{id}/modifica',EveningCoursesEdit::class)->name('evening_courses.edit');
+    Volt::route('corsi-serali/crea',EveningCoursesCreate::class)->name('evening_courses-create');
+    Volt::route('corsi-serali/{id}',EveningCoursesDetail::class)->name('evening_courses-detail');
+    Volt::route('corsi-serali/{id}/modifica',EveningCoursesEdit::class)->name('evening_courses-edit');
 
-    Volt::route('allievi',StudentsIndex::class)->name('students');
-    Volt::route('allievi/crea',StudentsCreate::class)->name('students.create');
-    Volt::route('allievi/{id}',StudentsDetail::class)->name('students.detail');
-    Volt::route('allievi/{id}/modifica',StudentsEdit::class)->name('students.edit');
 
     Route::redirect('settings', 'settings/profile');
 

@@ -1,4 +1,4 @@
-<div class="p-1 mt-5">
+<div class="p-1">
     <div class="text-end mb-5">
         <flux:button variant="filled" class="font-semibold cursor-pointer" icon="arrow-left" wire:navigate
             href="/professori">

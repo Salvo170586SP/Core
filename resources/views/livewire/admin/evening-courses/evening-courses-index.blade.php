@@ -1,4 +1,4 @@
-<div class="p-1 mt-5">
+<div class="p-1">
     <div class="flex justify-between items-center h-20">
         <h2 class="font-bold text-lg uppercase">Corsi Serali</h2>
         <!-- Div con conteggio elementi selezionati -->

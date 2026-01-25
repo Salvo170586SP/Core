@@ -1,4 +1,4 @@
-<div class="p-1 mt-5">
+<div class="p-1">
     <div class="flex justify-between items-center">
         <h2 class="font-bold text-lg uppercase">Tutti i corsi / Modifica</h2>
         <flux:button variant="filled" class="font-semibold cursor-pointer" icon="arrow-left" wire:navigate

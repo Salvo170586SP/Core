@@ -1,4 +1,4 @@
-<div class="p-1 mt-5">
+<div class="p-1">
     <div class="space-y-3">
         <div class="text-end">
             <flux:button variant="filled" class="font-semibold cursor-pointer" icon="arrow-left" wire:navigate
