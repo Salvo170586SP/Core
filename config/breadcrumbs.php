@@ -48,7 +48,7 @@ return [
         ['label' => 'Allievi', 'route' => 'students'],
         ['label' => 'Modifica'],
     ],
-    
+
     /* Corsi */
     'courses' => [
         ['label' => 'Home', 'route' => 'dashboard', 'icon' => 'home'],
@@ -69,7 +69,7 @@ return [
         ['label' => 'Tutti i Corsi', 'route' => 'courses'],
         ['label' => 'Modifica'],
     ],
-    
+
     /* Corsi serali */
     'evening_courses' => [
         ['label' => 'Home', 'route' => 'dashboard', 'icon' => 'home'],
@@ -90,4 +90,33 @@ return [
         ['label' => 'Corsi Serali', 'route' => 'evening_courses'],
         ['label' => 'Modifica'],
     ],
+    
+    /* tesseramenti */
+    'badges-students' => [
+        ['label' => 'Home', 'route' => 'dashboard', 'icon' => 'home'],
+        ['label' => 'Tesseramenti'],
+    ],
+    'badges-students-detail' => [
+        ['label' => 'Home', 'route' => 'dashboard', 'icon' => 'home'],
+        ['label' => 'Tesseramenti', 'route' => 'badges-students'],
+        ['label' => 'Dettagli'],
+    ],
+    'badges-students-course' => [
+        ['label' => 'Home', 'route' => 'dashboard', 'icon' => 'home'],
+        ['label' => 'Tesseramenti', 'route' => 'badges-students'],
+        ['label' => 'Dettaglio Tesseramento'],
+    ],
+
+    /* doumenti */
+    'documents' => [
+        ['label' => 'Home', 'route' => 'dashboard', 'icon' => 'home'],
+        ['label' => 'Documenti'],
+    ],
+    'documents-detail' => [
+        ['label' => 'Home', 'route' => 'dashboard', 'icon' => 'home'],
+        ['label' => 'Documenti', 'route' => 'documents'],
+        ['label' => 'Dettagli'],
+    ] 
+
+   
 ];

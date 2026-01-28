@@ -13,7 +13,7 @@ class StudentsCreate extends Component
     use WithFileUploads;
     public StudentDetailsStep $studentDetailsStep;
     public CoursesAddStep $coursesAddStep;
-    public $currentStep = 1;
+    public $currentStep = 0;
 
     public function mount()
     {

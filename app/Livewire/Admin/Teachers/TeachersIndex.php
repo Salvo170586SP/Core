@@ -61,6 +61,7 @@ class TeachersIndex extends Component
     public function render()
     {
         $teachers = User::role('istruttore')->latest()->paginate(10);
+   
 
         return view('livewire.admin.teachers.teachers-index', compact('teachers'));
     }

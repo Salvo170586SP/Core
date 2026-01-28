@@ -6,42 +6,59 @@
         </flux:button>
     </div>
     <div class="flex gap-5">
-        <div class="w-100 space-y-3">
-            <div class="border border-zinc-300 bg-white p-3 rounded shadow text-sm">
-                <h3 class="font-semibold mb-2">Dati Anagrafici Allievo</h3>
-                <div class="flex flex-col justify-center">
-                    <div class="font-semibold text-xl capitalize">
+        <div class="w-80 space-y-3">
+            <div class="border border-zinc-300 bg-white p-4 rounded shadow text-sm">
+                 <div class="flex flex-col justify-center">
+                    <div class="w-full flex justify-center mb-5">
+                        <figure class="w-40 overflow-hidden rounded-lg border border-zinc-300">
+                            @if($student->documentsAsStudent->where('type', 'foto_profilo')->first())
+                            <img alt="{{$student->documentsAsStudent->where('type', 'foto_profilo')->first()->name}}"
+                                class="w-full h-full object-cover"
+                                src="{{asset('storage/'. $student->documentsAsStudent->where('type', 'foto_profilo')->first()->url_file )}}" />
+                            @else
+                            <img alt="placeholder" src="{{asset('./assets/icons/placeholder.png')}}" />
+                            @endif
+                        </figure>
+                    </div>
+                    <div class="font-semibold text-xl uppercase">
                         {{ $student->name }}
                     </div>
                     <div>
                         {{ $student->email }}
+                    </div>
+                    <div>
+                        @if($student->documentsAsStudent->where('type', 'carta_identita')->first() )
+                        <div class="flex flex-col justify-between mt-5">
+                            <span class="font-medium">Documento d'identità:</span>
+                            <div class="space-x-1 mt-2">
+                                <flux:button download size="sm"
+                                    href="{{asset('storage/'. $student->documentsAsStudent->where('type', 'carta_identita')->first()->url_file )}}"
+                                    icon="arrow-down-tray" />
+                                <flux:button target="_blanck" size="sm"
+                                    href="{{asset('storage/'. $student->documentsAsStudent->where('type', 'carta_identita')->first()->url_file )}}"
+                                    icon="eye" />
+                            </div>
+                        </div>
+                        @endif
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="w-full border border-zinc-300 bg-white rounded shadow p-3">
-            <div class="p-3 text-sm mb-5 border-b border-zinc-300">
-                <h3 class="font-semibold mb-2">Descrizione</h3>
-                <p class="py-3">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit repellat exercitationem obcaecati
-                    reiciendis praesentium eum beatae nulla a eaque. Nam consequatur modi, quas itaque laudantium nisi
-                    accusantium enim animi molestiae.
-                </p>
-            </div>
-
-            <div class="p-3 text-sm mt-5">
-                <h3 class="font-semibold mb-2">Inserito nei seguenti Corsi</h3>
+            <div class="p-3 text-sm">
+                <h3 class="font-semibold mb-5 text-sm uppercase">Inserito nei seguenti Corsi</h3>
                 @if($student->coursesStudents->count() > 0)
 
                 <x-table :headers="[
-                    ['label' => '', 'align' => 'text-start'],
+                    ['label' => 'Cod', 'align' => 'text-start'],
                     ['label' => 'Nome Corso', 'align' => 'text-start'],
                     ['label' => 'Livello', 'align' => 'text-center'],
                     ['label' => 'Durata (ore)', 'align' => 'text-center'],
                     ['label' => 'Data Inizio', 'align' => 'text-center'],
                     ['label' => 'Data Fine', 'align' => 'text-center'],
                     ['label' => 'Stato', 'align' => 'text-center'],
+                    ['label' => 'Tesseramento', 'align' => 'text-center'],
                     ['label' => '']
                     ]" :show-checkbox="false">
 
@@ -61,6 +78,11 @@
                         <td class="px-1 text-center">
                             <flux:badge color="{{ $course->getStatusColor($course->status) }}" size="sm">
                                 {{ $course->getStatusLabel($course->status) }}
+                            </flux:badge>
+                        </td>
+                        <td class="px-1 text-center">
+                            <flux:badge color="gray" size="sm">
+                                {{ $course->IsBadge ? 'Tesserato' : 'Non Tesserato' }}
                             </flux:badge>
                         </td>
                         <td class="px-2">

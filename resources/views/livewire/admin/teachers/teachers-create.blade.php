@@ -20,7 +20,26 @@
                 <flux:input label="Email" type="email" id="email" wire:model="teacherDetailsStep.email" />
                 <flux:input label="Password" type="password" id="password" wire:model="teacherDetailsStep.password" />
             </div>
-
+            <div class="flex  flex-col  items-start gap-3 my-3">
+                <label for="url_photo">Foto profilo:</label>
+                <div class="space-x-3">
+                    <input type="file" id="url_photo" wire:model="teacherDetailsStep.url_photo" class="hidden" />
+                    <flux:button type="button" onclick="document.getElementById('url_photo').click()">
+                        Sfoglia file
+                    </flux:button>
+                    <span
+                        class="text-sm {{ $teacherDetailsStep->url_photo ? 'text-gray-700 font-semibold' : 'text-gray-400' }}">
+                        @if ($teacherDetailsStep->url_photo)
+                        {{ $teacherDetailsStep->url_photo->getClientOriginalName() }}
+                        @else
+                        Nessun file selezionato
+                        @endif
+                    </span>
+                </div>
+            </div>
+            @error('studentDetailsStep.url_photo')
+            <span class="text-red-500 text-sm">{{ $message }}</span>
+            @enderror
             <x-slot:actions>
                 <flux:button variant="primary" class="font-semibold cursor-pointer" icon="arrow-right"
                     wire:click="addStep">
@@ -31,7 +50,6 @@
         @elseif($currentStep == 1)
         <x-step-container title="Profilo Professionale">
             <div class="grid grid-cols-3 gap-3">
-                <flux:input id="center" wire:model="professionalProfileStep.center" label="Centro Scolastico" />
                 <flux:select id="level_coach" wire:model="professionalProfileStep.level_coach"
                     label="Livello Professionale">
                     <flux:select.option value="">-</flux:select.option>
@@ -52,22 +70,25 @@
                         label="Diretta" />
                 </flux:checkbox.group>
 
-                <div class="flex items-center gap-3 my-3">
-                    <label for="file_professional">Allegato:</label>
-                    <input type="file" id="file_professional" wire:model="professionalProfileStep.file_professional"
-                        accept=".pdf,.doc,.docx" class="hidden" />
-                    <flux:button type="button" onclick="document.getElementById('file_professional').click()">
-                        Scegli file
-                    </flux:button>
-                    <span
-                        class="text-sm {{ $professionalProfileStep->file_professional ? 'text-gray-700 font-semibold' : 'text-gray-400' }}">
-                        @if ($professionalProfileStep->file_professional)
-                        {{ $professionalProfileStep->file_professional->getClientOriginalName() }}
-                        @else
-                        Nessun file selezionato
-                        @endif
-                    </span>
-                    @error('professionalProfileStep.file_professional')
+                <div class="flex flex-col my-3">
+                    <div class="flex items-center gap-3 my-3">
+                        <label for="url_file">Titolo Professionale:</label>
+                        <input type="file" id="url_file" wire:model="professionalProfileStep.url_file" accept=".pdf"
+                            class="hidden" />
+                        <flux:button type="button" onclick="document.getElementById('url_file').click()">
+                            Sfoglia file
+                        </flux:button>
+                        <span
+                            class="text-sm {{ $professionalProfileStep->url_file ? 'text-gray-700 font-semibold' : 'text-gray-400' }}">
+                            @if ($professionalProfileStep->url_file)
+                            {{ $professionalProfileStep->url_file->getClientOriginalName() }}
+                            @else
+                            Nessun file selezionato
+                            @endif
+                        </span>
+                    </div>
+                    <div class="text-sm font-medium">*Allegare in formato .pdf</div>
+                    @error('professionalProfileStep.url_file')
                     <span class="text-red-500 text-sm">{{ $message }}</span>
                     @enderror
                 </div>
@@ -126,9 +147,6 @@
                             </flux:select.option>
                             @endforeach
                         </flux:select>
-
-                        {{-- <flux:input type="number" id="year" wire:model="subjectsStep.newSubject.{{ $index }}.year"
-                            label="Anno" min="1900" max="2155" placeholder="Anno" required /> --}}
                     </div>
                     @endforeach
                 </div>
@@ -153,38 +171,49 @@
         </x-step-container>
         @else
         <x-step-summary title="Riepilogo">
-            <div class="grid grid-row-2 gap-3 my-3">
-                <div class="w-full border dark:border-zinc-700 rounded-2xl p-5">
+            <div class="flex gap-3 my-3">
+                <div class="w-[800px] border dark:border-zinc-700 rounded-2xl p-5">
                     <h2 class="text-sm font-bold">Dati Anagrafici</h2>
                     <div class="space-y-2 mt-3">
+                        <div class="w-full flex mb-5">
+                            <figure class="w-40 overflow-hidden rounded-lg border border-zinc-300">
+                                @if($teacherDetailsStep->url_photo)
+                                <img alt="{{$teacherDetailsStep->url_photo}}" class="w-full h-full object-cover"
+                                    src="{{ $teacherDetailsStep->url_photo->temporaryUrl() }}" />
+                                @else
+                                <img alt="placeholder" src="{{asset('./assets/icons/placeholder.png')}}" />
+                                @endif
+                            </figure>
+                            <div class="space-y-5 ms-5">
+                                <div
+                                    class="font-medium text-sm inline-block @error('teacherDetailsStep.name') text-red-500 @enderror">
+                                    <div>
+                                        Nome e Cognome
+                                    </div>
+                                    <div class="font-normal text-base ">
+                                        {{ $teacherDetailsStep->name ?? '-' }}
+                                    </div>
+                                </div>
 
-                        <p class="font-medium text-sm @error('teacherDetailsStep.name') text-red-500 @enderror">
-                            Nome e Cognome:
-                            <span class="font-normal text-base ms-2">{{ $teacherDetailsStep->name ?? '-' }}
-                            </span>
-                        </p>
-
-                        <p class="font-medium text-sm @error('teacherDetailsStep.email') text-red-500 @enderror">
-                            @error('teacherDetailsStep.email')
-                            *
-                            @enderror
-                            Email:
-                            <span class="font-normal text-base ms-2">{{ $teacherDetailsStep->email ?? '-' }}
-                            </span>
-                        </p>
+                                <div
+                                    class="font-medium text-sm @error('teacherDetailsStep.email') text-red-500 @enderror">
+                                    @error('teacherDetailsStep.email')
+                                    *
+                                    @enderror
+                                    <div>
+                                        Email
+                                    </div>
+                                    <div class="font-normal text-base ">{{ $teacherDetailsStep->email ?? '-' }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 <div class="w-full border dark:border-zinc-700 rounded-2xl p-5">
                     <h2 class="text-sm font-bold">Profilo Professionale</h2>
                     <div class="space-y-2 grid grid-cols-2 mt-3">
-                        <p class="font-medium text-sm @error('professionalProfileStep.center') text-red-500 @enderror">
-                            @error('professionalProfileStep.center')
-                            *
-                            @enderror
-                            Centro Scolastico: <span class="font-normal text-base ms-2">{{
-                                $professionalProfileStep->center ?? '-' }}</span>
-                        </p>
                         <p
                             class="font-medium text-sm @error('professionalProfileStep.level_coach') text-red-500 @enderror">
                             @error('professionalProfileStep.level_coach')
@@ -228,45 +257,47 @@
                                 $professionalProfileStep->hour_end ?? '-' }}</span>
                         </p>
                         <p
-                            class="font-medium text-sm @error('professionalProfileStep.file_professional') text-red-500 @enderror">
-                            @error('professionalProfileStep.file_professional')
+                            class="font-medium text-sm @error('professionalProfileStep.url_file') text-red-500 @enderror">
+                            @error('professionalProfileStep.url_file')
                             *
                             @enderror
-                            File Professionale: <span class="font-normal text-base ms-2">
-                                @if ($professionalProfileStep->file_professional)
-                                {{ $professionalProfileStep->file_professional->getClientOriginalName() }}
+                            Documento Professionale: <span class="font-normal text-base ms-2">
+                                @if ($professionalProfileStep->url_file)
+                                {{ $professionalProfileStep->url_file->getClientOriginalName() }}
                                 @else
                                 -
                                 @endif
                             </span></p>
                     </div>
                 </div>
-                <div class="w-full border dark:border-zinc-700 rounded-2xl p-5">
-                    <h2 class="text-sm font-bold">Materie</h2>
-                    <div class="space-y-2 grid grid-cols-2 mt-3">
-                        @if (count($subjectsStep->newSubject) > 0)
-                        <ul class="space-y-2">
-                            @foreach ($subjectsStep->newSubject as $index => $sub)
-                            @php
-                            $subject = App\Models\Subject::find($sub['subject_id']);
-                            @endphp
-                            <li class="flex items-center justify-between p-2 bg-zinc-50 dark:bg-zinc-700/30 rounded">
-                                <span class="font-medium text-sm">
-                                    <span class="text-zinc-500 dark:text-zinc-400">{{ $index + 1 }}.</span>
-                                    {{ $subject->name ?? '-' }}
-                                </span>
+            </div>
 
-                            </li>
-                            @endforeach
-                        </ul>
-                        @else
-                        <p class="text-sm text-zinc-500 dark:text-zinc-400 italic">
-                            Nessuna materia aggiunta
-                        </p>
-                        @endif
-                    </div>
+            <div class="w-full border dark:border-zinc-700 rounded-2xl p-5">
+                <h2 class="text-sm font-bold">Materie</h2>
+                <div class="space-y-2 grid grid-cols-2 mt-3">
+                    @if (count($subjectsStep->newSubject) > 0)
+                    <ul class="space-y-2">
+                        @foreach ($subjectsStep->newSubject as $index => $sub)
+                        @php
+                        $subject = App\Models\Subject::find($sub['subject_id']);
+                        @endphp
+                        <li class="flex items-center justify-between p-2 bg-zinc-50 dark:bg-zinc-700/30 rounded">
+                            <span class="font-medium text-sm">
+                                <span class="text-zinc-500 dark:text-zinc-400">{{ $index + 1 }}.</span>
+                                {{ $subject->name ?? '-' }}
+                            </span>
+
+                        </li>
+                        @endforeach
+                    </ul>
+                    @else
+                    <p class="text-sm text-zinc-500 dark:text-zinc-400 italic">
+                        Nessuna materia aggiunta
+                    </p>
+                    @endif
                 </div>
             </div>
+
             <x-slot:actions>
                 <flux:button variant="primary" class="font-semibold cursor-pointer" icon="arrow-left"
                     wire:click="backStep">

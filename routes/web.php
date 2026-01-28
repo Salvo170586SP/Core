@@ -1,9 +1,14 @@
 <?php
 
+use App\Livewire\Admin\Badges\BadgesCourseDetail;
+use App\Livewire\Admin\Badges\BadgesDetail;
+use App\Livewire\Admin\Badges\BadgesIndex;
 use App\Livewire\Admin\Courses\CoursesCreate;
 use App\Livewire\Admin\Courses\CoursesDetail;
 use App\Livewire\Admin\Courses\CoursesEdit;
 use App\Livewire\Admin\Courses\CoursesIndex;
+use App\Livewire\Admin\Documents\DocumentsDetail;
+use App\Livewire\Admin\Documents\DocumentsIndex;
 use App\Livewire\Admin\EveningCourses\EveningCoursesCreate;
 use App\Livewire\Admin\EveningCourses\EveningCoursesDetail;
 use App\Livewire\Admin\EveningCourses\EveningCoursesEdit;
@@ -49,7 +54,13 @@ Route::middleware(['auth', 'role:amministratore'])->group(function () {
     Volt::route('corsi-serali/crea',EveningCoursesCreate::class)->name('evening_courses-create');
     Volt::route('corsi-serali/{id}',EveningCoursesDetail::class)->name('evening_courses-detail');
     Volt::route('corsi-serali/{id}/modifica',EveningCoursesEdit::class)->name('evening_courses-edit');
+    
+    Volt::route('tesserini-allievi',BadgesIndex::class)->name('badges-students');
+    Volt::route('tesserini-allievi/{id}',BadgesDetail::class)->name('badges-students-detail');
+    Volt::route('tesserini-allievi/{id}/corso/{course_id}',BadgesCourseDetail::class)->name('badges-students-course');
 
+    Volt::route('documenti', DocumentsIndex::class)->name('documents');
+    Volt::route('documenti/{id}', DocumentsDetail::class)->name('documents-detail');
 
     Route::redirect('settings', 'settings/profile');
 

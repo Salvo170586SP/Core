@@ -20,22 +20,32 @@
 
             <flux:navlist.group :heading="__('Anagrafiche')" class="grid">
                 <flux:navlist.item icon="home" :href="route('teachers')" :current="request()->routeIs('teachers')"
-                    wire:navigate>{{ __('Professori') }}</flux:navlist.item>
-                <flux:navlist.item icon="home" :href="route('students')" :current="request()->routeIs('students')"
+                    wire:navigate>{{ __('Insegnanti') }}</flux:navlist.item>
+                <flux:navlist.item icon="academic-cap" :href="route('students')" :current="request()->routeIs('students')"
                     wire:navigate>{{ __('Allievi') }}</flux:navlist.item>
             </flux:navlist.group>
 
             <flux:navlist.group :heading="__('Corsi')" class="grid">
-                <flux:navlist.item icon="home" :href="route('courses')" :current="request()->routeIs('courses')"
+                <flux:navlist.item icon="computer-desktop" :href="route('courses')" :current="request()->routeIs('courses')"
                     wire:navigate>{{ __('Tutti I Corsi') }}</flux:navlist.item>
-                <flux:navlist.item icon="home" :href="route('evening_courses')"
+                <flux:navlist.item icon="computer-desktop"  :href="route('evening_courses')"
                     :current="request()->routeIs('evening_courses')" wire:navigate>{{ __('Corsi Serali') }}
                 </flux:navlist.item>
+            </flux:navlist.group>
+           
+            <flux:navlist.group :heading="__('Documentazioni')" class="grid">
+                <flux:navlist.item icon="credit-card" :href="route('badges-students')" :current="request()->routeIs('badges-students')"
+                    wire:navigate>{{ __('Tesseramenti') }}</flux:navlist.item>
+                <flux:navlist.item icon="folder-plus" :href="route('documents')" :current="request()->routeIs('documents')"
+                    wire:navigate>{{ __('Documenti') }}</flux:navlist.item>
+               {{--  <flux:navlist.item icon="home" :href="route('evening_courses')"
+                    :current="request()->routeIs('evening_courses')" wire:navigate>{{ __('Documenti Insegnati') }}
+                </flux:navlist.item> --}}
             </flux:navlist.group>
 
 
             <flux:navlist.group :heading="__('Platform')" class="grid">
-                <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')"
+                <flux:navlist.item icon="presentation-chart-line" :href="route('dashboard')" :current="request()->routeIs('dashboard')"
                     wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
             </flux:navlist.group>
         </flux:navlist>

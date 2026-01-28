@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
@@ -34,7 +35,7 @@ class Course extends Model
         'certification' => 'boolean',
     ];
 
- 
+
 
     public function subjects()
     {
@@ -43,14 +44,22 @@ class Course extends Model
 
     public function teachers()
     {
-        return $this->belongsToMany(User::class,'course_teacher', 'course_id', 'teacher_id');
+        return $this->belongsToMany(User::class, 'course_teacher', 'course_id', 'teacher_id');
     }
-    
+
     public function students()
     {
-        return $this->belongsToMany(User::class,'course_student', 'course_id', 'student_id');
+        return $this->belongsToMany(User::class, 'course_student', 'course_id', 'student_id')
+            ->withPivot('is_active', 'badge_number', 'issued_at')
+            ->withTimestamps();
     }
- 
+
+    public function getIsBadgeAttribute()
+    {
+        return $this->students()->wherePivot('is_active', true)->exists();
+    }
+
+
     // prendo   livello  del corso
     public function getLevelLabel($levelId)
     {
@@ -77,5 +86,17 @@ class Course extends Model
     {
         $status_course = collect(config('Core.status_course'))->firstWhere('id', $stateId);
         return $status_course['color'] ?? '-';
+    }
+
+
+
+    // prendo colore stato del corso
+    public function getDate($date)
+    {
+        if (!$date) {
+            return '-';
+        }
+
+        return Carbon::parse($date)->format('d/m/Y');
     }
 }

@@ -20,9 +20,10 @@
 
 
         <x-table :headers="[
-            ['label' => ''],
+            ['label' => 'Matricola'],
             ['label' => 'Nome Allievo'],
             ['label' => 'Corsi', 'align' => 'text-center'],
+            ['label' => 'Documento d\'identità', 'align' => 'text-center'],
             ['label' => '']
             ]" :show-checkbox="true">
 
@@ -43,6 +44,15 @@
                     <div class="flex justify-center items-center">
                         <flux:badge variant="ghost">{{$item->coursesStudents->count()}}</flux:badge>
                     </div>
+                </td>
+                <td class="px-3 text-center">
+                    @if($item->documentsAsStudent->where('type', 'carta_identita')->first())
+                    <flux:button download size="sm" variant="ghost"
+                        href="{{asset('storage/'. $item->documentsAsStudent->where('type', 'carta_identita')->first()->url_file )}}"
+                        icon="arrow-down-tray" />
+                    @else
+                    -
+                    @endif
                 </td>
 
                 <td class="px-3">

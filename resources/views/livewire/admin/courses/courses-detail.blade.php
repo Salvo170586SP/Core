@@ -76,14 +76,24 @@
             <div x-cloak x-data="{isOpen: 'allievi'}"
                 class="border border-zinc-300 bg-white p-5 rounded shadow text-sm">
 
-                <div class="space-x-3">
+                <div class="flex gap-3">
                     <button @click="isOpen = 'info'"
                         :class="isOpen === 'info' ? 'bg-black text-white' : 'bg-zinc-50 hover:bg-zinc-100'"
-                        class="cursor-pointer p-2 font-medium rounded border border-zinc-400">Info del corso
+                        class="cursor-pointer p-2 font-medium rounded border border-zinc-400 flex items-center gap-2">
+                        <svg x-cloak x-show="isOpen == 'info'" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                        </svg>
+                        Info del corso
                     </button>
                     <button @click="isOpen = 'allievi'"
                         :class="isOpen === 'allievi' ? 'bg-black text-white' :  'bg-zinc-50 hover:bg-zinc-100'"
-                        class="cursor-pointer p-2 rounded font-medium border border-zinc-400">Allievi
+                        class="cursor-pointer p-2 rounded font-medium border border-zinc-400 flex items-center gap-2">
+                        <svg x-cloak x-show="isOpen == 'allievi'" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                        </svg>
+                        Allievi
                     </button>
                 </div>
 
@@ -163,6 +173,13 @@
                                                     </flux:select.option>
                                                     @endforeach
                                                 </flux:select>
+
+                                                <div class="mt-5">
+                                                    <flux:checkbox.group wire:model="is_active"
+                                                        class="flex gap-10 my-2">
+                                                        <flux:checkbox label="Tesserato" />
+                                                    </flux:checkbox.group>
+                                                </div>
                                             </flux:text>
                                         </div>
                                         <div class="flex gap-2">
@@ -185,9 +202,11 @@
 
                     @if($course->students->count() > 0)
                     <x-table :headers="[
-                                ['label' => 'ID'],
+                                ['label' => 'Matricola'],
                                 ['label' => 'Nome Allievo'],
-                                ['label' => 'Allegato', 'align' => 'text-center'],
+                                ['label' => 'Tesserato', 'align' => 'text-center'],
+                                ['label' => 'Emesso il', 'align' => 'text-center'],
+                                ['label' => 'Numero', 'align' => 'text-center'],
                                 ['label' => '']
                             ]" :show-checkbox="true">
                         @foreach($course->students as $student)
@@ -198,8 +217,23 @@
                             </td>
                             <td class="px-3 font-bold text-sm">{{$student->code}}</td>
                             <td class="px-3">{{$student->name}}</td>
+                            <td class="px-3">
+                                <div class="w-full flex justify-center items-center">
+                                    <flux:button wire:click="toggleBadge({{$student->id}})" variant="filled"
+                                        class="cursor-pointer">
+                                        @if($student->pivot->is_active)
+                                        <flux:icon.check-circle color="blue" variant="mini" />
+                                        @else
+                                        <flux:icon.x-circle color="red" variant="mini" />
+                                        @endif
+                                    </flux:button>
+                                </div>
+                            </td>
                             <td class="px-3 text-center">
-
+                                {{ $student->getDate($student->pivot->issued_at) }}
+                            </td>
+                            <td class="px-3 text-center">
+                                {{$student->pivot->badge_number ?? '-'}}
                             </td>
                             <td class="px-3">
                                 <div class="flex justify-end gap-2">

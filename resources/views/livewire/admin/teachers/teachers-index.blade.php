@@ -19,13 +19,12 @@
 
 
         <x-table :headers="[
-        ['label' => ''],
+        ['label' => 'ID'],
         ['label' => 'Nome Istruttore'],
         ['label' => 'Livello Istruttore', 'align' => 'text-center'],
         ['label' => 'Collaborazione Diretta', 'align' => 'text-center'],
-        ['label' => 'Centro', 'align' => 'text-center'],
         ['label' => 'Materie', 'align' => 'text-center'],
-        ['label' => 'Allegato', 'align' => 'text-center'],
+        ['label' => 'Titolo Professionale', 'align' => 'text-center'],
         ['label' => '']
     ]" :show-checkbox="true">
 
@@ -47,7 +46,7 @@
                 </td>
                 <td class="px-3">
                     <div class="flex justify-center items-center">
-                        <flux:button wire:click="toggle({{$item->id}})" variant="ghost" class="cursor-pointer">
+                        <flux:button wire:click="toggle({{$item->id}})" variant="filled" class="cursor-pointer">
                             @if($item->professionalProfile && $item->professionalProfile->direct_collaboration)
                             <flux:icon.check-circle color="blue" variant="mini" />
                             @else
@@ -57,16 +56,14 @@
                     </div>
                 </td>
                 <td class="px-3 text-center">
-                    {{$item->professionalProfile?->center ?? '-' }}</td>
-                <td class="px-3 text-center">
                     <flux:badge color="purple" size="sm">
                         {{$item->subjects?->count() }}
                     </flux:badge>
                 </td>
                 <td class="px-3 text-center">
-                    @if($item->professionalProfile?->file_professional)
+                    @if($item->documentsAsTeacher->where('type', 'doc_professionale')->first())
                     <flux:button download size="sm" variant="ghost"
-                        href="{{asset('storage/'. $item->professionalProfile->file_professional )}}"
+                        href="{{asset('storage/'. $item->documentsAsTeacher->where('type', 'doc_professionale')->first()->url_file )}}"
                         icon="arrow-down-tray" />
                     @else
                     -
@@ -81,7 +78,8 @@
                             href="/professori/{{$item->id}}/modifica">Modifica
                         </flux:button>
                         <flux:modal.trigger name="delete-profile-{{$item->id}}">
-                            <flux:button icon="trash" variant="danger" size="sm" class="cursor-pointer">Elimina</flux:button>
+                            <flux:button icon="trash" variant="danger" size="sm" class="cursor-pointer">Elimina
+                            </flux:button>
                         </flux:modal.trigger>
                         <flux:modal name="delete-profile-{{$item->id}}" class="md:w-96">
                             <div class="space-y-6">

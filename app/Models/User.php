@@ -11,6 +11,7 @@ use Illuminate\Support\Str;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Spatie\Permission\Traits\HasRoles;
 use App\Models\Course;
+use Carbon\Carbon;
 
 class User extends Authenticatable
 {
@@ -78,17 +79,38 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Subject::class, 'subject_teacher', 'teacher_id', 'subject_id');
     }
-    
+
     //corsi degli insegnanti
     public function courses()
     {
         return $this->belongsToMany(Course::class, 'course_teacher', 'teacher_id', 'course_id');
     }
-   
+
     //corsi degli studenti
     public function coursesStudents()
     {
-        return $this->belongsToMany(Course::class, 'course_student', 'student_id', 'course_id');
+        return $this->belongsToMany(Course::class, 'course_student', 'student_id', 'course_id')
+            ->withPivot('is_active', 'badge_number', 'issued_at')
+            ->withTimestamps();
+    }
+
+ 
+
+    // Documenti dove l'utente è lo studente
+    public function documentsAsStudent()
+    {
+        return $this->hasMany(Document::class, 'student_id');
+    }
+
+    // Documenti dove l'utente è il teacher
+    public function documentsAsTeacher()
+    {
+        return $this->hasMany(Document::class, 'teacher_id');
+    }
+    // Controlla se lo studente ha ALMENO un tesseramento attivo
+    public function getIsBadgeAttribute()
+    {
+        return $this->coursesStudents()->wherePivot('is_active', true)->exists();
     }
 
     // prendo livello professionale
@@ -111,5 +133,16 @@ class User extends Authenticatable
             ->select('courses.*')
             ->distinct()
             ->get();
+    }
+
+
+    // prendo colore stato del corso
+    public function getDate($date)
+    {
+        if (!$date) {
+            return '-';
+        }
+
+        return Carbon::parse($date)->format('d/m/Y');
     }
 }

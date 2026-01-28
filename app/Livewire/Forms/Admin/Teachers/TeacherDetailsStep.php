@@ -2,17 +2,21 @@
 
 namespace App\Livewire\Forms\Admin\Teachers;
 
+use App\Models\Document;
 use App\Models\User;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 
 class TeacherDetailsStep extends Form
 {
+    public $code;
     public $name = '';
     public $email = '';
     public $password = 'password';
     public $teacherId = null;
+    public $url_photo = null;
 
 
     protected function rules()
@@ -21,6 +25,7 @@ class TeacherDetailsStep extends Form
             'code' => 'unique:courses',
             'name' => 'required',
             'email' => ['required', 'email',  Rule::unique('users', 'email')->ignore($this->teacherId ?? null)],
+            'url_photo' => 'nullable|file|max:10240',
         ];
 
         if (!$this->teacherId) {
@@ -39,6 +44,8 @@ class TeacherDetailsStep extends Form
         'email.email' => 'la mail deve essere valida',
         'email.unique' => 'la mail è già presente, inseriscine una nuova',
         'password.required' => 'Il campo è obbligatorio',
+        'url_photo.file' => 'Il file caricato non è valido',
+        'url_photo.max' => 'Il file non può superare i 10MB',
     ];
 
     public function generateUniqueCode()
@@ -70,6 +77,19 @@ class TeacherDetailsStep extends Form
             'password' => bcrypt($this->password),
         ])->assignRole('istruttore');
 
+        $filePhotoPath = null;
+        if ($this->url_photo) {
+            $originalPhotoName = $this->url_photo->getClientOriginalName();
+            $filePhotoPath = $this->url_photo->store('documents_teacher', 'public');
+
+            Document::create([
+                'teacher_id' => $teacher->id,
+                'type' => Document::TYPE_FOTO_PROFILO,
+                'name' => $originalPhotoName,
+                'url_file' => $filePhotoPath
+            ]);
+        }
+
         return $teacher->id;
     }
 
@@ -84,6 +104,36 @@ class TeacherDetailsStep extends Form
         // Aggiorna la password solo se fornita
         if (!empty($this->password)) {
             $teacher->password = bcrypt($this->password);
+        }
+
+
+        // Gestisci foto solo se è stato caricato
+        if ($this->url_photo) {
+            // Trova il documento esistente
+            $document = Document::where('teacher_id', $teacher->id)
+                ->where('type', Document::TYPE_FOTO_PROFILO)
+                ->first();
+
+            // Se esiste, elimina il vecchio file
+            if ($document && $document->url_photo) {
+                Storage::disk('public')->delete($document->url_photo);
+            }
+
+            // Salva il nuovo file
+            $filePathPhoto = $this->url_photo->store('documents_teacher', 'public');
+            $originalPhotoName = $this->url_photo->getClientOriginalName();
+
+            // Crea o aggiorna
+            Document::updateOrCreate(
+                [
+                    'teacher_id'  => $teacher->id,
+                    'type' => Document::TYPE_FOTO_PROFILO
+                ],
+                [
+                    'name' => $originalPhotoName,
+                    'url_file' => $filePathPhoto
+                ]
+            );
         }
 
         $teacher->save();

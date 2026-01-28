@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('file_professional')->nullable();
             $table->string('level_coach')->nullable();
             $table->string('direct_collaboration')->nullable();
-            $table->string('center')->nullable();
             $table->string('day_course')->nullable();
             $table->time('hour_start')->nullable();
             $table->time('hour_end')->nullable();

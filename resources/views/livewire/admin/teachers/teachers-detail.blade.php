@@ -6,9 +6,18 @@
         </flux:button>
     </div>
     <div class="flex gap-5">
-        <div class="w-100 space-y-3">
+        <div class="w-80 space-y-3">
             <div class="border border-zinc-300 bg-white p-3 rounded shadow text-sm">
-                <h3 class="font-semibold mb-2">Dati Anagrafici</h3>
+                 <div class="w-full flex justify-center mb-5">
+                    <figure class="w-40 overflow-hidden rounded-lg border border-zinc-300">
+                        @if($teacher->documentsAsTeacher->where('type', 'foto_profilo')->first())
+                        <img alt="{{$teacher->documentsAsTeacher->where('type', 'foto_profilo')->first()->name}}" class="w-full h-full object-cover"
+                            src="{{asset('storage/'. $teacher->documentsAsTeacher->where('type', 'foto_profilo')->first()->url_file )}}" />
+                        @else
+                        <img alt="placeholder" src="{{asset('./assets/icons/placeholder.png')}}" />
+                        @endif
+                    </figure>
+                </div>
                 <div class="flex flex-col justify-center space-y-2">
                     <div class="font-semibold text-xl">
                         Prof. {{ $teacher->name }}
@@ -51,10 +60,6 @@
                         <flux:icon.x-circle color="red" variant="mini" />
                         @endif
                     </div>
-                    <div class="flex items-center justify-between">
-                        <span>Centro Scolastico:</span>
-                        <span class="font-medium">{{ $teacher->professionalProfile->center ?? '-' }}</span>
-                    </div>
                     <div class="flex items-center justify-between gap-2">
                         <span>Giorni di lezione:</span>
                         <span class="font-medium">{{ $teacher->professionalProfile->day_course ?? '-' }}</span>
@@ -67,15 +72,15 @@
                         <span>Orario fine:</span>
                         <span class="font-medium">{{ $teacher->professionalProfile->hour_end ?? '-' }}</span>
                     </div>
-                    @if($teacher->professionalProfile->file_professional )
+                    @if($teacher->documentsAsTeacher->where('type', 'doc_professionale')->first() )
                     <div class="flex flex-col justify-between mt-5">
                         <span class="font-medium">Allegato:</span>
                         <div class="space-x-1 mt-2">
                             <flux:button download size="sm"
-                                href="{{asset('storage/'. $teacher->professionalProfile->file_professional )}}"
+                                href="{{asset('storage/'. $teacher->documentsAsTeacher->where('type', 'doc_professionale')->first()->url_file )}}"
                                 icon="arrow-down-tray" />
                             <flux:button target="_blanck" size="sm"
-                                href="{{asset('storage/'. $teacher->professionalProfile->file_professional )}}"
+                                href="{{asset('storage/'. $teacher->documentsAsTeacher->where('type', 'doc_professionale')->first()->url_file )}}"
                                 icon="eye" />
                         </div>
                     </div>

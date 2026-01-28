@@ -16,17 +16,69 @@
 
         <x-step-container title="Dati Anagrafici">
             <div class="space-y-3">
-                <flux:input label="Nome e Cognome" type="text" id="name" wire:model="studentDetailsStep.name" />
-                <flux:input label="Email" type="email" id="email" wire:model="studentDetailsStep.email" />
-                <flux:input label="Password" type="password" id="password" wire:model="studentDetailsStep.password" />
-            </div>
+                <div class="grid grid-cols-2 gap-5">
+                    <div class="border-e pe-5">
+                        <flux:input label="Nome e Cognome" type="text" id="name" wire:model="studentDetailsStep.name" />
+                        <div class="flex  flex-col  items-start gap-3 my-3">
+                            <label for="url_photo">Foto profilo:</label>
+                            <div class="space-x-3">
+                                <input type="file" id="url_photo" wire:model="studentDetailsStep.url_photo"
+                                    class="hidden" />
+                                <flux:button type="button" onclick="document.getElementById('url_photo').click()">
+                                    Sfoglia file
+                                </flux:button>
+                                <span
+                                    class="text-sm {{ $studentDetailsStep->url_photo ? 'text-gray-700 font-semibold' : 'text-gray-400' }}">
+                                    @if ($studentDetailsStep->url_photo)
+                                    {{ $studentDetailsStep->url_photo->getClientOriginalName() }}
+                                    @else
+                                    Nessun file selezionato
+                                    @endif
+                                </span>
+                            </div>
+                        </div>
+                        @error('studentDetailsStep.url_photo')
+                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                        @enderror
+                    </div>
 
-            <x-slot:actions>
-                <flux:button variant="primary" class="font-semibold cursor-pointer" icon="arrow-right"
-                    wire:click="addStep">
-                    Avanti
-                </flux:button>
-            </x-slot:actions>
+                    <div class="space-y-3">
+                        <flux:input label="Email" type="email" id="email" wire:model="studentDetailsStep.email" />
+                        <flux:input label="Password" type="password" id="password"
+                            wire:model="studentDetailsStep.password" />
+                    </div>
+                </div>
+
+                <div class="flex flex-col my-3">
+                    <div class="flex  flex-col  items-start gap-3 my-3">
+                        <label for="url_file">Carica o sostituisci documento d'identità:</label>
+                        <div class="space-x-3">
+                            <input type="file" id="url_file" wire:model="studentDetailsStep.url_file" accept=".pdf"
+                                class="hidden" />
+                            <flux:button type="button" onclick="document.getElementById('url_file').click()">
+                                Sfoglia file
+                            </flux:button>
+                            <span
+                                class="text-sm {{ $studentDetailsStep->url_file ? 'text-gray-700 font-semibold' : 'text-gray-400' }}">
+                                @if ($studentDetailsStep->url_file)
+                                {{ $studentDetailsStep->url_file->getClientOriginalName() }}
+                                @else
+                                Nessun file selezionato
+                                @endif
+                            </span>
+                        </div>
+                        <div class="text-sm font-medium">*Allegare in formato .pdf</div>
+                    </div>
+                    @error('studentDetailsStep.url_file')
+                    <span class="text-red-500 text-sm">{{ $message }}</span>
+                    @enderror
+                </div>
+                <x-slot:actions>
+                    <flux:button variant="primary" class="font-semibold cursor-pointer" icon="arrow-right"
+                        wire:click="addStep">
+                        Avanti
+                    </flux:button>
+                </x-slot:actions>
         </x-step-container>
         @elseif($currentStep == 1)
         <x-step-container title="Seleziona Corsi">
@@ -92,27 +144,48 @@
                 <div class="w-full border dark:border-zinc-700 rounded-2xl p-5">
                     <h2 class="text-sm font-bold">Dati Anagrafici</h2>
                     <div class="space-y-2 mt-3">
+                        <div class="w-full flex mb-5">
+                            <figure class="w-40 overflow-hidden rounded-lg border border-zinc-300">
+                                @if($studentDetailsStep->url_photo)
+                                <img alt="{{$studentDetailsStep->url_photo}}" class="w-full h-full object-cover"
+                                    src="{{ $studentDetailsStep->url_photo->temporaryUrl() }}" />
+                                @else
+                                <img alt="placeholder" src="{{asset('./assets/icons/placeholder.png')}}" />
+                                @endif
+                            </figure>
+                            <div class="space-y-5 ms-5">
+                                <div
+                                    class="font-medium text-sm @error('studentDetailsStep.name') text-red-500 @enderror">
+                                    <div>
+                                        ID Matricola:
+                                    </div>
+                                    <div class="font-normal text-base ms-2">{{
+                                        $this->studentDetailsStep->generateUniqueCode()
+                                        }}
+                                    </div>
+                                </div>
+                                <div
+                                    class="font-medium text-sm @error('studentDetailsStep.name') text-red-500 @enderror">
+                                    <div>
+                                        Nome e Cognome:
+                                    </div>
+                                    <div class="font-normal text-base ms-2">{{ $studentDetailsStep->name ?? '-' }}
+                                    </div>
+                                </div>
 
-                        <p class="font-medium text-sm @error('studentDetailsStep.name') text-red-500 @enderror">
-                            ID Matricola:
-                            <span class="font-normal text-base ms-2">{{ $this->studentDetailsStep->generateUniqueCode()
-                                }}
-                            </span>
-                        </p>
-                        <p class="font-medium text-sm @error('studentDetailsStep.name') text-red-500 @enderror">
-                            Nome e Cognome:
-                            <span class="font-normal text-base ms-2">{{ $studentDetailsStep->name ?? '-' }}
-                            </span>
-                        </p>
-
-                        <p class="font-medium text-sm @error('studentDetailsStep.email') text-red-500 @enderror">
-                            @error('studentDetailsStep.email')
-                            *
-                            @enderror
-                            Email:
-                            <span class="font-normal text-base ms-2">{{ $studentDetailsStep->email ?? '-' }}
-                            </span>
-                        </p>
+                                <div
+                                    class="font-medium text-sm @error('studentDetailsStep.email') text-red-500 @enderror">
+                                    @error('studentDetailsStep.email')
+                                    *
+                                    @enderror
+                                    <div>
+                                        Email:
+                                    </div>
+                                    <div class="font-normal text-base ms-2">{{ $studentDetailsStep->email ?? '-' }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 

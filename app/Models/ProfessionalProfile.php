@@ -13,7 +13,6 @@ class ProfessionalProfile extends Model
         'original_name',
         'level_coach',
         'direct_collaboration',
-        'center',
         'day_course',
         'hour_start',
         'hour_end',

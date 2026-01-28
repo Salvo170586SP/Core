@@ -4,6 +4,8 @@ namespace App\Livewire\Admin\EveningCourses;
 
 use App\Models\Course;
 use App\Models\User;
+use FFI;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class EveningCoursesDetail extends Component
@@ -13,7 +15,7 @@ class EveningCoursesDetail extends Component
     public $selected = [];
     public $selectAll = false;
     public $student_id;
-
+    public $is_active = false;
 
     public function mount()
     {
@@ -44,11 +46,31 @@ class EveningCoursesDetail extends Component
         $this->toggleRecruitment();
     }
 
+    private function generateUniqueBadgeNumber()
+    {
+        do {
+            // Genera un codice alfanumerico casuale (es: "A7K9M2X5")
+            $badgeNumber = strtoupper(substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'), 0, 8));
+
+            // Verifica se esiste già
+            $exists = DB::table('course_student')
+                ->where('badge_number', $badgeNumber)
+                ->exists();
+        } while ($exists);
+
+        return $badgeNumber;
+    }
+
     public function attachStudentCourse()
     {
-        $this->course->students()->attach($this->student_id);
+        $this->course->students()->attach($this->student_id, [
+            'is_active' => (bool) $this->is_active,
+            'issued_at' => now(),
+            'badge_number' => $this->generateUniqueBadgeNumber(),
+        ]);
 
         $this->toggleRecruitment();
+        $this->is_active = false;
     }
 
     public function clearSelection()
@@ -65,6 +87,18 @@ class EveningCoursesDetail extends Component
             $this->course->status = 'recruitment';
         }
         $this->course->save();
+    }
+
+    public function toggleBadge($studentId)
+    {
+        $student = $this->course->students()->find($studentId);
+
+        if ($student) {
+            $this->course->students()->updateExistingPivot(
+                $studentId,
+                ['is_active' => !$student->pivot->is_active]
+            );
+        }
     }
 
     public function render()
