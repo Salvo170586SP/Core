@@ -34,13 +34,23 @@ class TeachersEdit extends Component
         // Carica il profilo professionale se esiste
         if ($this->teacher->professionalProfile) {
             $profile = $this->teacher->professionalProfile;
-            $this->professionalProfileStep->center = $profile->center;
             $this->professionalProfileStep->level_coach = $profile->level_coach;
             $this->professionalProfileStep->day_course = $profile->day_course;
             $this->professionalProfileStep->hour_start = $profile->hour_start;
             $this->professionalProfileStep->hour_end = $profile->hour_end;
             $this->professionalProfileStep->direct_collaboration = $profile->direct_collaboration;
         }
+
+        $this->teacherDetailsStep->cap = $this->teacher->detailsAsTeacher?->cap;
+        $this->teacherDetailsStep->city = $this->teacher->detailsAsTeacher?->city;
+        $this->teacherDetailsStep->city_birth = $this->teacher->detailsAsTeacher?->city_birth;
+        $this->teacherDetailsStep->date_birth = $this->teacher->detailsAsTeacher?->date_birth
+            ? $this->teacher->detailsAsTeacher->date_birth->format('Y-m-d')
+            : null;
+        $this->teacherDetailsStep->fiscal_code = $this->teacher->detailsAsTeacher?->fiscal_code;
+        $this->teacherDetailsStep->phone_number = $this->teacher->detailsAsTeacher?->phone_number;
+        $this->teacherDetailsStep->note = $this->teacher->detailsAsTeacher?->note;
+
 
         // Carica i subjects attuali del professore
         $this->subjects_selected = $this->teacher->subjects->pluck('id')->toArray();

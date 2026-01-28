@@ -4,6 +4,7 @@ namespace App\Livewire\Forms\Admin\Students;
 
 use App\Models\Document;
 use App\Models\User;
+use App\Models\UserDetail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Validate;
@@ -19,19 +20,35 @@ class StudentDetailsStep extends Form
     public $url_photo = null;
     public $url_file = null;
 
+    public $fiscal_code;
+    public $city;
+    public $cap;
+    public $city_birth;
+    public $date_birth;
+    public $phone_number;
+    public $note;
+
     protected function rules()
     {
         $rules = [
             'code' => 'unique:courses',
             'name' => 'required',
-            'email' => ['required', 'email',  Rule::unique('users', 'email')->ignore($this->studentId ?? null)],
             'url_photo' => 'nullable|file|max:10240',
             'url_file' => 'nullable|file|mimes:pdf|max:10240',
+            'fiscal_code' => 'nullable',
+            'city' => 'nullable',
+            'cap' => 'nullable|numeric',
+            'city_birth' => 'nullable',
+            'date_birth' => 'nullable|date_format:Y-m-d',
+            'phone_number' => 'nullable|numeric',
+            'note' => 'nullable|max:500',
         ];
 
         if (!$this->studentId) {
+            $rules['email'] = ['required', 'email',  Rule::unique('users', 'email')->ignore($this->studentId ?? null)];
             $rules['password'] = 'required';
         } else {
+            $rules['email'] = 'nullable';
             $rules['password'] = 'nullable|min:8';
         }
 
@@ -50,6 +67,10 @@ class StudentDetailsStep extends Form
         'url_file.file' => 'Il file caricato non è valido',
         'url_file.mimes' => 'Il file deve essere di tipo PDF',
         'url_file.max' => 'Il file non può superare i 10MB',
+        'cap.numeric' => 'il campo deve contenere numeri',
+        'date_birth.date_format' => 'il campo deve contenere una data',
+        'phone_number.numeric' => 'il campo deve contenere numeri',
+        'note.max' => 'il campo non può avere più di :max caratteri',
     ];
 
     public function generateUniqueCode()
@@ -80,6 +101,17 @@ class StudentDetailsStep extends Form
             'email' => $this->email,
             'password' => bcrypt($this->password),
         ])->assignRole('allievo');
+
+        UserDetail::create([
+            'student_id' => $student->id,
+            'fiscal_code' => $this->fiscal_code,
+            'city' => $this->city,
+            'cap' => $this->cap,
+            'city_birth' => $this->city_birth,
+            'date_birth' => $this->date_birth,
+            'phone_number' => $this->phone_number,
+            'note' => $this->note,
+        ]);
 
         $filePath = null;
         if ($this->url_file) {
@@ -123,6 +155,23 @@ class StudentDetailsStep extends Form
         }
         $student->save();
 
+        UserDetail::updateOrCreate(
+            [
+                // Trova per student_id
+                'student_id' => $student->id,
+            ],
+            [
+                // Campi da aggiornare/creare
+                'fiscal_code' => $this->fiscal_code,
+                'city' => $this->city,
+                'cap' => $this->cap,
+                'city_birth' => $this->city_birth,
+                'date_birth' => $this->date_birth,
+                'phone_number' => $this->phone_number,
+                'note' => $this->note,
+            ]
+        );
+
         // Gestisci il file solo se è stato caricato
         if ($this->url_file) {
             // Trova il documento esistente
@@ -151,7 +200,7 @@ class StudentDetailsStep extends Form
                 ]
             );
         }
-      
+
         // Gestisci foto solo se è stato caricato
         if ($this->url_photo) {
             // Trova il documento esistente

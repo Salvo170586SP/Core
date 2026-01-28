@@ -107,6 +107,19 @@ class User extends Authenticatable
     {
         return $this->hasMany(Document::class, 'teacher_id');
     }
+   
+    // Dettagli dove l'utente è lo studente
+    public function detailsAsStudent()
+    {
+        return $this->hasOne(UserDetail::class, 'student_id');
+    }
+
+    // Dettagli dove l'utente è il teacher
+    public function detailsAsTeacher()
+    {
+        return $this->hasOne(UserDetail::class, 'teacher_id');
+    }
+
     // Controlla se lo studente ha ALMENO un tesseramento attivo
     public function getIsBadgeAttribute()
     {

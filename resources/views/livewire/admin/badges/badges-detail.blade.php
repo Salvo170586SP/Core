@@ -7,50 +7,50 @@
             </flux:button>
         </div>
         <div class="flex justify-center gap-3 h-25">
-            <div class="w-full border bg-white border-zinc-300 p-3 rounded shadow text-sm">
-                <div class="flex flex-col justify-center space-y-1">
-                    <div class="font-semibold text-xl capitalize">
-                        {{ $student->name }}
-                    </div>
-                    <div>
-                        Matricola. <span class="text-sm font-medium"> {{ $student->code }} </span>
-                    </div>
-                    <div>
-                        Tesseramenti attivi <span class="text-black font-bold ms-2">
-                            {{$student->coursesStudents()->wherePivot('is_active',
-                            true)->count()
-                            }}</span>
-                    </div>
+
+            <div class="w-full border border-zinc-300 bg-white p-3 rounded shadow text-sm space-y-1">
+                <div class="font-semibold text-lg capitalize">
+                    {{ $student->name }}
+                </div>
+                <div class="flex justify-between items-center font-medium">
+                    Matricola: <span class="text-sm font-semibold"> {{ $student->code }} </span>
+                </div>
+                <div class="flex justify-between items-center font-medium">
+                    Tesseramenti attivi: <span class="bg-black text-white font-semibold rounded text-center w-5 h-5">
+                        {{$student->coursesStudents()->wherePivot('is_active',
+                        true)->count()
+                        }}</span>
                 </div>
             </div>
 
-            <div class="w-full border border-zinc-300 bg-white p-3 rounded shadow text-sm space-y-1">
-                <div class="flex justify-between">
+            <div class="w-full border border-zinc-300 bg-white p-3 rounded shadow text-sm space-y-2">
+                <div class="flex justify-between font-medium">
                     Cod Fiscale:
-                    <span class="text-sm font-medium"> </span>
+                    <span class="text-sm font-semibold">{{ $student->detailsAsStudent?->fiscal_code ?? '-' }}</span>
                 </div>
-                <div class="flex justify-between items-center">
-                    Nato il: <span class="text-sm font-medium"> </span>
+                <div class="flex justify-between items-center font-medium">
+                    Nato il: <span class="text-sm  font-semibold"> {{
+                        $student->detailsAsStudent?->date_birth?->format('d-m-Y') ?? '-' }} </span>
                 </div>
-                <div class="flex justify-between">
+                <div class="flex justify-between items-center font-medium">
                     A:
-                    {{-- <span class="text-sm font-medium"> {{ $course->center }}</span> --}}
+                    <span class="text-sm font-semibold">{{ $student->detailsAsStudent?->city_birth ?? '-' }}</span>
                 </div>
             </div>
 
-            <div class="w-full border border-zinc-300 bg-white p-3 rounded shadow text-sm space-y-1">
-                <div class="flex justify-between items-center">
-                    Tel:{{-- <flux:badge color="{{ $course->getStatusColor($course->status) }}" size="sm">
-                        {{ $course->getStatusLabel($course->status) }}
-                    </flux:badge> --}}
+            <div class="w-full border border-zinc-300 bg-white p-3 rounded shadow text-sm space-y-2">
+                <div class="flex justify-between items-center font-medium">
+                    Tel: <span class="text-sm font-semibold"> {{ $student->detailsAsStudent?->phone_number ?? '-' }}
+                    </span>
                 </div>
-                <div class="flex justify-between">
-                    Email:
-                    {{-- <span class="text-sm font-medium"> {{ $course->min_students ?? '-' }} - {{
-                        $course->max_students ??
-                        '-' }}</span> --}}
+                <div class="flex justify-between font-medium">
+                    Email: <span class="text-sm font-semibold">
+                        {{ $student->email ?? '-' }} </span>
                 </div>
-
+                <div class="flex justify-between font-medium">
+                    Residente a: <span class="text-sm font-semibold">
+                        {{ $student->detailsAsStudent?->city ?? '-' }} </span>
+                </div>
             </div>
         </div>
 

@@ -9,48 +9,76 @@
 
     <div class="w-full mt-5">
         <div class="border border-zinc-300 bg-white dark:border-zinc-700 rounded shadow p-5 space-y-6">
+           
             <div>
-                <h3 class="text-lg font-semibold mb-4">Dati Anagrafici</h3>
-                <div class="grid grid-cols-2 gap-5">
-                    <div class="border-e pe-5">
-                        <flux:input label="Nome e Cognome" type="text" id="name" wire:model="teacherDetailsStep.name" />
-                        <div class="flex  flex-col  items-start gap-3 my-3">
-                            <label for="url_photo">Foto profilo:</label>
-                            <div class="space-x-3">
-                                <input type="file" id="url_photo" wire:model="teacherDetailsStep.url_photo"
-                                    class="hidden" />
-                                <flux:button type="button" onclick="document.getElementById('url_photo').click()">
-                                    Sfoglia file
-                                </flux:button>
-                                <span
-                                    class="text-sm {{ $teacherDetailsStep->url_photo ? 'text-gray-700 font-semibold' : 'text-gray-400' }}">
-                                    @if ($teacherDetailsStep->url_photo)
-                                    {{ $teacherDetailsStep->url_photo->getClientOriginalName() }}
-                                    @else
-                                    Nessun file selezionato
-                                    @endif
-                                </span>
+                <h3 class="text-base font-semibold mb-4">Dati Anagrafici</h3>
+                <div class="w-full flex gap-3">
+                    <div class="w-full border-e pe-3">
+                        <div class="grid grid-cols-3 gap-3">
+                            <div class="space-y-3">
+                                <flux:input label="Nome e Cognome" type="text" id="name"
+                                    wire:model="teacherDetailsStep.name" />
+                                <flux:input label="Cod.Fiscale" type="text" id="fiscal_code"
+                                    wire:model="teacherDetailsStep.fiscal_code" />
+                                <flux:input label="Numero di telefono" type="text" id="phone_number"
+                                    wire:model="teacherDetailsStep.phone_number" />
+                            </div>
+
+                            <div class="space-y-3">
+                                <flux:input label="Cap di Residenza" type="text" id="cap"
+                                    wire:model="teacherDetailsStep.cap" />
+                                <flux:input label="Nato a" type="text" id="city_birth"
+                                    wire:model="teacherDetailsStep.city_birth" />
+                            </div>
+
+                            <div class="space-y-3">
+                                <flux:input label="Città di residenza" type="text" id="city"
+                                    wire:model="teacherDetailsStep.city" />
+                                <flux:input label="Nato il" type="date" id="date_birth"
+                                    wire:model="teacherDetailsStep.date_birth" />
                             </div>
                         </div>
-                        @error('studentDetailsStep.url_photo')
-                        <span class="text-red-500 text-sm">{{ $message }}</span>
-                        @enderror
+                        <div class="mt-3">
+                            <flux:textarea label="Note" id="note" wire:model="teacherDetailsStep.note" />
+                        </div>
                     </div>
 
-                    <div>
-                        <flux:input label="Email" type="email" id="email" disabled value="teacherDetailsStep.email" />
-                        <flux:input label="Password" type="password" id="password"
+                    <div class="w-full space-y-3">
+                         <flux:input label="Password" type="password" id="password"
                             wire:model="teacherDetailsStep.password" />
-                        <flux:text class="text-sm text-gray-500 dark:text-gray-400">Lascia vuoto per non modificare la
-                            password</flux:text>
                     </div>
+                </div>
+
+                <div>
+                    <div class="flex  flex-col  items-start gap-3 my-3 font-medium text-sm">
+                        <label for="url_photo">Foto profilo:</label>
+                        <div class="space-x-3">
+                            <input type="file" id="url_photo" wire:model="teacherDetailsStep.url_photo"
+                                class="hidden" />
+                            <flux:button type="button" onclick="document.getElementById('url_photo').click()">
+                                Sfoglia file
+                            </flux:button>
+                            <span
+                                class="text-sm {{ $teacherDetailsStep->url_photo ? 'text-gray-700 font-semibold' : 'text-gray-400' }}">
+                                @if ($teacherDetailsStep->url_photo)
+                                {{ $teacherDetailsStep->url_photo->getClientOriginalName() }}
+                                @else
+                                Nessun file selezionato
+                                @endif
+                            </span>
+                        </div>
+
+                    </div>
+                    @error('studentDetailsStep.url_photo')
+                    <span class="text-red-500 text-sm">{{ $message }}</span>
+                    @enderror
                 </div>
             </div>
 
             <div class="border-t dark:border-zinc-700 pt-6">
-                <h3 class="text-lg font-semibold mb-4">Profilo Professionale</h3>
+                <h3 class="text-base font-semibold mb-4">Profilo Professionale</h3>
                 <div class="grid grid-cols-3 gap-3">
-                     <flux:select id="level_coach" wire:model="professionalProfileStep.level_coach"
+                    <flux:select id="level_coach" wire:model="professionalProfileStep.level_coach"
                         label="Livello Professionale">
                         <flux:select.option value="">-</flux:select.option>
                         @foreach($levels as $level)
@@ -72,8 +100,8 @@
 
                     <div class="flex items-center gap-3 my-3 col-span-3">
                         <label for="url_file">Titolo Professionale:</label>
-                        <input type="file" id="url_file" wire:model="professionalProfileStep.url_file"
-                            accept=".pdf" class="hidden" />
+                        <input type="file" id="url_file" wire:model="professionalProfileStep.url_file" accept=".pdf"
+                            class="hidden" />
                         <flux:button type="button" onclick="document.getElementById('url_file').click()">
                             Scegli file
                         </flux:button>
@@ -91,17 +119,19 @@
                         <span class="text-red-500 text-sm">{{ $message }}</span>
                         @enderror
                     </div>
-                    <div class="mt-5">
-                        <flux:checkbox.group label="Materie" wire:model="subjects_selected" class="flex gap-10 my-2">
-                            @foreach($subjects as $s)
-                            <flux:checkbox wire:key="{{$s->id}}" value="{{$s->id}}" label="{{$s->name}}" />
-                            @endforeach
-                        </flux:checkbox.group>
-                    </div>
                 </div>
             </div>
 
-            <div class="flex justify-end gap-3 pt-4 border-t dark:border-zinc-700">
+            <div class="border-t pt-5">
+                <h3 class="text-base font-semibold mb-4">Materie</h3>
+                <flux:checkbox.group wire:model="subjects_selected" class="flex gap-10 my-2">
+                    @foreach($subjects as $s)
+                    <flux:checkbox wire:key="{{$s->id}}" value="{{$s->id}}" label="{{$s->name}}" />
+                    @endforeach
+                </flux:checkbox.group>
+            </div>
+
+            <div class="flex justify-end gap-3 pt-4  dark:border-zinc-700">
                 <flux:button variant="primary" class="font-semibold cursor-pointer" icon="check" wire:click="submit">
                     Salva Modifiche
                 </flux:button>

@@ -6,12 +6,13 @@
         </flux:button>
     </div>
     <div class="flex gap-5">
-        <div class="w-80 space-y-3">
-            <div class="border border-zinc-300 bg-white p-3 rounded shadow text-sm">
-                 <div class="w-full flex justify-center mb-5">
-                    <figure class="w-40 overflow-hidden rounded-lg border border-zinc-300">
+        <div class="w-120 space-y-3">
+            <div class="border border-zinc-300 bg-white p-3 rounded shadow text-sm overflow-hidden">
+                <div class="w-full flex justify-center mb-5">
+                    <figure class="w-full overflow-hidden rounded-lg border border-zinc-300">
                         @if($teacher->documentsAsTeacher->where('type', 'foto_profilo')->first())
-                        <img alt="{{$teacher->documentsAsTeacher->where('type', 'foto_profilo')->first()->name}}" class="w-full h-full object-cover"
+                        <img alt="{{$teacher->documentsAsTeacher->where('type', 'foto_profilo')->first()->name}}"
+                            class="w-full h-full object-cover"
                             src="{{asset('storage/'. $teacher->documentsAsTeacher->where('type', 'foto_profilo')->first()->url_file )}}" />
                         @else
                         <img alt="placeholder" src="{{asset('./assets/icons/placeholder.png')}}" />
@@ -22,11 +23,63 @@
                     <div class="font-semibold text-xl">
                         Prof. {{ $teacher->name }}
                     </div>
-                    <div>
-                        {{ $teacher->email }}
+                    <div class="flex gap-2">
+                        <div class="font-medium">
+                            Cod.
+                        </div>
+                        <div class="font-semibold">
+                            {{$teacher->code ?? '*'}}
+                        </div>
                     </div>
-                    <div>
-                        Cod. {{$teacher->code ?? '*'}}
+                    <div class="flex gap-2">
+                        <div class="font-medium">
+                            Email:
+                        </div>
+                        <div class="font-semibold">
+                            {{ $teacher->email ?? '-' }}
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                        <div class="font-medium">
+                            Tel:
+                        </div>
+                        <div class="font-semibold">
+                            {{ $teacher->detailsAsTeacher?->phone_number ?? '-' }}
+                        </div>
+                    </div>
+
+                    <div class="flex gap-2">
+                        <div class="font-medium">
+                            Cod Fiscale:
+                        </div>
+                        <div class="font-semibold">
+                            {{ $teacher->detailsAsTeacher?->fiscal_code ?? '-' }}
+                        </div>
+                    </div>
+
+                    <div class="flex gap-2">
+                        <div class="font-medium">
+                            Residente a:
+                        </div>
+                        <div class="font-semibold">
+                            {{ $teacher->detailsAsTeacher?->city ?? '-' }}
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                        <div class="font-medium">
+                            Nato il:
+                        </div>
+                        <div class="font-semibold">
+                            {{ $teacher->detailsAsTeacher?->date_birth->format('d/m/Y') ?? '-' }}
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                        <div class="font-medium">
+                            Nato a:
+                        </div>
+                        <div class="font-semibold">
+                            {{ $teacher->detailsAsTeacher?->city_birth ?? '-' }}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -90,14 +143,6 @@
         </div>
 
         <div class="w-full border border-zinc-300 bg-white rounded shadow">
-            <div class="p-3 text-sm mt-5">
-                <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit repellat exercitationem obcaecati
-                    reiciendis praesentium eum beatae nulla a eaque. Nam consequatur modi, quas itaque laudantium nisi
-                    accusantium enim animi molestiae.
-                </p>
-            </div>
-
             <div class="p-3 text-sm mt-5">
                 <h3 class="font-semibold mb-2">Insegna nei seguenti Corsi</h3>
                 @if($this->courses->count() > 0)

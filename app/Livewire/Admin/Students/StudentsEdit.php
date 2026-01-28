@@ -21,8 +21,17 @@ class StudentsEdit extends Component
         $this->student = User::role('allievo')->findOrFail($this->id);
 
         $this->studentDetailsStep->name = $this->student->name;
-        $this->studentDetailsStep->email = $this->student->email;
         $this->studentDetailsStep->password = '';
+
+        $this->studentDetailsStep->cap = $this->student->detailsAsStudent?->cap;
+        $this->studentDetailsStep->city = $this->student->detailsAsStudent?->city;
+        $this->studentDetailsStep->city_birth = $this->student->detailsAsStudent?->city_birth;
+        $this->studentDetailsStep->date_birth = $this->student->detailsAsStudent?->date_birth
+            ? $this->student->detailsAsStudent->date_birth->format('Y-m-d')
+            : null;
+        $this->studentDetailsStep->fiscal_code = $this->student->detailsAsStudent?->fiscal_code;
+        $this->studentDetailsStep->phone_number = $this->student->detailsAsStudent?->phone_number;
+        $this->studentDetailsStep->note = $this->student->detailsAsStudent?->note;
     }
 
     public function submit()

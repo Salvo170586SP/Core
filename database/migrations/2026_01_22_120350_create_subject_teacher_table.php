@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('teacher_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('subject_id')->constrained('subjects')->onDelete('cascade');
-            /*$table->unsignedSmallInteger('year');*/
             $table->timestamps();
             $table->unique(['teacher_id', 'subject_id']);
         });

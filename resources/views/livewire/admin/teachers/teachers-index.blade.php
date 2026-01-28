@@ -21,11 +21,11 @@
         <x-table :headers="[
         ['label' => 'ID'],
         ['label' => 'Nome Istruttore'],
+        ['label' => 'Email'],
         ['label' => 'Livello Istruttore', 'align' => 'text-center'],
         ['label' => 'Collaborazione Diretta', 'align' => 'text-center'],
         ['label' => 'Materie', 'align' => 'text-center'],
-        ['label' => 'Titolo Professionale', 'align' => 'text-center'],
-        ['label' => '']
+         ['label' => '']
     ]" :show-checkbox="true">
 
             @slot('checkboxHeader')
@@ -37,8 +37,9 @@
                 <td class="ps-5">
                     <flux:checkbox wire:model.live="selected" value="{{ $item->id }}" />
                 </td>
-                <td class="px-3 font-bold text-sm">{{$item->code ?? '*'}}</td>
+                <td class="px-3 font-bold text-sm">{{$item->code ?? '-'}}</td>
                 <td class="px-3">{{$item->name}}</td>
+                <td class="px-3">{{$item->email}}</td>
                 <td class="px-3 text-center">
                     <flux:badge color="purple" size="sm">
                         {{ $item->getLevelLabel($item->professionalProfile?->level_coach) }}
@@ -59,15 +60,6 @@
                     <flux:badge color="purple" size="sm">
                         {{$item->subjects?->count() }}
                     </flux:badge>
-                </td>
-                <td class="px-3 text-center">
-                    @if($item->documentsAsTeacher->where('type', 'doc_professionale')->first())
-                    <flux:button download size="sm" variant="ghost"
-                        href="{{asset('storage/'. $item->documentsAsTeacher->where('type', 'doc_professionale')->first()->url_file )}}"
-                        icon="arrow-down-tray" />
-                    @else
-                    -
-                    @endif
                 </td>
                 <td class="px-3">
                     <div class="flex justify-end gap-2">

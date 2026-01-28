@@ -6,11 +6,11 @@
         </flux:button>
     </div>
     <div class="flex gap-5">
-        <div class="w-80 space-y-3">
+        <div class="w-120 space-y-3">
             <div class="border border-zinc-300 bg-white p-4 rounded shadow text-sm">
-                 <div class="flex flex-col justify-center">
+                <div class="flex flex-col justify-center space-y-3">
                     <div class="w-full flex justify-center mb-5">
-                        <figure class="w-40 overflow-hidden rounded-lg border border-zinc-300">
+                        <figure class="w-full overflow-hidden rounded border border-zinc-300">
                             @if($student->documentsAsStudent->where('type', 'foto_profilo')->first())
                             <img alt="{{$student->documentsAsStudent->where('type', 'foto_profilo')->first()->name}}"
                                 class="w-full h-full object-cover"
@@ -21,10 +21,57 @@
                         </figure>
                     </div>
                     <div class="font-semibold text-xl uppercase">
-                        {{ $student->name }}
+                        {{ $student->name ?? '-' }}
                     </div>
-                    <div>
-                        {{ $student->email }}
+                    <div class="flex gap-2">
+                        <div class="font-medium">
+                            Email:
+                        </div>
+                        <div class="font-semibold">
+                            {{ $student->email ?? '-' }}
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                        <div class="font-medium">
+                            Tel:
+                        </div>
+                        <div class="font-semibold">
+                            {{ $student->detailsAsStudent?->phone_number ?? '-' }}
+                        </div>
+                    </div>
+
+                    <div class="flex gap-2">
+                        <div class="font-medium">
+                            Cod Fiscale:
+                        </div>
+                        <div class="font-semibold">
+                            {{ $student->detailsAsStudent?->fiscal_code ?? '-' }}
+                        </div>
+                    </div>
+
+                    <div class="flex gap-2">
+                        <div class="font-medium">
+                            Residente a:
+                        </div>
+                        <div class="font-semibold">
+                            {{ $student->detailsAsStudent?->city ?? '-' }}
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                        <div class="font-medium">
+                            Nato il:
+                        </div>
+                        <div class="font-semibold">
+                            {{ $student->detailsAsStudent?->date_birth->format('d/m/Y') ?? '-' }}
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                        <div class="font-medium">
+                            Nato a:
+                        </div>
+                        <div class="font-semibold">
+                            {{ $student->detailsAsStudent?->city_birth ?? '-' }}
+                        </div>
                     </div>
                     <div>
                         @if($student->documentsAsStudent->where('type', 'carta_identita')->first() )

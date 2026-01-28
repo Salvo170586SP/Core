@@ -22,6 +22,9 @@
         <x-table :headers="[
             ['label' => 'Matricola'],
             ['label' => 'Nome Allievo'],
+            ['label' => 'Email'],
+            ['label' => 'Cod.Fiscale'],
+            ['label' => 'Telefono'],
             ['label' => 'Corsi', 'align' => 'text-center'],
             ['label' => 'Documento d\'identità', 'align' => 'text-center'],
             ['label' => '']
@@ -37,8 +40,11 @@
 
                     <flux:checkbox wire:model.live="selected" value="{{ $item->id }}" />
                 </td>
-                <td class="px-3 font-bold text-sm">{{$item->code}}</td>
+                <td class="px-3 font-bold">{{$item->code}}</td>
                 <td class="px-3 uppercase">{{$item->name}}</td>
+                <td class="px-3">{{$item->email ?? '-'}}</td>
+                <td class="px-3">{{$item->detailsAsStudent->fiscal_code?? '-'}}</td>
+                <td class="px-3">{{$item->detailsAsStudent->phone_number ?? '-'}}</td>
 
                 <td class="px-3">
                     <div class="flex justify-center items-center">

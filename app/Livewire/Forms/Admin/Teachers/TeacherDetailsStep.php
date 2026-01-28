@@ -4,9 +4,9 @@ namespace App\Livewire\Forms\Admin\Teachers;
 
 use App\Models\Document;
 use App\Models\User;
+use App\Models\UserDetail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
-use Livewire\Attributes\Validate;
 use Livewire\Form;
 
 class TeacherDetailsStep extends Form
@@ -18,6 +18,14 @@ class TeacherDetailsStep extends Form
     public $teacherId = null;
     public $url_photo = null;
 
+    public $fiscal_code;
+    public $city;
+    public $cap;
+    public $city_birth;
+    public $date_birth;
+    public $phone_number;
+    public $note;
+
 
     protected function rules()
     {
@@ -26,6 +34,13 @@ class TeacherDetailsStep extends Form
             'name' => 'required',
             'email' => ['required', 'email',  Rule::unique('users', 'email')->ignore($this->teacherId ?? null)],
             'url_photo' => 'nullable|file|max:10240',
+            'fiscal_code' => 'nullable',
+            'city' => 'nullable',
+            'cap' => 'nullable|numeric',
+            'city_birth' => 'nullable',
+            'date_birth' => 'nullable|date_format:Y-m-d',
+            'phone_number' => 'nullable|numeric',
+            'note' => 'nullable|max:500',
         ];
 
         if (!$this->teacherId) {
@@ -46,6 +61,10 @@ class TeacherDetailsStep extends Form
         'password.required' => 'Il campo è obbligatorio',
         'url_photo.file' => 'Il file caricato non è valido',
         'url_photo.max' => 'Il file non può superare i 10MB',
+        'cap.numeric' => 'il campo deve contenere numeri',
+        'date_birth.date_format' => 'il campo deve contenere una data',
+        'phone_number.numeric' => 'il campo deve contenere numeri',
+        'note.max' => 'il campo non può avere più di :max caratteri',
     ];
 
     public function generateUniqueCode()
@@ -77,6 +96,18 @@ class TeacherDetailsStep extends Form
             'password' => bcrypt($this->password),
         ])->assignRole('istruttore');
 
+        UserDetail::create([
+            'teacher_id' => $teacher->id,
+            'fiscal_code' => $this->fiscal_code,
+            'city' => $this->city,
+            'cap' => $this->cap,
+            'city_birth' => $this->city_birth,
+            'date_birth' => $this->date_birth,
+            'phone_number' => $this->phone_number,
+            'note' => $this->note,
+        ]);
+
+
         $filePhotoPath = null;
         if ($this->url_photo) {
             $originalPhotoName = $this->url_photo->getClientOriginalName();
@@ -100,12 +131,27 @@ class TeacherDetailsStep extends Form
 
         $teacher = User::findOrFail($teacherId);
         $teacher->name = $this->name;
-
         // Aggiorna la password solo se fornita
         if (!empty($this->password)) {
             $teacher->password = bcrypt($this->password);
         }
 
+        UserDetail::updateOrCreate(
+            [
+                // Trova per student_id
+                'teacher_id' => $teacher->id,
+            ],
+            [
+                // Campi da aggiornare/creare
+                'fiscal_code' => $this->fiscal_code,
+                'city' => $this->city,
+                'cap' => $this->cap,
+                'city_birth' => $this->city_birth,
+                'date_birth' => $this->date_birth,
+                'phone_number' => $this->phone_number,
+                'note' => $this->note,
+            ]
+        );
 
         // Gestisci foto solo se è stato caricato
         if ($this->url_photo) {

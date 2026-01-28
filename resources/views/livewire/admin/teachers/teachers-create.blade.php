@@ -15,31 +15,69 @@
         @if ($currentStep == 0)
 
         <x-step-container title="Dati Anagrafici">
-            <div class="space-y-3">
-                <flux:input label="Nome e Cognome" type="text" id="name" wire:model="teacherDetailsStep.name" />
-                <flux:input label="Email" type="email" id="email" wire:model="teacherDetailsStep.email" />
-                <flux:input label="Password" type="password" id="password" wire:model="teacherDetailsStep.password" />
-            </div>
-            <div class="flex  flex-col  items-start gap-3 my-3">
-                <label for="url_photo">Foto profilo:</label>
-                <div class="space-x-3">
-                    <input type="file" id="url_photo" wire:model="teacherDetailsStep.url_photo" class="hidden" />
-                    <flux:button type="button" onclick="document.getElementById('url_photo').click()">
-                        Sfoglia file
-                    </flux:button>
-                    <span
-                        class="text-sm {{ $teacherDetailsStep->url_photo ? 'text-gray-700 font-semibold' : 'text-gray-400' }}">
-                        @if ($teacherDetailsStep->url_photo)
-                        {{ $teacherDetailsStep->url_photo->getClientOriginalName() }}
-                        @else
-                        Nessun file selezionato
-                        @endif
-                    </span>
+            <div class="w-full flex gap-3">
+
+                <div class="w-full border-e pe-3">
+                    <div class="grid grid-cols-3 gap-3">
+                        <div class="space-y-3">
+                            <flux:input label="Nome e Cognome" type="text" id="name"
+                                wire:model="teacherDetailsStep.name" />
+                            <flux:input label="Cod.Fiscale" type="text" id="fiscal_code"
+                                wire:model="teacherDetailsStep.fiscal_code" />
+                            <flux:input label="Numero di telefono" type="text" id="phone_number"
+                                wire:model="teacherDetailsStep.phone_number" />
+                        </div>
+
+                        <div class="space-y-3">
+                            <flux:input label="Cap di Residenza" type="text" id="cap"
+                                wire:model="teacherDetailsStep.cap" />
+                            <flux:input label="Nato a" type="text" id="city_birth"
+                                wire:model="teacherDetailsStep.city_birth" />
+                        </div>
+
+                        <div class="space-y-3">
+                            <flux:input label="Città di residenza" type="text" id="city"
+                                wire:model="teacherDetailsStep.city" />
+                            <flux:input label="Nato il" type="date" id="date_birth"
+                                wire:model="teacherDetailsStep.date_birth" />
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <flux:textarea label="Note" id="note" wire:model="teacherDetailsStep.note" />
+                    </div>
+                </div>
+
+                <div class="w-full space-y-3">
+                    <flux:input label="Email" type="email" id="email" wire:model="teacherDetailsStep.email" />
+                    <flux:input label="Password" type="password" id="password"
+                        wire:model="teacherDetailsStep.password" />
                 </div>
             </div>
-            @error('studentDetailsStep.url_photo')
-            <span class="text-red-500 text-sm">{{ $message }}</span>
-            @enderror
+
+            <div>
+                <div class="flex  flex-col  items-start gap-3 my-3">
+                    <label for="url_photo">Foto profilo:</label>
+                    <div class="space-x-3">
+                        <input type="file" id="url_photo" wire:model="teacherDetailsStep.url_photo" class="hidden" />
+                        <flux:button type="button" onclick="document.getElementById('url_photo').click()">
+                            Sfoglia file
+                        </flux:button>
+                        <span
+                            class="text-sm {{ $teacherDetailsStep->url_photo ? 'text-gray-700 font-semibold' : 'text-gray-400' }}">
+                            @if ($teacherDetailsStep->url_photo)
+                            {{ $teacherDetailsStep->url_photo->getClientOriginalName() }}
+                            @else
+                            Nessun file selezionato
+                            @endif
+                        </span>
+                    </div>
+
+                </div>
+                @error('studentDetailsStep.url_photo')
+                <span class="text-red-500 text-sm">{{ $message }}</span>
+                @enderror
+            </div>
+
             <x-slot:actions>
                 <flux:button variant="primary" class="font-semibold cursor-pointer" icon="arrow-right"
                     wire:click="addStep">
