@@ -32,7 +32,7 @@
             <flux:checkbox class="ps-3" wire:model.live="selectAll" />
             @endslot
 
-            @foreach($teachers as $item)
+            @forelse($teachers as $item)
             <tr wire:key="teacher-{{$item->id}}" class="border-b dark:border-zinc-700 h-[60px] text-sm">
                 <td class="ps-5">
                     <flux:checkbox wire:model.live="selected" value="{{ $item->id }}" />
@@ -92,7 +92,13 @@
                     </div>
                 </td>
             </tr>
-            @endforeach
+            @empty
+            <tr>
+                <td colspan="5" class="p-2 text-sm text-center italic">
+                    Non ci sono Insegnanti
+                </td>
+            </tr>
+            @endforelse
         </x-table>
         <div class="mt-5 px-2">
             {{$teachers->links()}}

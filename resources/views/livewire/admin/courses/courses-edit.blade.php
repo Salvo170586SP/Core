@@ -45,14 +45,21 @@
                     <flux:input label="Centro Scolastico" id="center" wire:model="center" />
                 </div>
                 <div class="space-y-3">
+                    <flux:select label="Iscrizioni" id="recruitment_status" wire:model="recruitment_status">
+                        @foreach($recruitments_state as $key => $sr)
+                        <flux:select.option wire:key="sr-{{$key}}-{{$sr['id']}}" label="{{$sr['label']}}"
+                            value="{{$sr['id']}}" />
+                        @endforeach
+                    </flux:select>
+ 
                     <flux:input label="Prezzo" id="price" wire:model="price" />
-                    <flux:checkbox.group label="Certificazione">
-                        <flux:checkbox id="certification" wire:model="certification" />
-                    </flux:checkbox.group>
                 </div>
+                <flux:checkbox.group label="Certificazione">
+                    <flux:checkbox id="certification" wire:model="certification" />
+                </flux:checkbox.group>
             </div>
 
-            <div class="mt-5">
+            <div class="mt-10">
                 <flux:checkbox.group label="Materie" wire:model="subjects_selected" class="flex gap-10 my-2">
                     @foreach($subjects as $s)
                     <flux:checkbox wire:key="{{$s->id}}" value="{{$s->id}}" label="{{$s->name}}" />

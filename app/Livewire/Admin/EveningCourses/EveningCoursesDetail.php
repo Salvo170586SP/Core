@@ -16,7 +16,15 @@ class EveningCoursesDetail extends Component
     public $selectAll = false;
     public $student_id;
     public $is_active = false;
+    public $recruitmentStatus;
 
+    public function updateRecruitmentStatus($courseId, $value)
+    {
+        $this->course = Course::where('type', 'evening')->findOrFail($courseId);
+        $this->course->update([
+            'recruitment_status' => $value
+        ]);
+    }
     public function mount()
     {
         $this->course = Course::where('type', 'evening')->with(['subjects', 'students'])->findOrFail($this->id);
@@ -103,13 +111,15 @@ class EveningCoursesDetail extends Component
 
     public function render()
     {
-        $courseId = $this->course->id;
+        $courseId = $this->id;
         $students = User::role('allievo')
             ->whereDoesntHave('coursesStudents', function ($query) use ($courseId) {
                 $query->where('courses.id', $courseId);
             })
             ->get();
 
-        return view('livewire.admin.evening-courses.evening-courses-detail', compact('students'));
+        $recruitments_state = config('Core.recruitments_state');
+
+        return view('livewire.admin.evening-courses.evening-courses-detail', compact('students', 'recruitments_state'));
     }
 }

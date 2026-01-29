@@ -24,6 +24,7 @@ class Course extends Model
         'price',
         'center',
         'certification',
+        'recruitment_status',
     ];
 
     protected $casts = [
@@ -86,6 +87,20 @@ class Course extends Model
     {
         $status_course = collect(config('Core.status_course'))->firstWhere('id', $stateId);
         return $status_course['color'] ?? '-';
+    }
+ 
+    // prendo recrutamento del corso
+    public function getRecLabel($stateId)
+    {
+        $status_rec = collect(config('Core.recruitments_state'))->firstWhere('id', $stateId);
+        return $status_rec['label'] ?? '-';
+    }
+
+    // prendo colore recrutamento del corso
+    public function getRecColor($stateId)
+    {
+        $status_rec = collect(config('Core.recruitments_state'))->firstWhere('id', $stateId);
+        return $status_rec['color'] ?? '-';
     }
 
 

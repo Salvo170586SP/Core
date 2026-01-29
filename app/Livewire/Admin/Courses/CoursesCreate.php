@@ -114,6 +114,6 @@ class CoursesCreate extends Component
         $levels_course = config('Core.levels_course');
         $status_course = config('Core.status_course');
         $subjects = Subject::all();
-        return view('livewire.admin.courses.courses-create', compact('levels_course', 'status_course', 'subjects'));
+        return view('livewire.admin.courses.courses-create', compact('levels_course', 'status_course','subjects'));
     }
 }

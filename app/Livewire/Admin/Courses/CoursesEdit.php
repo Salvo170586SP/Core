@@ -17,6 +17,7 @@ class CoursesEdit extends Component
     public $name;
     public $level;
     public $status;
+    public $recruitment_status;
     public $min_students;
     public $max_students;
     public $duration_hours;
@@ -73,6 +74,7 @@ class CoursesEdit extends Component
         $this->name = $this->course->name;
         $this->level = $this->course->level;
         $this->status = $this->course->status;
+        $this->recruitment_status = $this->course->recruitment_status;
         $this->min_students = $this->course->min_students;
         $this->max_students = $this->course->max_students;
         $this->duration_hours = $this->course->duration_hours;
@@ -106,6 +108,7 @@ class CoursesEdit extends Component
             'start_date' => $this->start_date,
             'end_date' => $this->end_date,
             'status' => $this->status,
+            'recruitment_status' => $this->recruitment_status,
             'center' => $this->center,
             'price' => $this->price,
             'certification' => $this->certification,
@@ -122,8 +125,9 @@ class CoursesEdit extends Component
     {
         $levels_course = config('Core.levels_course');
         $status_course = config('Core.status_course');
+        $recruitments_state = config('Core.recruitments_state');
         $subjects = Subject::all();
 
-        return view('livewire.admin.courses.courses-edit', compact('levels_course', 'status_course', 'subjects'));
+        return view('livewire.admin.courses.courses-edit', compact('levels_course', 'status_course', 'recruitments_state', 'subjects'));
     }
 }

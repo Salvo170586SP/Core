@@ -64,20 +64,23 @@ return  [
             "color" => "yellow",
         ],
         [
-            "id" => "recruitment",
-            "label" => "Iscrizioni aperte",
-            "color" => "zinc",
-        ],
-        [
-            "id" => "recruitment_closed",
-            "label" => "Iscrizioni chiuse",
-            "color" => "orange",
-        ],
-        [
             "id" => "cancel",
             "label" => "Annullato",
             "color" => "red",
         ]
+    ],
+    "recruitments_state" => [
+        [
+            "id" => "recruitment",
+            "label" => "Iscrizioni aperte",
+            "color" => "teal",
+        ],
+        [
+            "id" => "recruitment_closed",
+            "label" => "Iscrizioni chiuse",
+            "color" => "red",
+        ]
+     
     ],
     "specializations" => [
         [

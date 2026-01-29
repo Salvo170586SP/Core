@@ -12,6 +12,15 @@ class EveningCoursesIndex extends Component
 
     public $selected = [];
     public $selectAll = false;
+    public $recruitmentStatus = [];
+
+    public function updateRecruitmentStatus($courseId, $value)
+    {
+        $course = Course::where('type', 'evening')->findOrFail($courseId);
+        $course->update([
+            'recruitment_status' => $value
+        ]);
+    }
 
     public function updatedSelected()
     {
@@ -52,10 +61,11 @@ class EveningCoursesIndex extends Component
 
         $this->selected = [];
     }
-    
+
     public function render()
     {
         $evening_courses = Course::where('type', 'evening')->with('subjects')->latest()->paginate(10);
-        return view('livewire.admin.evening-courses.evening-courses-index', compact('evening_courses'));
+        $recruitments_state = config('Core.recruitments_state');
+        return view('livewire.admin.evening-courses.evening-courses-index', compact('evening_courses', 'recruitments_state'));
     }
 }

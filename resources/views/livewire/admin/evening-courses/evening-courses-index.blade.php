@@ -24,8 +24,7 @@
             ['label' => 'Livello', 'align' => 'text-center'],
             ['label' => 'Durata (ore)', 'align' => 'text-center'],
             ['label' => 'Studenti', 'align' => 'text-center'],
-            ['label' => 'Data Inizio', 'align' => 'text-center'],
-            ['label' => 'Data Fine', 'align' => 'text-center'],
+            ['label' => 'Recrutamento', 'align' => 'text-center'],           
             ['label' => 'Stato', 'align' => 'text-center'],
             ['label' => 'Materie', 'align' => 'text-center'],
             ['label' => 'Allievi Iscritti', 'align' => 'text-center'],
@@ -36,7 +35,7 @@
             <flux:checkbox class="ps-3" wire:model.live="selectAll" />
             @endslot
 
-            @foreach($evening_courses as $course)
+            @forelse($evening_courses as $course)
             <tr wire:key="evening-course-{{$course->id}}" class="border-b dark:border-zinc-700 h-[60px] text-sm">
                 <td class="ps-5">
                     <flux:checkbox wire:model.live="selected" value="{{ $course->id }}" />
@@ -52,8 +51,18 @@
                 <td class="px-1 text-center">
                     {{ $course->min_students }}-{{ $course->max_students }}
                 </td>
-                <td class="px-1 text-center">{{ $course->start_date->format('d/m/Y') }}</td>
-                <td class="px-1 text-center">{{ $course->end_date->format('d/m/Y') }}</td>
+                <td class="px-1 text-center">
+                    <select class="border border-zinc-400 rounded w-40 h-8 px-2 font-medium hover:bg-zinc-200"
+                        id="recruitment_status_{{ $course->id }}"
+                        wire:change="updateRecruitmentStatus({{ $course->id }}, $event.target.value)">
+                        @foreach($recruitments_state as $key => $sr)
+                        <option class="font-medium mx-2" wire:key="sr-{{ $key }}-{{ $sr['id'] }}-{{ $course->id }}"
+                            value="{{ $sr['id'] }}" @selected($sr['id']==$course->recruitment_status)>
+                            {{ $sr['label'] }}
+                        </option>
+                        @endforeach
+                    </select>
+                </td>
                 <td class="px-1 text-center">
                     <flux:badge color="{{ $course->getStatusColor($course->status) }}" size="sm">
                         {{ $course->getStatusLabel($course->status) }}
@@ -78,7 +87,8 @@
                             href="/corsi-serali/{{$course->id}}/modifica">Modifica
                         </flux:button>
                         <flux:modal.trigger name="delete-evening-course-{{$course->id}}">
-                            <flux:button icon="trash" variant="danger" size="sm" class="cursor-pointer">Elimina</flux:button>
+                            <flux:button icon="trash" variant="danger" size="sm" class="cursor-pointer">Elimina
+                            </flux:button>
                         </flux:modal.trigger>
                         <flux:modal name="delete-evening-course-{{$course->id}}" class="md:w-96">
                             <div class="space-y-6">
@@ -99,7 +109,13 @@
                     </div>
                 </td>
             </tr>
-            @endforeach
+            @empty
+            <tr>
+                <td colspan="5" class="p-2 text-sm text-center italic">
+                    Non ci sono Corsi
+                </td>
+            </tr>
+            @endforelse
         </x-table>
         <div class="mt-5 px-2">
             {{$evening_courses->links()}}

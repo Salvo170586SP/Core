@@ -15,7 +15,16 @@ class CoursesDetail extends Component
     public $selectAll = false;
     public $student_id;
     public $is_active = false;
- 
+    public $recruitmentStatus;
+
+    public function updateRecruitmentStatus($courseId, $value)
+    {
+        $this->course = Course::where('type', 'all')->findOrFail($courseId);
+        $this->course->update([
+            'recruitment_status' => $value
+        ]);
+    }
+
     public function mount()
     {
         $this->course = Course::with(['subjects', 'students'])->findOrFail($this->id);
@@ -62,11 +71,17 @@ class CoursesDetail extends Component
 
     public function attachStudentCourse()
     {
-        $this->course->students()->attach($this->student_id, [
+        $data = [
             'is_active' => (bool) $this->is_active,
-            'issued_at' => now(),
-            'badge_number' => $this->generateUniqueBadgeNumber(),
-        ]);
+        ];
+
+        if ($this->is_active) {
+            $data['issued_at'] = now();
+            $data['badge_number'] = $this->generateUniqueBadgeNumber();
+        }
+
+        $this->course->students()->attach($this->student_id, $data);
+
         $this->toggleRecruitment();
         $this->is_active = false;
     }
@@ -92,22 +107,35 @@ class CoursesDetail extends Component
         $student = $this->course->students()->find($studentId);
 
         if ($student) {
-            $this->course->students()->updateExistingPivot(
-                $studentId,
-                ['is_active' => !$student->pivot->is_active]
-            );
+            $newIsActive = !$student->pivot->is_active;
+
+            $data = [
+                'is_active' => $newIsActive,
+            ];
+
+            if ($newIsActive) {
+                $data['issued_at'] = now();
+                $data['badge_number'] = $this->generateUniqueBadgeNumber();
+            } else {
+                $data['issued_at'] = null;
+                $data['badge_number'] = null;
+            }
+
+            $this->course->students()->updateExistingPivot($studentId, $data);
         }
     }
 
     public function render()
     {
-        $courseId = $this->course->id;
+        $courseId = $this->id;
         $students = User::role('allievo')
             ->whereDoesntHave('coursesStudents', function ($query) use ($courseId) {
                 $query->where('courses.id', $courseId);
             })
             ->get();
 
-        return view('livewire.admin.courses.courses-detail', compact('students'));
+        $recruitments_state = config('Core.recruitments_state');
+
+        return view('livewire.admin.courses.courses-detail', compact('students', 'recruitments_state'));
     }
 }

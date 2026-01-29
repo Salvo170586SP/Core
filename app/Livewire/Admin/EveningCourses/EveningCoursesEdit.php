@@ -26,6 +26,8 @@ class EveningCoursesEdit extends Component
     public $price;
     public $certification;
     public $subjects_selected = [];
+    public $recruitment_status;
+
 
 
     protected function rules()
@@ -75,6 +77,7 @@ class EveningCoursesEdit extends Component
         $this->min_students = $this->course->min_students;
         $this->max_students = $this->course->max_students;
         $this->duration_hours = $this->course->duration_hours;
+        $this->recruitment_status = $this->course->recruitment_status;
         $this->description = $this->course->description;
         $this->start_date = $this->course->start_date?->format('Y-m-d');
         $this->end_date = $this->course->end_date?->format('Y-m-d');
@@ -108,6 +111,7 @@ class EveningCoursesEdit extends Component
             'center' => $this->center,
             'price' => $this->price,
             'certification' => $this->certification,
+            'recruitment_status' => $this->recruitment_status,
         ]);
 
         // Sincronizza le materie con la relazione many-to-many
@@ -121,7 +125,7 @@ class EveningCoursesEdit extends Component
         $levels_course = config('Core.levels_course');
         $status_course = config('Core.status_course');
         $subjects = Subject::all();
-
-        return view('livewire.admin.evening-courses.evening-courses-edit', compact('levels_course', 'status_course', 'subjects'));
+        $recruitments_state = config('Core.recruitments_state');
+        return view('livewire.admin.evening-courses.evening-courses-edit', compact('levels_course', 'recruitments_state', 'status_course', 'subjects'));
     }
 }

@@ -12,6 +12,15 @@ class CoursesIndex extends Component
 
     public $selected = [];
     public $selectAll = false;
+    public $recruitmentStatus = [];
+
+    public function updateRecruitmentStatus($courseId, $value)
+    {
+        $course = Course::where('type', 'all')->findOrFail($courseId);
+        $course->update([
+            'recruitment_status' => $value
+        ]);
+    }
 
     public function updatedSelected()
     {
@@ -56,6 +65,7 @@ class CoursesIndex extends Component
     public function render()
     {
         $courses = Course::where('type', 'all')->with('subjects')->latest()->paginate(10);
-        return view('livewire.admin.courses.courses-index', compact('courses'));
+        $recruitments_state = config('Core.recruitments_state');
+        return view('livewire.admin.courses.courses-index', compact('courses', 'recruitments_state'));
     }
 }

@@ -52,7 +52,9 @@
             </tr>
             @empty
             <tr>
-                <td>Non ci sono studenti tesserati</td>
+                <td colspan="5" class="p-2 text-sm text-center italic">
+                    Non ci sono Tesserati
+                </td>
             </tr>
             @endforelse
         </x-table>

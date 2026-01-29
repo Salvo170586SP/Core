@@ -69,6 +69,23 @@
                     <span class="text-sm font-medium">{{ $course->end_date->format('d/m/Y') ?? '-' }} </span>
                 </div>
             </div>
+            <div class="w-full border border-zinc-300 bg-white p-3 rounded shadow text-sm space-y-1">
+                <div class="flex flex-col justify-between space-y-3">
+                    <div>
+                        Iscrizioni
+                    </div>
+                    <select class="border border-zinc-400 rounded h-10 px-2 font-medium hover:bg-zinc-200"
+                        id="recruitment_status_{{ $course->id }}"
+                        wire:change="updateRecruitmentStatus({{ $course->id }}, $event.target.value)">
+                        @foreach($recruitments_state as $key => $sr)
+                        <option class="font-medium mx-2" wire:key="sr-{{ $key }}-{{ $sr['id'] }}-{{ $course->id }}"
+                            value="{{ $sr['id'] }}" @selected($sr['id']==$course->recruitment_status)>
+                            {{ $sr['label'] }}
+                        </option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
         </div>
 
 
@@ -133,7 +150,7 @@
                         <div class="flex justify-between items-center h-20">
                             <div class="space-y-3">
                                 <h3 class="text-lg font-medium">Allievi iscritti</h3>
-                                @if($course->status == 'recruitment_closed' || $course->students->count() == 3) <div
+                                @if($course->recruitment_status == 'recruitment_closed') <div
                                     class="text-red-600 rounded-lg flex gap-1 text-base font-bold">
                                     Iscrizioni chiuse
                                     <flux:icon.lock-closed />
@@ -143,7 +160,7 @@
                             <!-- Div con conteggio elementi selezionati -->
                             <x-div-selection :selected="$selected" function="detachSelectedStudentCourse" />
 
-                            @if($course->status == 'recruitment' || $course->students->count() < 3) <div>
+                            @if($course->recruitment_status == 'recruitment') <div>
                                 <flux:modal.trigger name="add-allievo-{{$course->id}}">
                                     <flux:button icon="plus" variant="primary" size="sm" class="cursor-pointer">
                                         Aggiungi Allievo
