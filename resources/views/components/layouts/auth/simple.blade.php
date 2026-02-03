@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" >
 
 <head>
     @include('partials.head')
@@ -7,10 +7,10 @@
 
 <body class="min-h-screen bg-zinc-100 antialiased dark:bg-linear-to-b dark:from-neutral-950 dark:to-neutral-900 font-sans">
     <div class="bg-background flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
-        <div class="flex w-150 flex-col bg-white border border-zinc-400 p-5 rounded-xl shadow-lg">
+        <div class="flex w-150 flex-col bg-white dark:bg-zinc-800 border border-zinc-400 dark:border-zinc-700 p-5 rounded-xl shadow-lg">
             <a href="{{ route('home') }}" class="flex flex-col items-center  font-medium" wire:navigate>
                 <figure class="rounded-xl overflow-hidden w-[250px]">
-                    <img src="{{asset('/assets/icons/icon.png')}}" alt="icon" class="w-full h-full" />
+                    <img src="{{asset('/assets/icons/icon.png')}}" alt="icon" class="w-full h-full invert-100" />
                 </figure>
             </a>
             <div class="flex flex-col gap-6">

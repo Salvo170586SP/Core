@@ -52,7 +52,7 @@
                     {{ $course->min_students }}-{{ $course->max_students }}
                 </td>
                 <td class="px-2 text-center">
-                    <select class="border border-zinc-400 rounded w-40 h-8 px-2 font-medium hover:bg-zinc-200"
+                    <select class="bg-zinc-100 dark:bg-zinc-800 dark:hover:bg-zinc-700 border border-zinc-400 dark:border-zinc-700 rounded w-40 h-8 px-2 text-xs font-medium hover:bg-zinc-200" 
                         id="recruitment_status_{{ $course->id }}"
                         wire:change="updateRecruitmentStatus({{ $course->id }}, $event.target.value)">
                         @foreach($recruitments_state as $key => $sr)

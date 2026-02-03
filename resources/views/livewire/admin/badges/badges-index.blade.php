@@ -4,7 +4,7 @@
     </div>
 
 
-    <div class="w-full rounded-lg mt-5">
+    <div class="w-full rounded-lg mt-5 ">
         <div class="flex items-center mb-5">
             <div class="font-semibold text-sm text-zinc-500 dark:text-zinc-400 me-3">
                 Numero Elementi

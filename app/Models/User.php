@@ -94,7 +94,13 @@ class User extends Authenticatable
             ->withTimestamps();
     }
 
- 
+
+
+    // Documenti dove l'utente è lo studente
+    public function documentsAsAdmin()
+    {
+        return $this->hasMany(Document::class, 'admin_id');
+    }
 
     // Documenti dove l'utente è lo studente
     public function documentsAsStudent()
@@ -107,7 +113,7 @@ class User extends Authenticatable
     {
         return $this->hasMany(Document::class, 'teacher_id');
     }
-   
+
     // Dettagli dove l'utente è lo studente
     public function detailsAsStudent()
     {

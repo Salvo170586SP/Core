@@ -7,15 +7,15 @@
     </div>
 
     <div class="flex gap-5">
-        <div class="w-full border border-zinc-300 bg-white rounded shadow p-4 text-sm">
+        <div class="w-full border border-zinc-300 bg-white dark:bg-zinc-800 dark:border-zinc-700 rounded shadow p-4 text-sm">
             <h3 class="font-semibold text-lg mb-5">Tesserino</h3>
             <div class="w-full flex items-start gap-10 p-5">
                 <x-card-badge :student="$student" :course="$course" />
 
-                <div class="h-full border-s border-zinc-400 px-5">
+                <div class="h-full border-s border-zinc-400 dark:border-zinc-700 px-5">
                     <div class="flex gap-5">
                         <div class="font-medium">
-                            <figure class="w-25 h-25 rounded-lg border border-blue-500 overflow-hidden mb-5">
+                            <figure class="w-25 h-25 rounded-lg border border-zinc-500 overflow-hidden mb-5">
                                 @if($student->documentsAsStudent->where('type', 'foto_profilo')->first())
                                 <img alt="{{$student->documentsAsStudent->where('type', 'foto_profilo')->first()->name}}"
                                     class="w-full h-full object-cover"

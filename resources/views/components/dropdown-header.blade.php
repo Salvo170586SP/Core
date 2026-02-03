@@ -1,9 +1,9 @@
 <div x-data="{isOpen: false }" class="relative">
     <button @click="isOpen = !isOpen"
-        class="w-50 bg-white shadow hover:shadow-lg focus:shadow-lg border border-gray-300 rounded-lg p-2 cursor-pointer transition-all">
+        class="w-50 bg-white dark:bg-zinc-800 hover:shadow focus:shadow border dark:border-zinc-700 border-gray-300  rounded-lg p-2 cursor-pointer ">
         <div class="flex gap-2">
-            <figure class="w-13 overflow-hidden border border-zinc-400 rounded-lg">
-                <img src="{{ asset('assets/icons/placeholder.png') }}" class="w-full h-full object-cover" alt="placeholder">
+            <figure class="w-13 overflow-hidden border border-zinc-400 dark:border-zinc-600 rounded-lg">
+                <img src="{{ asset('assets/icons/placeholder.png') }}" class="w-full h-full object-cover dark:invert-90"  alt="placeholder">
             </figure>
             <div class="text-sm font-semibold text-start">
                 {{auth()->user()->name}}
@@ -13,7 +13,7 @@
     </button>
 
     <div x-cloak x-show="isOpen" @click.outside="isOpen = false"
-        class="absolute top-16 right-0 border border-zinc-300 shadow-lg bg-white w-50 rounded-lg p-2">
+        class="absolute top-16 right-0 border border-zinc-300 dark:border-zinc-700 shadow-lg bg-white dark:bg-zinc-800 w-50 rounded-lg p-2">
         <flux:menu.radio.group>
             <flux:menu.item :href="route('profile.edit')" icon="cog" wire:navigate>
                 {{ __('Impostazioni') }}

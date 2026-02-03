@@ -7,6 +7,7 @@ use App\Livewire\Admin\Courses\CoursesCreate;
 use App\Livewire\Admin\Courses\CoursesDetail;
 use App\Livewire\Admin\Courses\CoursesEdit;
 use App\Livewire\Admin\Courses\CoursesIndex;
+use App\Livewire\Admin\Dashboard;
 use App\Livewire\Admin\Documents\DocumentsDetail;
 use App\Livewire\Admin\Documents\DocumentsIndex;
 use App\Livewire\Admin\EveningCourses\EveningCoursesCreate;
@@ -30,11 +31,12 @@ Route::get('/', function () {
     return redirect()->route('login');
 })->name('home');
 
-Route::view('dashboard', 'dashboard')
+/* Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified', 'role:amministratore'])
-    ->name('dashboard');
-
-Route::middleware(['auth', 'role:amministratore'])->group(function () {
+    ->name('dashboard'); */
+    
+    Route::middleware(['auth', 'role:amministratore'])->group(function () {
+    Volt::route('dashboard', Dashboard::class)->name('dashboard');
 
     Volt::route('professori', TeachersIndex::class)->name('teachers');
     Volt::route('professori/crea', TeachersCreate::class)->name('teachers-create');

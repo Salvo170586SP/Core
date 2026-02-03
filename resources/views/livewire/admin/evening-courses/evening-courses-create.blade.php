@@ -14,41 +14,41 @@
         <x-step-container title="Dati del corso">
             <div class="grid grid-cols-3 gap-5">
                 <div class="space-y-3">
-                    <flux:input label="Nome del corso" type="text" id="name" wire:model="name" />
-                    <flux:textarea label="Descrizione" id="description" wire:model="description" />
+                    <flux:input label="Nome del corso" type="text" id="name" wire:model="name"  variant="filled"/>
+                    <flux:textarea label="Descrizione" id="description" wire:model="description" class="bg-zinc-100" />
                 </div>
                 <div class="space-y-3">
-                    <flux:select label="Livello" id="level" wire:model="level">
+                    <flux:select label="Livello" id="level" wire:model="level" class="bg-zinc-100" >
                         <flux:select.option label="-" value="" />
                         @foreach($levels_course as $key => $l)
                         <flux:select.option wire:key="l-{{$key}}-{{$l['id']}}" label="{{$l['label']}}"
                             value="{{$l['id']}}" />
                         @endforeach
                     </flux:select>
-                    <flux:input type="number" label="Durata" id="duration_hours" wire:model="duration_hours" />
+                    <flux:input type="number" label="Durata" id="duration_hours" wire:model="duration_hours" variant="filled" />
                 </div>
                 <div class="space-y-3">
-                    <flux:input type="number" label="Max Studenti" id="max_students" wire:model="max_students" />
-                    <flux:input type="number" label="Min Studenti" id="min_students" wire:model="min_students" />
+                    <flux:input type="number" label="Max Studenti" id="max_students" wire:model="max_students" variant="filled" />
+                    <flux:input type="number" label="Min Studenti" id="min_students" wire:model="min_students" variant="filled" />
                 </div>
                 <div class="space-y-3">
-                    <flux:input type="date" label="Data di inizio" id="start_date" wire:model="start_date" />
-                    <flux:input type="date" label="Data di fine" id="end_date" wire:model="end_date" />
+                    <flux:input type="date" label="Data di inizio" id="start_date" wire:model="start_date"  variant="filled"/>
+                    <flux:input type="date" label="Data di fine" id="end_date" wire:model="end_date" variant="filled" />
                 </div>
                 <div class="space-y-3">
-                    <flux:select label="Stato" id="status" wire:model="status">
+                    <flux:select label="Stato" id="status" wire:model="status" class="bg-zinc-100" >
                         <flux:select.option label="-" value="" />
                         @foreach($status_course as $key => $s)
                         <flux:select.option wire:key="s-{{$key}}-{{$s['id']}}" label="{{$s['label']}}"
                             value="{{$s['id']}}" />
                         @endforeach
                     </flux:select>
-                    <flux:input label="Centro Scolastico" id="center" wire:model="center" />
+                    <flux:input label="Centro Scolastico" id="center" wire:model="center" variant="filled" />
                 </div>
                 <div class="space-y-3">
-                    <flux:input label="Prezzo" id="price" wire:model="price" />
+                    <flux:input label="Prezzo" id="price" wire:model="price" variant="filled" />
                     <flux:checkbox.group label="Certificazione">
-                        <flux:checkbox id="certification" wire:model="certification" />
+                        <flux:checkbox id="certification" wire:model="certification" variant="filled" />
                     </flux:checkbox.group>
                 </div>
 

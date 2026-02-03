@@ -7,16 +7,16 @@
     </div>
     <div class="flex gap-5">
         <div class="w-120 space-y-3">
-            <div class="border border-zinc-300 bg-white p-4 rounded shadow text-sm">
+            <div class="border border-zinc-300 bg-white dark:bg-zinc-800 dark:border-zinc-700 p-4 rounded shadow text-sm">
                 <div class="flex flex-col justify-center space-y-3">
                     <div class="w-full flex justify-center mb-5">
-                        <figure class="w-full overflow-hidden rounded border border-zinc-300">
+                        <figure class="w-full overflow-hidden rounded border border-zinc-300 dark:border-zinc-600">
                             @if($student->documentsAsStudent->where('type', 'foto_profilo')->first())
                             <img alt="{{$student->documentsAsStudent->where('type', 'foto_profilo')->first()->name}}"
                                 class="w-full h-full object-cover"
                                 src="{{asset('storage/'. $student->documentsAsStudent->where('type', 'foto_profilo')->first()->url_file )}}" />
                             @else
-                            <img alt="placeholder" src="{{asset('./assets/icons/placeholder.png')}}" />
+                            <img alt="placeholder" src="{{asset('./assets/icons/placeholder.png')}}" class="dark:invert-90" />
                             @endif
                         </figure>
                     </div>
@@ -92,7 +92,7 @@
             </div>
         </div>
 
-        <div class="w-full border border-zinc-300 bg-white rounded shadow p-3">
+        <div class="w-full border border-zinc-300 bg-white dark:bg-zinc-800 dark:border-zinc-700 rounded shadow p-3">
             <div class="p-3 text-sm">
                 <h3 class="font-semibold mb-5 text-sm uppercase">Inserito nei seguenti Corsi</h3>
                 @if($student->coursesStudents->count() > 0)
@@ -134,8 +134,8 @@
                         </td>
                         <td class="px-2">
                             <div class="flex justify-center">
-                                <flux:button wire:navigate icon="eye" variant="ghost" size="sm"
-                                    href="/tutti-corsi/{{$course->id}}">
+                                <flux:button wire:navigate icon="eye" variant="filled" size="sm"
+                                    href="/tutti-corsi/{{$course->id}}">Dettagli
                                 </flux:button>
                             </div>
                         </td>

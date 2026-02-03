@@ -8,43 +8,42 @@
     </div>
 
     <div class="w-full mt-5">
-        <div class="border border-zinc-300 bg-white dark:border-zinc-700 rounded shadow p-5 space-y-6">
-           
+        <div class="border border-zinc-300 bg-white dark:bg-zinc-800 dark:border-zinc-700 rounded shadow p-5 space-y-6">
             <div>
                 <h3 class="text-base font-semibold mb-4">Dati Anagrafici</h3>
                 <div class="w-full flex gap-3">
-                    <div class="w-full border-e pe-3">
+                    <div class="w-full border-e dark:border-e-zinc-700 pe-3">
                         <div class="grid grid-cols-3 gap-3">
                             <div class="space-y-3">
-                                <flux:input label="Nome e Cognome" type="text" id="name"
+                                <flux:input label="Nome e Cognome" type="text" id="name" variant="filled" 
                                     wire:model="teacherDetailsStep.name" />
-                                <flux:input label="Cod.Fiscale" type="text" id="fiscal_code"
+                                <flux:input label="Cod.Fiscale" type="text" id="fiscal_code" variant="filled" 
                                     wire:model="teacherDetailsStep.fiscal_code" />
-                                <flux:input label="Numero di telefono" type="text" id="phone_number"
+                                <flux:input label="Numero di telefono" type="text" id="phone_number" variant="filled" 
                                     wire:model="teacherDetailsStep.phone_number" />
                             </div>
 
                             <div class="space-y-3">
-                                <flux:input label="Cap di Residenza" type="text" id="cap"
+                                <flux:input label="Cap di Residenza" type="text" id="cap" variant="filled" 
                                     wire:model="teacherDetailsStep.cap" />
-                                <flux:input label="Nato a" type="text" id="city_birth"
+                                <flux:input label="Nato a" type="text" id="city_birth" variant="filled" 
                                     wire:model="teacherDetailsStep.city_birth" />
                             </div>
 
                             <div class="space-y-3">
-                                <flux:input label="Città di residenza" type="text" id="city"
+                                <flux:input label="Città di residenza" type="text" id="city" variant="filled" 
                                     wire:model="teacherDetailsStep.city" />
-                                <flux:input label="Nato il" type="date" id="date_birth"
+                                <flux:input label="Nato il" type="date" id="date_birth" variant="filled" 
                                     wire:model="teacherDetailsStep.date_birth" />
                             </div>
                         </div>
                         <div class="mt-3">
-                            <flux:textarea label="Note" id="note" wire:model="teacherDetailsStep.note" />
+                            <flux:textarea label="Note" id="note" wire:model="teacherDetailsStep.note" class="bg-zinc-100"/>
                         </div>
                     </div>
 
                     <div class="w-full space-y-3">
-                         <flux:input label="Password" type="password" id="password"
+                         <flux:input label="Password" type="password" id="password" variant="filled" 
                             wire:model="teacherDetailsStep.password" />
                     </div>
                 </div>
@@ -87,15 +86,15 @@
                         </flux:select.option>
                         @endforeach
                     </flux:select>
-                    <flux:input id="day_course" wire:model="professionalProfileStep.day_course"
+                    <flux:input id="day_course" wire:model="professionalProfileStep.day_course" variant="filled" 
                         label="Giorni di Lezione Previsti" />
-                    <flux:input id="hour_start" type="time" wire:model="professionalProfileStep.hour_start"
+                    <flux:input id="hour_start" type="time" wire:model="professionalProfileStep.hour_start" variant="filled" 
                         label="Ora inizio lezione" />
-                    <flux:input id="hour_end" type="time" wire:model="professionalProfileStep.hour_end"
+                    <flux:input id="hour_end" type="time" wire:model="professionalProfileStep.hour_end" variant="filled" 
                         label="Ora fine lezione" />
-                    <flux:checkbox.group label="Collaborazione">
+                    <flux:checkbox.group label="Collaborazione" >
                         <flux:checkbox id="direct_collaboration"
-                            wire:model="professionalProfileStep.direct_collaboration" label="Diretta" />
+                            wire:model="professionalProfileStep.direct_collaboration" label="Diretta"   />
                     </flux:checkbox.group>
 
                     <div class="flex items-center gap-3 my-3 col-span-3">
@@ -122,7 +121,7 @@
                 </div>
             </div>
 
-            <div class="border-t pt-5">
+            <div class="border-t dark:border-t-zinc-700 pt-5">
                 <h3 class="text-base font-semibold mb-4">Materie</h3>
                 <flux:checkbox.group wire:model="subjects_selected" class="flex gap-10 my-2">
                     @foreach($subjects as $s)

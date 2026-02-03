@@ -7,7 +7,7 @@
             </flux:button>
         </div>
         <div class="flex justify-center gap-3 h-25">
-            <div class="w-full border bg-white border-zinc-300 p-3 rounded shadow text-sm">
+            <div class="w-full border bg-white dark:bg-zinc-800 dark:border-zinc-700 border-zinc-300 p-3 rounded shadow text-sm">
                 <div class="flex flex-col justify-center space-y-1">
                     <div class="font-semibold text-xl capitalize">
                         {{ $course->name }}
@@ -21,7 +21,7 @@
                 </div>
             </div>
 
-            <div class="w-full border border-zinc-300 bg-white p-3 rounded shadow text-sm space-y-1">
+            <div class="w-full border border-zinc-300 bg-white dark:bg-zinc-800 dark:border-zinc-700 p-3 rounded shadow text-sm space-y-1">
                 <div class="flex justify-between">
                     Durata prevista:
                     <span class="text-sm font-medium"> {{ $course->duration_hours .'h' }} </span>
@@ -37,7 +37,7 @@
                 </div>
             </div>
 
-            <div class="w-full border border-zinc-300 bg-white p-3 rounded shadow text-sm space-y-1">
+            <div class="w-full border border-zinc-300 bg-white dark:bg-zinc-800 dark:border-zinc-700 p-3 rounded shadow text-sm space-y-1">
                 <div class="flex justify-between items-center">
                     Stato: <flux:badge color="{{ $course->getStatusColor($course->status) }}" size="sm">
                         {{ $course->getStatusLabel($course->status) }}
@@ -55,7 +55,7 @@
                 </div>
             </div>
 
-            <div class="w-full border border-zinc-300 bg-white p-3 rounded shadow text-sm space-y-1">
+            <div class="w-full border border-zinc-300 bg-white dark:bg-zinc-800 dark:border-zinc-700 p-3 rounded shadow text-sm space-y-1">
                 <div class="flex justify-between">
                     Prezzo:
                     <span class="font-bold">{{ $course->price .'€' ?? '-' }}</span>
@@ -69,12 +69,13 @@
                     <span class="text-sm font-medium">{{ $course->end_date->format('d/m/Y') ?? '-' }} </span>
                 </div>
             </div>
-            <div class="w-full border border-zinc-300 bg-white p-3 rounded shadow text-sm space-y-1">
+          
+            <div class="w-full border border-zinc-300 bg-white dark:bg-zinc-800 dark:border-zinc-700 p-3 rounded shadow text-sm space-y-1">
                 <div class="w-full flex flex-col justify-center space-y-3">
                     <div>
                         Iscrizioni
                     </div>
-                    <select class="border border-zinc-400 rounded h-10 px-2 font-medium hover:bg-zinc-200"
+                    <select class="dark:bg-zinc-700 dark:hover:bg-zinc-700 dark:border-zinc-700 border border-zinc-400 rounded h-10 px-2 font-medium text-sm hover:bg-zinc-200 bg-zinc-100"
                         id="recruitment_status_{{ $course->id }}"
                         wire:change="updateRecruitmentStatus({{ $course->id }}, $event.target.value)">
                         @foreach($recruitments_state as $key => $sr)
@@ -91,11 +92,11 @@
 
         <div class="w-full">
             <div x-cloak x-data="{isOpen: 'allievi'}"
-                class="border border-zinc-300 bg-white p-5 rounded shadow text-sm">
+                class="border border-zinc-300 bg-white dark:bg-zinc-800 dark:border-zinc-700 p-5 rounded shadow text-sm">
 
                 <div class="flex gap-3">
                     <button @click="isOpen = 'info'"
-                        :class="isOpen === 'info' ? 'bg-black text-white' : 'bg-zinc-50 hover:bg-zinc-100'"
+                        :class="isOpen === 'info' ? 'bg-black text-white dark:border-zinc-700' : 'bg-zinc-50 hover:bg-zinc-100 dark:bg-zinc-700 dark:hover:bg-zinc-600 dark:border-zinc-700'"
                         class="cursor-pointer p-2 font-medium rounded border border-zinc-400 flex items-center gap-2">
                         <svg x-cloak x-show="isOpen == 'info'" xmlns="http://www.w3.org/2000/svg" fill="none"
                             viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
@@ -104,7 +105,7 @@
                         Info del corso
                     </button>
                     <button @click="isOpen = 'allievi'"
-                        :class="isOpen === 'allievi' ? 'bg-black text-white' :  'bg-zinc-50 hover:bg-zinc-100'"
+                        :class="isOpen === 'allievi' ? 'bg-black text-white dark:border-zinc-700' :  'bg-zinc-50 hover:bg-zinc-100  dark:bg-zinc-700 dark:hover:bg-zinc-600 dark:border-zinc-700'"
                         class="cursor-pointer p-2 rounded font-medium border border-zinc-400 flex items-center gap-2">
                         <svg x-cloak x-show="isOpen == 'allievi'" xmlns="http://www.w3.org/2000/svg" fill="none"
                             viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
@@ -115,12 +116,12 @@
                 </div>
 
                 <div x-cloak x-show="isOpen === 'info'">
-                    <div class="mt-5 space-y-2 border-b border-zinc-300">
+                    <div class="mt-5 space-y-2 border-b border-zinc-300 dark:border-zinc-700">
                         <h3 class="text-lg font-medium">Descrizione del Corso</h3>
                         <p class="py-3">{{$course->description ?? '-'}}</p>
                     </div>
 
-                    <div class="mt-5 space-y-2 border-b border-zinc-300">
+                    <div class="mt-5 space-y-2 border-b border-zinc-300 dark:border-zinc-700">
                         <h3 class="text-lg font-medium">Materie da seguire</h3>
                         <div class="py-3">
                             @forelse($course->subjects as $subject)
@@ -254,11 +255,13 @@
                                 </td>
                                 <td class="px-3">
                                     <div class="flex justify-end gap-2">
-                                        <flux:button wire:navigate icon="eye" variant="ghost" size="sm"
+                                        <flux:button wire:navigate icon="eye" variant="filled" size="sm"
                                             class="cursor-pointer" href="/allievi/{{$student->id}}">
+                                            Dettagli
                                         </flux:button>
                                         <flux:modal.trigger name="delete-allievo-{{$student->id}}">
-                                            <flux:button icon="trash" variant="ghost" size="sm" class="cursor-pointer">
+                                            <flux:button icon="trash" variant="danger" size="sm" class="cursor-pointer">
+                                                Disiscrivi
                                             </flux:button>
                                         </flux:modal.trigger>
                                         <flux:modal name="delete-allievo-{{$student->id}}" class="md:w-96">

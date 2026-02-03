@@ -3,7 +3,7 @@
 'course'
 ])
 
-<div class="w-150 h-75 bg-blue-600 border border-blue-500 shadow-lg rounded-lg">
+<div class="w-150 h-75 bg-blue-600 border border-blue-500 shadow-lg rounded-lg text-black">
     <div class="text-xs text-white p-2 text-end font-medium">
         Numero Tessera: <span class="text-sm font-semibold">{{
             $student->coursesStudents->firstWhere('id', $course->id)->pivot->badge_number

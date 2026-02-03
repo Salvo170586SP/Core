@@ -8,7 +8,7 @@
         </div>
         <div class="flex justify-center gap-3 h-25">
 
-            <div class="w-full border border-zinc-300 bg-white p-3 rounded shadow text-sm space-y-1">
+            <div class="w-full border border-zinc-300 bg-white dark:bg-zinc-800 dark:border-zinc-700 p-3 rounded shadow text-sm space-y-1">
                 <div class="font-semibold text-lg capitalize">
                     {{ $student->name }}
                 </div>
@@ -23,7 +23,7 @@
                 </div>
             </div>
 
-            <div class="w-full border border-zinc-300 bg-white p-3 rounded shadow text-sm space-y-2">
+            <div class="w-full border border-zinc-300 bg-white dark:bg-zinc-800 dark:border-zinc-700 p-3 rounded shadow text-sm space-y-2">
                 <div class="flex justify-between font-medium">
                     Cod Fiscale:
                     <span class="text-sm font-semibold">{{ $student->detailsAsStudent?->fiscal_code ?? '-' }}</span>
@@ -38,7 +38,7 @@
                 </div>
             </div>
 
-            <div class="w-full border border-zinc-300 bg-white p-3 rounded shadow text-sm space-y-2">
+            <div class="w-full border border-zinc-300 bg-white dark:bg-zinc-800 dark:border-zinc-700 p-3 rounded shadow text-sm space-y-2">
                 <div class="flex justify-between items-center font-medium">
                     Tel: <span class="text-sm font-semibold"> {{ $student->detailsAsStudent?->phone_number ?? '-' }}
                     </span>
@@ -56,7 +56,7 @@
 
 
         <div class="w-full">
-            <div class="border border-zinc-300 bg-white p-5 rounded shadow text-sm">
+            <div class="border border-zinc-300 bg-white dark:bg-zinc-800 dark:border-zinc-700 p-5 rounded shadow text-sm">
                 <div class="flex justify-between items-center mb-5">
                     <h3 class="text-lg font-medium">Tesseramenti Attivi</h3>
                 </div>
@@ -68,14 +68,14 @@
                 </div>
                 @if($student->coursesStudents()->count() > 0)
                 <x-table :headers="[
-                                ['label' => 'Cod'],
-                                ['label' => 'Nome Corso'],
-                                ['label' => 'Tesserato', 'align' => 'text-center'],
-                                ['label' => 'Emesso il', 'align' => 'text-center'],
-                                ['label' => 'Numero', 'align' => 'text-center'],
-                                ['label' => '']
-                            ]" :show-checkbox="false">
-                    @foreach($student->coursesStudents as $course)
+                    ['label' => 'Cod'],
+                    ['label' => 'Nome Corso'],
+                    ['label' => 'Tesserato', 'align' => 'text-center'],
+                    ['label' => 'Emesso il', 'align' => 'text-center'],
+                    ['label' => 'Numero', 'align' => 'text-center'],
+                    ['label' => '']
+                    ]" :show-checkbox="false">
+                    @foreach($student->coursesStudents()->wherePivot('is_active', true)->get() as $course)
                     <tr wire:key="student-course-{{$student->id}}-{{$course->id}}"
                         class="border-b dark:border-zinc-700 h-[60px] text-sm">
 

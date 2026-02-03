@@ -7,15 +7,15 @@
     </div>
     <div class="flex gap-5">
         <div class="w-120 space-y-3">
-            <div class="border border-zinc-300 bg-white p-3 rounded shadow text-sm overflow-hidden">
+            <div class="border border-zinc-300 bg-white dark:bg-zinc-800 dark:border-zinc-700 p-3 rounded shadow text-sm overflow-hidden">
                 <div class="w-full flex justify-center mb-5">
-                    <figure class="w-full overflow-hidden rounded-lg border border-zinc-300">
+                    <figure class="w-full overflow-hidden rounded-lg border border-zinc-300 dark:border-zinc-600">
                         @if($teacher->documentsAsTeacher->where('type', 'foto_profilo')->first())
                         <img alt="{{$teacher->documentsAsTeacher->where('type', 'foto_profilo')->first()->name}}"
                             class="w-full h-full object-cover"
                             src="{{asset('storage/'. $teacher->documentsAsTeacher->where('type', 'foto_profilo')->first()->url_file )}}" />
                         @else
-                        <img alt="placeholder" src="{{asset('./assets/icons/placeholder.png')}}" />
+                        <img alt="placeholder" src="{{asset('./assets/icons/placeholder.png')}}" class="dark:invert-90" />
                         @endif
                     </figure>
                 </div>
@@ -84,7 +84,7 @@
                 </div>
             </div>
 
-            <div class="border border-zinc-300 bg-white p-3 rounded shadow text-sm">
+            <div class="border border-zinc-300 bg-white dark:bg-zinc-800 dark:border-zinc-700 p-3 rounded shadow text-sm">
                 <h3 class="font-semibold mb-2">Materie</h3>
                 @if($teacher->subjects->count() > 0)
                 <div class="flex flex-wrap gap-1">
@@ -97,7 +97,7 @@
                 @endif
             </div>
 
-            <div class="border border-zinc-300 bg-white p-3 rounded shadow text-sm">
+            <div class="border border-zinc-300 bg-white dark:bg-zinc-800 dark:border-zinc-700 p-3 rounded shadow text-sm">
                 <h3 class="font-semibold mb-2 textcenter">Profilo Professionale</h3>
                 <div class="space-y-2">
                     <div class="flex items-center justify-between">
@@ -142,14 +142,14 @@
             </div>
         </div>
 
-        <div class="w-full border border-zinc-300 bg-white rounded shadow">
+        <div class="w-full border border-zinc-300 bg-white dark:bg-zinc-800 dark:border-zinc-700 rounded shadow">
             <div class="p-3 text-sm mt-5">
                 <h3 class="font-semibold mb-2">Insegna nei seguenti Corsi</h3>
                 @if($this->courses->count() > 0)
                 <div class="space-y-2">
                     @foreach($this->courses as $course)
-                    <div class="border border-zinc-200 rounded p-2 bg-zinc-50">
-                        <div class="font-semibold text-zinc-800 uppercase">{{ $course->name }}</div>
+                    <div class="border border-zinc-200 rounded p-2 bg-zinc-50 dark:bg-zinc-700 dark:border-zinc-700">
+                        <div class="font-semibold text-zinc-800 dark:text-zinc-200 uppercase">{{ $course->name }}</div>
                         <div class="text-xs text-zinc-600 mt-1">
                             @forelse($course->subjects->whereIn('id', $teacher->subjects->pluck('id')) as $subject)
                             <div class="inline-block mr-2">
