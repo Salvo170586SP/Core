@@ -10,7 +10,7 @@
         <div class="flex w-150 flex-col bg-white dark:bg-zinc-800 border border-zinc-400 dark:border-zinc-700 p-5 rounded-xl shadow-lg">
             <a href="{{ route('home') }}" class="flex flex-col items-center  font-medium" wire:navigate>
                 <figure class="rounded-xl overflow-hidden w-[250px]">
-                    <img src="{{asset('/assets/icons/icon.png')}}" alt="icon" class="w-full h-full invert-100" />
+                    <img src="{{asset('/assets/icons/icon.png')}}" alt="icon" class="w-full h-full dark:invert-100" />
                 </figure>
             </a>
             <div class="flex flex-col gap-6">

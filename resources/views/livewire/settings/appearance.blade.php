@@ -11,7 +11,7 @@ new class extends Component {
 
     <flux:heading class="sr-only">Appearance Settings</flux:heading>
 
-    <x-settings.layout :heading="__('Appearance')" :subheading="__('Update the appearance settings for your account')">
+    <x-settings.layout :heading="__('Apparenza')" :subheading="__('Aggiorna lo stile del tuo account')">
         <flux:radio.group x-data variant="segmented" x-model="$flux.appearance">
             <flux:radio value="light" icon="sun">{{ __('Light') }}</flux:radio>
             <flux:radio value="dark" icon="moon">{{ __('Dark') }}</flux:radio>

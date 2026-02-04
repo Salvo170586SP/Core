@@ -11,7 +11,7 @@
         <div
             class="bg-muted relative hidden h-full flex-col p-10 text-white lg:flex dark:border-e dark:border-neutral-800">
             <div class="absolute inset-0 bg-neutral-900"></div>
-            <a href="{{ route('home') }}" class="flex flex-col items-center  font-medium" wire:navigate>
+            <a href="{{ route('home') }}" class="flex flex-col items-center font-medium" wire:navigate>
                 <figure class="rounded-xl overflow-hidden w-[250px]">
                     <img src="{{asset('/assets/icons/icon.png')}}" alt="icon" class="w-full h-full" />
                 </figure>

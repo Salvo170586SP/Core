@@ -7,13 +7,13 @@
             </figure>
             <div class="text-sm font-semibold text-start">
                 {{auth()->user()->name}}
-                <span class="text-zinc-400 text-[12px]"> {{auth()->user()->getRoleNames()->first()}}</span>
+                <div class="text-zinc-400 text-[12px] capitalize"> {{auth()->user()->getRoleNames()->first()}}</div>
             </div>
         </div>
     </button>
 
     <div x-cloak x-show="isOpen" @click.outside="isOpen = false"
-        class="absolute top-16 right-0 border border-zinc-300 dark:border-zinc-700 shadow-lg bg-white dark:bg-zinc-800 w-50 rounded-lg p-2">
+        class="absolute top-18 right-0 border border-zinc-300 dark:border-zinc-700 shadow-lg bg-white dark:bg-zinc-800 w-50 rounded-lg p-2">
         <flux:menu.radio.group>
             <flux:menu.item :href="route('profile.edit')" icon="cog" wire:navigate>
                 {{ __('Impostazioni') }}

@@ -8,7 +8,7 @@
 <body class="min-h-screen bg-neutral-100 antialiased dark:bg-linear-to-b dark:from-neutral-950 dark:to-neutral-900">
     <div class="bg-muted flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10 dark:bg-zinc-700">
         <div class="flex w-full max-w-md flex-col gap-6">
-            <a href="{{ route('home') }}" class="flex flex-col items-center  font-medium" wire:navigate>
+            <a href="{{ route('home') }}" class="flex flex-col items-center font-medium" wire:navigate>
                 <figure class="rounded-xl overflow-hidden w-[250px]">
                     <img src="{{asset('/assets/icons/icon.png')}}" alt="icon" class="w-full h-full" />
                 </figure>
