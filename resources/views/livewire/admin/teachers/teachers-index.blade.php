@@ -17,7 +17,6 @@
             <flux:badge color="gray">{{$teachers->count()}}</flux:badge>
         </div>
 
-
         <x-table :headers="[
         ['label' => 'ID'],
         ['label' => 'Nome Istruttore'],

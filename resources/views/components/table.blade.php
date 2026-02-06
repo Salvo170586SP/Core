@@ -1,6 +1,6 @@
 @props(['headers','showCheckbox' => false])
 
-<table class="w-full border rounded border-zinc-300 shadow dark:border-zinc-700">
+<table class="w-full  border  border-zinc-300 shadow dark:border-zinc-700">
     <thead class="bg-zinc-100 dark:bg-zinc-800 h-[44px] border-b dark:border-zinc-700">
         <tr>
             @if($showCheckbox)

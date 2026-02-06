@@ -22,16 +22,57 @@ class DocumentsDetail extends Component
         $this->user = User::findOrfail($this->id);
     }
 
+
     public function updatedSelected()
     {
-        $totalCourses = Document::count();
-        $this->selectAll = count($this->selected) === $totalCourses && $totalCourses > 0;
+        $student = $this->user->hasRole('allievo');
+        $teacher = $this->user->hasRole('istruttore');
+
+        if ($student) {
+            $userDocumentIds = $this->user->documentsAsStudent()
+                ->where('student_id', $this->user->id)
+                ->pluck('id')
+                ->toArray();
+        } elseif ($teacher) {
+            $userDocumentIds = $this->user->documentsAsTeacher()
+                ->where('teacher_id', $this->user->id)
+                ->pluck('id')
+                ->toArray();
+        } else {
+            $userDocumentIds = $this->user->documentsAsAdmin()
+                ->pluck('id')
+                ->toArray();
+        }
+
+        // Conta solo gli elementi selezionati che appartengono a questo utente
+        $validSelectedCount = count(array_intersect($this->selected, $userDocumentIds));
+        $totalCourses = count($userDocumentIds);
+
+        $this->selectAll = $validSelectedCount === $totalCourses && $totalCourses > 0;
     }
+
 
     public function updatedSelectAll($value)
     {
         if ($value) {
-            $this->selected = Document::pluck('id')->toArray();
+            $student = $this->user->hasRole('allievo');
+            $teacher = $this->user->hasRole('istruttore');
+
+            if ($student) {
+                $this->selected = $this->user->documentsAsStudent()
+                    ->where('student_id', $this->user->id)
+                    ->pluck('id')
+                    ->toArray();
+            } elseif ($teacher) {
+                $this->selected = $this->user->documentsAsTeacher()
+                    ->where('teacher_id', $this->user->id)
+                    ->pluck('id')
+                    ->toArray();
+            } else {
+                $this->selected = $this->user->documentsAsAdmin()
+                    ->pluck('id')
+                    ->toArray();
+            }
         } else {
             $this->selected = [];
         }
