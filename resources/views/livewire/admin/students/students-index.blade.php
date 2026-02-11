@@ -27,6 +27,7 @@
             ['label' => 'Telefono'],
             ['label' => 'Corsi', 'align' => 'text-center'],
             ['label' => 'Documento d\'identità', 'align' => 'text-center'],
+            ['label' => 'Modulo', 'align' => 'text-center'],
             ['label' => '']
             ]" :show-checkbox="true">
 
@@ -37,10 +38,9 @@
             @forelse($students as $item)
             <tr wire:key="student-{{$item->id}}" class="border-b dark:border-zinc-700 h-[60px] text-sm">
                 <td class="ps-5">
-
                     <flux:checkbox wire:model.live="selected" value="{{ $item->id }}" />
                 </td>
-                <td class="px-3 font-bold">{{$item->code}}</td>
+                <td class="px-3 font-bold text-xs w-[120px]">{{$item->code}}</td>
                 <td class="px-3 uppercase">{{$item->name}}</td>
                 <td class="px-3">{{$item->email ?? '-'}}</td>
                 <td class="px-3">{{$item->detailsAsStudent->fiscal_code?? '-'}}</td>
@@ -53,9 +53,18 @@
                 </td>
                 <td class="px-3 text-center">
                     @if($item->documentsAsStudent->where('type', 'carta_identita')->first())
-                    <flux:button download size="sm" variant="ghost"
+                    <flux:button download size="sm" variant="filled"
                         href="{{asset('storage/'. $item->documentsAsStudent->where('type', 'carta_identita')->first()->url_file )}}"
                         icon="arrow-down-tray" />
+                    @else
+                    -
+                    @endif
+                </td>
+                <td class="px-3 text-center">
+                    @if($item->documentsAsStudent->where('type', 'modulo_pdf')->first())
+                    <flux:button size="sm" variant="filled" target="_black"
+                        href="{{asset('storage/'. $item->documentsAsStudent->where('type', 'modulo_pdf')->first()->url_file )}}"
+                        icon="document-magnifying-glass" />
                     @else
                     -
                     @endif

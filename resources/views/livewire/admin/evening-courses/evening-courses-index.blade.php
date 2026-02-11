@@ -23,7 +23,6 @@
             ['label' => 'Nome Corso'],
             ['label' => 'Livello', 'align' => 'text-center'],
             ['label' => 'Durata (ore)', 'align' => 'text-center'],
-            ['label' => 'Studenti', 'align' => 'text-center'],
             ['label' => 'Recrutamento', 'align' => 'text-center'],           
             ['label' => 'Stato', 'align' => 'text-center'],
             ['label' => 'Materie', 'align' => 'text-center'],
@@ -36,12 +35,12 @@
             @endslot
 
             @forelse($evening_courses as $course)
-            <tr wire:key="evening-course-{{$course->id}}" class="border-b dark:border-zinc-700 h-[60px] text-sm">
+            <tr wire:key="evening-course-{{$course->id}}" class="border-b  dark:border-zinc-700 h-[60px] text-sm">
                 <td class="ps-5">
                     <flux:checkbox wire:model.live="selected" value="{{ $course->id }}" />
                 </td>
-                <td class="px-3 font-bold text-sm">{{ $course->code }}</td>
-                <td class="px-1 font-semibold uppercase">{{ $course->name }}</td>
+                <td class="px-3 font-bold text-xs w-[120px]">{{ $course->code }}</td>
+                <td class="px-1 font-semibold uppercase text-xs w-[120px]">{{ $course->name }}</td>
                 <td class="px-1 text-center">
                     <flux:badge color="{{ $course->getLevelColor($course->level) }}" size="sm">
                         {{ $course->getLevelLabel($course->level) }}
@@ -49,10 +48,8 @@
                 </td>
                 <td class="px-1 text-center">{{ $course->duration_hours }}h</td>
                 <td class="px-1 text-center">
-                    {{ $course->min_students }}-{{ $course->max_students }}
-                </td>
-                <td class="px-1 text-center">
-                    <select class="border border-zinc-400 rounded w-40 h-8 px-2 font-medium hover:bg-zinc-200 bg-zinc-100 dark:bg-zinc-800 dark:hover:bg-zinc-700 dark:border-zinc-700 text-xs" 
+                    <select
+                        class="border border-zinc-400 rounded w-40 h-8 px-2 font-medium hover:bg-zinc-200 bg-zinc-100 dark:bg-zinc-800 dark:hover:bg-zinc-700 dark:border-zinc-700 text-xs"
                         id="recruitment_status_{{ $course->id }}"
                         wire:change="updateRecruitmentStatus({{ $course->id }}, $event.target.value)">
                         @foreach($recruitments_state as $key => $sr)
@@ -80,6 +77,36 @@
                 </td>
                 <td class="px-1">
                     <div class="flex justify-end gap-2">
+                        <flux:modal.trigger name="module-{{$course->id}}">
+                            <flux:button variant="primary" color="teal" size="sm" icon="envelope"
+                                class="cursor-pointer">Invia Modulo
+                            </flux:button>
+                        </flux:modal.trigger>
+                        <flux:modal name="module-{{$course->id}}" class="md:w-96">
+                            <div class="space-y-6">
+                                <div>
+                                    <flux:heading size="lg" class="pb-5">Invia modulo a...</flux:heading>
+                                    <flux:input type="email" label="Email" wire:model="email"
+                                        placeholder="example@example.com" variant="filled" />
+                                </div>
+                                <div class="flex gap-2">
+                                    <flux:spacer />
+                                    <flux:modal.close>
+                                        <flux:button variant="ghost">Cancel</flux:button>
+                                    </flux:modal.close>
+
+                                    <flux:button variant="primary" wire:click="sendSubscriptionMail({{ $course->id }})"
+                                        class="btn btn-primary" wire:loading.attr="disabled">
+                                        <span wire:loading.remove wire:target="sendSubscriptionMail({{ $course->id }})">
+                                            Invia Mail
+                                        </span>
+                                        <span wire:loading wire:target="sendSubscriptionMail({{ $course->id }})">
+                                            Invio in corso...
+                                        </span>
+                                    </flux:button>
+                                </div>
+                            </div>
+                        </flux:modal>
                         <flux:button wire:navigate icon="eye" variant="filled" size="sm"
                             href="/corsi-serali/{{$course->id}}">Dettagli
                         </flux:button>

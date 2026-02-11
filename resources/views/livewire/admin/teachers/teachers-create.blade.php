@@ -1,6 +1,5 @@
 <div class="p-1">
-    <div class="flex justify-between items-center">
-        <h2 class="font-bold text-lg uppercase">Professori / Crea</h2>
+    <div class="flex justify-end items-center">
         <flux:button variant="filled" class="font-semibold cursor-pointer" icon="arrow-left" wire:navigate
             href="/professori">
             Torna Indietro
@@ -20,35 +19,37 @@
                 <div class="w-full border-e dark:border-e-zinc-600 pe-3">
                     <div class="grid grid-cols-3 gap-3">
                         <div class="space-y-3">
-                            <flux:input label="Nome e Cognome" type="text" id="name" variant="filled" placeholder="Es. Mario Rossi"
-                                wire:model="teacherDetailsStep.name" />
-                            <flux:input label="Cod.Fiscale" type="text" id="fiscal_code" variant="filled" 
+                            <flux:input label="Nome e Cognome" type="text" id="name" variant="filled"
+                                placeholder="Es. Mario Rossi" wire:model="teacherDetailsStep.name" />
+                            <flux:input label="Cod.Fiscale" type="text" id="fiscal_code" variant="filled"
                                 wire:model="teacherDetailsStep.fiscal_code" />
-                            <flux:input label="Numero di telefono" type="text" id="phone_number" variant="filled"  
+                            <flux:input label="Numero di telefono" type="text" id="phone_number" variant="filled"
                                 wire:model="teacherDetailsStep.phone_number" />
                         </div>
 
                         <div class="space-y-3">
-                            <flux:input label="Cap di Residenza" type="text" id="cap" variant="filled"  
+                            <flux:input label="Cap di Residenza" type="text" id="cap" variant="filled"
                                 wire:model="teacherDetailsStep.cap" />
-                            <flux:input label="Nato a" type="text" id="city_birth" variant="filled"  
+                            <flux:input label="Nato a" type="text" id="city_birth" variant="filled"
                                 wire:model="teacherDetailsStep.city_birth" />
                         </div>
 
                         <div class="space-y-3">
-                            <flux:input label="Città di residenza" type="text" id="city" variant="filled" 
+                            <flux:input label="Città di residenza" type="text" id="city" variant="filled"
                                 wire:model="teacherDetailsStep.city" />
                             <flux:input label="Nato il" type="date" id="date_birth" variant="filled"
                                 wire:model="teacherDetailsStep.date_birth" />
                         </div>
                     </div>
                     <div class="mt-3">
-                        <flux:textarea label="Note" id="note" wire:model="teacherDetailsStep.note" class="bg-zinc-100" />
+                        <flux:textarea label="Note" id="note" wire:model="teacherDetailsStep.note"
+                            class="bg-zinc-100" />
                     </div>
                 </div>
 
                 <div class="w-full space-y-3">
-                    <flux:input label="Email" type="email" id="email" wire:model="teacherDetailsStep.email" variant="filled" placeholder="Es. mariorossi@example.it"  />
+                    <flux:input label="Email" type="email" id="email" wire:model="teacherDetailsStep.email"
+                        variant="filled" placeholder="Es. mariorossi@example.it" />
                     <flux:input label="Password" type="password" id="password" variant="filled"
                         wire:model="teacherDetailsStep.password" />
                 </div>
@@ -88,24 +89,24 @@
         @elseif($currentStep == 1)
         <x-step-container title="Profilo Professionale">
             <div class="grid grid-cols-3 gap-3">
-                <flux:select id="level_coach" wire:model="professionalProfileStep.level_coach" 
+                <flux:select id="level_coach" wire:model="professionalProfileStep.level_coach"
                     label="Livello Professionale">
                     <flux:select.option value="">-</flux:select.option>
                     @foreach ($levels as $level)
-                    <flux:select.option wire:key="level-{{ $level['id'] }}" value="{{ $level['id'] }}" variant="filled" >
+                    <flux:select.option wire:key="level-{{ $level['id'] }}" value="{{ $level['id'] }}" variant="filled">
                         {{ $level['label'] }}
                     </flux:select.option>
                     @endforeach
                 </flux:select>
-                <flux:input id="day_course" wire:model="professionalProfileStep.day_course" variant="filled"  
+                <flux:input id="day_course" wire:model="professionalProfileStep.day_course" variant="filled"
                     label="Giorni di Lezione Previsti" />
-                <flux:input id="hour_start" type="time" wire:model="professionalProfileStep.hour_start" variant="filled" 
+                <flux:input id="hour_start" type="time" wire:model="professionalProfileStep.hour_start" variant="filled"
                     label="Ora inizio lezione" />
-                <flux:input id="hour_end" type="time" wire:model="professionalProfileStep.hour_end" variant="filled" 
+                <flux:input id="hour_end" type="time" wire:model="professionalProfileStep.hour_end" variant="filled"
                     label="Ora fine lezione" />
                 <flux:checkbox.group label="Collaborazione">
-                    <flux:checkbox id="direct_collaboration" wire:model="professionalProfileStep.direct_collaboration" variant="filled" 
-                        label="Diretta" />
+                    <flux:checkbox id="direct_collaboration" wire:model="professionalProfileStep.direct_collaboration"
+                        variant="filled" label="Diretta" />
                 </flux:checkbox.group>
 
                 <div class="flex flex-col my-3">

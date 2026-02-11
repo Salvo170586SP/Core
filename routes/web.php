@@ -3,6 +3,7 @@
 use App\Livewire\Admin\Badges\BadgesCourseDetail;
 use App\Livewire\Admin\Badges\BadgesDetail;
 use App\Livewire\Admin\Badges\BadgesIndex;
+use App\Livewire\Admin\CourseModule;
 use App\Livewire\Admin\Courses\CoursesCreate;
 use App\Livewire\Admin\Courses\CoursesDetail;
 use App\Livewire\Admin\Courses\CoursesEdit;
@@ -29,6 +30,9 @@ use App\Livewire\Admin\Teachers\TeachersIndex;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 use Livewire\Volt\Volt;
+
+//REGISTRAZIONE ALLIEVI
+Route::get('modulo-corso/{course}/subscribe/{token}', CourseModule::class)->name('module-course');
 
 // Apply redirect middleware to all responses after login
 Route::middleware(['redirect_role'])->group(function () {

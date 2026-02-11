@@ -18,6 +18,7 @@ class Document extends Model
     const TYPE_FOTO_PROFILO = 'foto_profilo';
     const TYPE_DOC_PROFESSIONALE = 'doc_professionale';
     const TYPE_CARTA_IDENTITA = 'carta_identita';
+    const TYPE_MODULO_PDF = 'modulo_pdf';
     const TYPE_ALTRO = 'altro';
 
     //ha un professore (user)

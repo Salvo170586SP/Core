@@ -25,7 +25,7 @@
         ['label' => 'Collaborazione Diretta', 'align' => 'text-center'],
         ['label' => 'Materie', 'align' => 'text-center'],
          ['label' => '']
-    ]" :show-checkbox="true">
+        ]" :show-checkbox="true">
 
             @slot('checkboxHeader')
             <flux:checkbox class="ps-3" wire:model.live="selectAll" />
@@ -36,7 +36,7 @@
                 <td class="ps-5">
                     <flux:checkbox wire:model.live="selected" value="{{ $item->id }}" />
                 </td>
-                <td class="px-3 font-bold text-sm">{{$item->code ?? '-'}}</td>
+                <td class="px-3 font-bold text-xs w-[120px]">{{$item->code ?? '-'}}</td>
                 <td class="px-3">{{$item->name}}</td>
                 <td class="px-3">{{$item->email}}</td>
                 <td class="px-3 text-center">

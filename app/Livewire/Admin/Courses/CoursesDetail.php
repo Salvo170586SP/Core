@@ -95,9 +95,9 @@ class CoursesDetail extends Component
     public function toggleRecruitment()
     {
         if ($this->course->students()->count() == 3) {
-            $this->course->status = 'recruitment_closed';
+            $this->course->recruitment_status = 'recruitment_closed';
         } else if ($this->course->students()->count() < 3) {
-            $this->course->status = 'recruitment';
+            $this->course->recruitment_status = 'recruitment';
         }
         $this->course->save();
     }

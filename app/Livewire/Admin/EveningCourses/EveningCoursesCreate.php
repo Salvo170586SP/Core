@@ -100,8 +100,12 @@ class EveningCoursesCreate extends Component
             'center' => $this->center,
             'price' => $this->price,
             'certification' => $this->certification,
-            /*  'depliant_file' => $this->depliant_file, */
         ]);
+
+        // Genera l'URL per la pagina di iscrizione
+        $url = route('module-course', ['course' => $course->id]);
+        $course->url = $url;
+        $course->save();
 
         // Sincronizza le materie con la relazione many-to-many
         $course->subjects()->attach($this->subjects_selected);
@@ -116,6 +120,6 @@ class EveningCoursesCreate extends Component
         $levels_course = config('Core.levels_course');
         $status_course = config('Core.status_course');
         $subjects = Subject::all();
-        return view('livewire.admin.evening-courses.evening-courses-create', compact('levels_course','status_course','subjects'));
+        return view('livewire.admin.evening-courses.evening-courses-create', compact('levels_course', 'status_course', 'subjects'));
     }
 }

@@ -96,8 +96,6 @@ class User extends Authenticatable
             ->withTimestamps();
     }
 
-
-
     // Documenti dove l'utente è lo studente
     public function documentsAsAdmin()
     {
@@ -155,11 +153,8 @@ class User extends Authenticatable
             ->distinct()
             ->get();
     }
-  
- 
 
-
-    // prendo colore stato del corso
+    // prendo data  
     public function getDate($date)
     {
         if (!$date) {

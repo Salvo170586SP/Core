@@ -12,6 +12,5 @@
             <x-chart-courses-dashboard  :data="$dataCourses" :labels="$labelsCourses" 
             :backgroundColors="$backgroundColors" :borderColors="$borderColors" />
         </div>
-
     </div>
 </div>

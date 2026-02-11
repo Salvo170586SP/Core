@@ -18,31 +18,25 @@ class Dashboard extends Component
         $evening_courses = Course::where('type', 'evening')->latest()->get();
 
 
-        
         //CARD TESSERATI
-        // Conteggio progressivo dei tesseramenti dal 2024 ad oggi 
+        // Conteggio tesseramenti per anno (non progressivo)
         $startYear = 2024;
         $currentYear = Carbon::now()->year;
-
         $labels = [];
         $data = [];
-        $totaleProgressivo = 0;
 
         // Cicla attraverso gli anni dal 2024 fino all'anno corrente
         for ($year = $startYear; $year <= $currentYear; $year++) {
             $labels[] = (string) $year;
 
-            // Conta i tesseramenti attivi creati in questo anno
+            // Conta i tesseramenti attivi creati in questo anno specifico
             $badge_actives = DB::table('course_student')
                 ->where('is_active', true)
-                ->whereYear('created_at', $year)
+                ->whereYear('issued_at', $year)
                 ->count();
 
-            $totaleProgressivo += $badge_actives;
-            $data[] = $totaleProgressivo;
+            $data[] = $badge_actives; // Non più progressivo, solo il valore dell'anno
         }
-
-
 
 
         //CARD CORSI

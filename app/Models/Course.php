@@ -11,6 +11,7 @@ class Course extends Model
     protected $fillable = [
         'code',
         'type',
+        'url',
         'name',
         'description',
         'level',

@@ -23,12 +23,10 @@
             ]" :show-checkbox="false">
 
             @forelse($badge_student as $item)
-            <tr wire:key="student-{{$item->id}}" class="border-b dark:border-zinc-700 h-[60px] text-sm">
-
-                <td class="px-3 font-bold text-sm">{{$item->code}}</td>
+            <tr wire:key="badge_student-{{$item->id}}" class="border-b dark:border-zinc-700 h-[60px] text-sm">
+                <td class="px-3 font-bold text-xs w-[120px]">{{$item->code}}</td>
                 <td class="px-3 uppercase">{{$item->name}}</td>
-                <td class="px-3 uppercase"> dsfdsfsdf</td>
-
+                <td class="px-3">{{$item->detailsAsStudent->fiscal_code}}</td>
                 <td class="px-3">
                     <div class="flex justify-center items-center">
                         <flux:badge variant="ghost">{{$item->coursesStudents->count()}}</flux:badge>

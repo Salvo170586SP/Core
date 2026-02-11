@@ -2,7 +2,10 @@
 
 namespace App\Livewire\Admin\Courses;
 
+use App\Mail\SubscribeLinkMail;
 use App\Models\Course;
+use App\Models\User;
+use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -13,6 +16,39 @@ class CoursesIndex extends Component
     public $selected = [];
     public $selectAll = false;
     public $recruitmentStatus = [];
+
+    public $email = '';
+    public $courseIdForMail; // ID del corso per cui inviare la mail
+
+    public function sendSubscriptionMail($courseId)
+    {
+        $this->validate([
+            'email' => 'required|email|max:255',
+        ], [
+            'email.required' => 'L\'indirizzo email è obbligatorio.',
+            'email.email' => 'Inserisci un indirizzo email valido.',
+            'email.max' => 'L\'email non può superare 255 caratteri.',
+        ]);
+
+        $course = Course::where('type', 'all')->findOrFail($courseId);
+
+        // Genera il link di iscrizione (adatta questo URL alla tua applicazione)
+        $subscribeLink = route('module-course', [
+            'course' => $course->id,
+            'token' => encrypt($course->id)
+        ]);
+
+        // Invia la mail
+        Mail::to($this->email)->send(
+            new SubscribeLinkMail($course, $subscribeLink)
+        );
+
+        // Reset del campo
+        $this->email = '';
+
+        // Notifica di successo
+        session()->flash('message', 'Mail inviata con successo');
+    }
 
     public function updateRecruitmentStatus($courseId, $value)
     {

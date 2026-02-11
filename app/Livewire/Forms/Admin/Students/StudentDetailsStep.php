@@ -90,7 +90,6 @@ class StudentDetailsStep extends Form
         return $code;
     }
 
-
     public function save()
     {
         $this->validate();

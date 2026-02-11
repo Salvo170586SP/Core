@@ -1,6 +1,5 @@
 <div class="p-1">
-    <div class="flex justify-between items-center">
-        <h2 class="font-bold text-lg uppercase">Studenti / Crea</h2>
+    <div class="flex justify-end items-center">
         <flux:button variant="filled" class="font-semibold cursor-pointer" icon="arrow-left" wire:navigate
             href="/allievi">
             Torna Indietro
@@ -20,8 +19,8 @@
                     <div class="border-e dark:border-e-zinc-700 pe-5 gap-5">
                         <div class="grid grid-cols-3 gap-3">
                             <div class="space-y-3">
-                                <flux:input label="Nome e Cognome" type="text" id="name" variant="filled" placeholder="Es. Mario Rossi"
-                                    wire:model="studentDetailsStep.name" />
+                                <flux:input label="Nome e Cognome" type="text" id="name" variant="filled"
+                                    placeholder="Es. Mario Rossi" wire:model="studentDetailsStep.name" />
                                 <flux:input label="Cod.Fiscale" type="text" id="fiscal_code" variant="filled"
                                     wire:model="studentDetailsStep.fiscal_code" />
                                 <flux:input label="Città di residenza" type="text" id="city" variant="filled"
@@ -41,12 +40,14 @@
                             </div>
                         </div>
                         <div class="mt-3">
-                            <flux:textarea label="Note" id="note" wire:model="studentDetailsStep.note" class="bg-zinc-100"  />
+                            <flux:textarea label="Note" id="note" wire:model="studentDetailsStep.note"
+                                class="bg-zinc-100" />
                         </div>
                     </div>
 
                     <div class="space-y-3">
-                        <flux:input label="Email" type="email" id="email" wire:model="studentDetailsStep.email" variant="filled" placeholder="Ex. mariorossi@example.it" />
+                        <flux:input label="Email" type="email" id="email" wire:model="studentDetailsStep.email"
+                            variant="filled" placeholder="Ex. mariorossi@example.it" />
                         <flux:input label="Password" type="password" id="password" variant="filled"
                             wire:model="studentDetailsStep.password" />
                     </div>
@@ -178,7 +179,8 @@
                                 <img alt="{{$studentDetailsStep->url_photo}}" class="w-full h-full object-cover"
                                     src="{{ $studentDetailsStep->url_photo->temporaryUrl() }}" />
                                 @else
-                                <img alt="placeholder" src="{{asset('./assets/icons/placeholder.png')}}" class="w-full h-full object-cover" />
+                                <img alt="placeholder" src="{{asset('./assets/icons/placeholder.png')}}"
+                                    class="w-full h-full object-cover" />
                                 @endif
                             </figure>
                             <div class="space-y-5 ms-5">
