@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin;
 
+use App\Events\StudentRegistered;
 use App\Mail\SendOtpMail;
 use App\Mail\SuccessSubscribeMail;
 use App\Models\Course;
@@ -9,6 +10,7 @@ use App\Models\Document;
 use App\Models\Feedback;
 use App\Models\User;
 use App\Models\UserDetail;
+use App\Notifications\NewStudentRegistered;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use Illuminate\Support\Facades\Mail;
@@ -96,7 +98,7 @@ class CourseModule extends Component
         session()->put('otp', $this->otp); // Salva OTP in sessione
 
         // Invia email con OTP
-        Mail::to($this->email)->send(new SendOtpMail($this->otp));
+        /*    Mail::to($this->email)->send(new SendOtpMail($this->otp)); */
 
         $this->otpSent = true;
         session()->flash('success', 'Il codice OTP è stato inviato alla tua email.');
@@ -124,7 +126,6 @@ class CourseModule extends Component
 
     public function saveModule()
     {
-
         if (!$this->isVerified) {
             session()->flash('error', 'Devi completare la verifica OTP per procedere.');
             return;
@@ -162,7 +163,7 @@ class CourseModule extends Component
 
 
 
-        Mail::to($this->email)->send(new SuccessSubscribeMail($this->name, $this->course));
+        /*    Mail::to($this->email)->send(new SuccessSubscribeMail($this->name, $this->course)); */
 
         //Prepara i dati da passare alla vista del PDF
         $data = [
@@ -229,6 +230,14 @@ class CourseModule extends Component
 
         // Eventuale messaggio di successo (opzionale)
         $this->dispatch('messageUploadMoudule');
+
+        if (auth()->user()->notification_preferences == true) {
+            // Invia notifica all'amministratore
+            $admin = User::role('amministratore')->first();
+            $admin->notify(new NewStudentRegistered($student));
+            // Broadcast evento real-time
+            broadcast(new StudentRegistered($student));
+        }
     }
 
     public function verifyOtp()

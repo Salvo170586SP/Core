@@ -115,7 +115,7 @@
         <strong>Attenzione!</strong> Ci sono campi obbligatori da compilare.
     </div>
     @endif
-
+    {{$otp}}
     {{-- @dump($otp) --}}
     <div class="w-full text-center mt-5">
         @if(!$otpSent)

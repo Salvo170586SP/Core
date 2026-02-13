@@ -62,18 +62,19 @@
 
         <livewire:admin.components.breadcrumbs />
 
-
         <flux:spacer />
-        @role('amministratore|istruttore')
+
         <div class="flex gap-7 mx-18 text-zinc-500">
+         
             <button class="cursor-pointer">
                 <flux:icon.chat-bubble-left-right class="size-5" />
             </button>
-            <button class="cursor-pointer">
-                <flux:icon.bell class="size-5" />
-            </button>
+
+            @role('amministratore')
+            <livewire:admin.admin-notifications />
+            @endrole
+
         </div>
-        @endrole
 
         <x-dropdown-header />
     </flux:header>
