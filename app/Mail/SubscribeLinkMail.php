@@ -15,15 +15,13 @@ class SubscribeLinkMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $course;
     public $subscribeLink;
 
     /**
      * Create a new message instance.
      */
-    public function __construct(Course $course, string $subscribeLink)
+    public function __construct(string $subscribeLink)
     {
-        $this->course = $course;
         $this->subscribeLink = $subscribeLink;
     }
 
@@ -33,7 +31,7 @@ class SubscribeLinkMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Link di Iscrizione al Corso - ' . $this->course->name,
+            subject: 'Link di Iscrizione a Core',
         );
     }
 

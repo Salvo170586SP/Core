@@ -16,7 +16,6 @@ return new class extends Migration
             $table->foreignId('teacher_id')->constrained('users')->onDelete('cascade');
             $table->string('file_professional')->nullable();
             $table->string('level_coach')->nullable();
-            $table->string('direct_collaboration')->nullable();
             $table->string('day_course')->nullable();
             $table->time('hour_start')->nullable();
             $table->time('hour_end')->nullable();

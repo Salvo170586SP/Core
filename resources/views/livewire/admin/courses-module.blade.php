@@ -6,8 +6,7 @@
     @else
 
     <div class="bg-white rounded p-2 h-full">
-        <h2 class="w-full text-center font-bold text-lg mb-5">DOMANDA DI TESSERAMENTO E ISCRIZIONE AL CORSO DI {{
-            strtoupper($course->name)}}</h2>
+        <h2 class="w-full text-center font-bold text-lg mb-5">DOMANDA DI TESSERAMENTO E ISCRIZIONE</h2>
         <h3 class="font-semibold text-xs mb-3">(*) i campi sono obbligatori</h3>
         <div class="grid grid-cols-3 gap-3 w-full pb-10 mb-10 border-b border-zinc-300">
             <div class="flex flex-col mb-2">
@@ -27,13 +26,21 @@
                 <flux:input id="cap" label="Cap*" wire:model="cap" variant="filled" />
             </div>
             <div class="flex flex-col mb-2">
-                <flux:input id="fiscal_code" label="Codice fiscale*" wire:model="fiscal_code" variant="filled" />
+                <flux:input id="fiscal_code" label="Codice fiscale*" wire:model.live.debounce.500ms="fiscal_code"
+                    variant="filled" />
             </div>
             <div class="flex flex-col mb-2">
                 <flux:input id="phone_number" label="Numero di telefono*" wire:model="phone_number" variant="filled" />
             </div>
             <div class="flex flex-col mb-2">
+                @if($existingStudent)
+                <div>
+                    <label for="email" class="text-sm font-medium">Email</label>
+                    <p id="email" class="mt-1">{{ $existingStudent->email }}</p>
+                </div>
+                @else
                 <flux:input type="email" label="Email*" id="email" wire:model="email" variant="filled" />
+                @endif
             </div>
         </div>
 

@@ -22,8 +22,7 @@
         ['label' => 'Nome Istruttore'],
         ['label' => 'Email'],
         ['label' => 'Livello Istruttore', 'align' => 'text-center'],
-        ['label' => 'Collaborazione Diretta', 'align' => 'text-center'],
-        ['label' => 'Materie', 'align' => 'text-center'],
+         ['label' => 'Materie', 'align' => 'text-center'],
          ['label' => '']
         ]" :show-checkbox="true">
 
@@ -43,17 +42,6 @@
                     <flux:badge color="purple" size="sm">
                         {{ $item->getLevelLabel($item->professionalProfile?->level_coach) }}
                     </flux:badge>
-                </td>
-                <td class="px-3">
-                    <div class="flex justify-center items-center">
-                        <flux:button wire:click="toggle({{$item->id}})" variant="filled" class="cursor-pointer">
-                            @if($item->professionalProfile && $item->professionalProfile->direct_collaboration)
-                            <flux:icon.check-circle color="blue" variant="mini" />
-                            @else
-                            <flux:icon.x-circle color="red" variant="mini" />
-                            @endif
-                        </flux:button>
-                    </div>
                 </td>
                 <td class="px-3 text-center">
                     <flux:badge color="purple" size="sm">
@@ -93,7 +81,7 @@
             </tr>
             @empty
             <tr>
-                <td colspan="5" class="p-2 text-sm text-center italic">
+                <td colspan="7" class="p-5 text-center italic">
                     Non ci sono Insegnanti
                 </td>
             </tr>

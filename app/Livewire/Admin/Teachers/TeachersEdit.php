@@ -38,7 +38,6 @@ class TeachersEdit extends Component
             $this->professionalProfileStep->day_course = $profile->day_course;
             $this->professionalProfileStep->hour_start = $profile->hour_start;
             $this->professionalProfileStep->hour_end = $profile->hour_end;
-            $this->professionalProfileStep->direct_collaboration = $profile->direct_collaboration;
         }
 
         $this->teacherDetailsStep->cap = $this->teacher->detailsAsTeacher?->cap;

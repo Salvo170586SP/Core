@@ -13,7 +13,6 @@ class ProfessionalProfileStep extends Form
     use WithFileUploads;
 
     public $level_coach;
-    public $direct_collaboration;
     public $day_course;
     public $hour_start;
     public $hour_end;
@@ -45,7 +44,6 @@ class ProfessionalProfileStep extends Form
         ModelsProfessionalProfile::create([
             'teacher_id' => $teacher_id,
             'level_coach' => $this->level_coach,
-            'direct_collaboration' => $this->direct_collaboration,
             'day_course' => $this->day_course,
             'hour_start' => $this->hour_start,
             'hour_end' => $this->hour_end,
@@ -72,7 +70,6 @@ class ProfessionalProfileStep extends Form
 
         $profile = ModelsProfessionalProfile::firstOrNew(['teacher_id' => $teacher_id]);
         $profile->level_coach = $this->level_coach;
-        $profile->direct_collaboration = $this->direct_collaboration;
         $profile->day_course = $this->day_course;
         $profile->hour_start = $this->hour_start;
         $profile->hour_end = $this->hour_end;

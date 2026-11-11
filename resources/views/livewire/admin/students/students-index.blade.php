@@ -3,10 +3,43 @@
         <h2 class="font-bold text-lg uppercase">Studenti</h2>
 
         <x-div-selection :selected="$selected" function="deleteSelection" />
-        <flux:button variant="primary" class="font-semibold cursor-pointer" icon="plus" wire:navigate
-            href="allievi/crea">
-            Aggiungi Studente
-        </flux:button>
+        <div class="flex gap-2">
+            <flux:modal.trigger name="module">
+                <flux:button variant="primary" color="teal" icon="envelope" class="font-semibold cursor-pointer">Invia
+                    Modulo
+                </flux:button>
+            </flux:modal.trigger>
+            <flux:modal name="module" class="md:w-96">
+                <div class="space-y-6">
+                    <div>
+                        <flux:heading size="lg" class="pb-5">Invia modulo a...</flux:heading>
+                        <flux:input type="email" label="Email" wire:model="email" placeholder="example@example.com"
+                            variant="filled" />
+                    </div>
+                    <div class="flex gap-2">
+                        <flux:spacer />
+                        <flux:modal.close>
+                            <flux:button variant="ghost">Cancel</flux:button>
+                        </flux:modal.close>
+
+                        <flux:button variant="primary" wire:click="sendSubscriptionMail({{ $email }})"
+                            class="btn btn-primary" wire:loading.attr="disabled">
+                            <span wire:loading.remove wire:target="sendSubscriptionMail({{ $email }})">
+                                Invia Mail
+                            </span>
+                            <span wire:loading wire:target="sendSubscriptionMail({{ $email }})">
+                                Invio in corso...
+                            </span>
+                        </flux:button>
+                    </div>
+                </div>
+            </flux:modal>
+
+            <flux:button variant="primary" class="font-semibold cursor-pointer" icon="plus" wire:navigate
+                href="allievi/crea">
+                Aggiungi Studente
+            </flux:button>
+        </div>
     </div>
 
 
@@ -41,7 +74,7 @@
                     <flux:checkbox wire:model.live="selected" value="{{ $item->id }}" />
                 </td>
                 <td class="px-3 font-bold text-xs w-[120px]">{{$item->code}}</td>
-                <td class="px-3 uppercase">{{$item->name}}</td>
+                <td class="px-3 capitalize">{{$item->name}}</td>
                 <td class="px-3">{{$item->email ?? '-'}}</td>
                 <td class="px-3">{{$item->detailsAsStudent->fiscal_code?? '-'}}</td>
                 <td class="px-3">{{$item->detailsAsStudent->phone_number ?? '-'}}</td>
@@ -105,7 +138,7 @@
             </tr>
             @empty
             <tr>
-                <td colspan="5" class="p-2 text-sm text-center italic">
+                <td colspan="10" class="p-5 text-center italic">
                     Non ci sono Studenti
                 </td>
             </tr>

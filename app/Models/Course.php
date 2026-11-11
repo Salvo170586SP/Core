@@ -11,7 +11,6 @@ class Course extends Model
     protected $fillable = [
         'code',
         'type',
-        'url',
         'name',
         'description',
         'level',
@@ -20,6 +19,7 @@ class Course extends Model
         'min_students',
         'start_date',
         'end_date',
+        'type',
         'status',
         'location',
         'price',

@@ -104,11 +104,6 @@
                     label="Ora inizio lezione" />
                 <flux:input id="hour_end" type="time" wire:model="professionalProfileStep.hour_end" variant="filled"
                     label="Ora fine lezione" />
-                <flux:checkbox.group label="Collaborazione">
-                    <flux:checkbox id="direct_collaboration" wire:model="professionalProfileStep.direct_collaboration"
-                        variant="filled" label="Diretta" />
-                </flux:checkbox.group>
-
                 <div class="flex flex-col my-3">
                     <div class="flex items-center gap-3 my-3">
                         <label for="url_file">Titolo Professionale:</label>

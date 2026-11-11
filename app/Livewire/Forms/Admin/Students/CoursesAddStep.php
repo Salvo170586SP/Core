@@ -8,15 +8,19 @@ use Livewire\Form;
 
 class CoursesAddStep extends Form
 {
-    #[Validate('array|min:1')]
+   
     public $courses_selected = [];
+
+    protected $rules = [
+        'courses_selected' => ['nullable', 'array'],
+    ];
 
     protected $messages = [
         'courses_selected.array' => 'Il campo è un array.',
         'courses_selected.min' => 'Devi selezionare almeno 1 corso',
     ];
 
-    public function save($student_id)
+    public function save(int $student_id)
     {
         $this->validate();
         $student = User::findOrFail($student_id);

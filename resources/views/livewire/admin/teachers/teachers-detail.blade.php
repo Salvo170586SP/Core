@@ -109,14 +109,6 @@
                         <span class="font-medium">{{
                             $teacher->getLevelLabel($teacher->professionalProfile?->level_coach) }}</span>
                     </div>
-                    <div class="flex items-center  justify-between">
-                        <span>Collaborazione diretta:</span>
-                        @if($teacher->professionalProfile && $teacher->professionalProfile->direct_collaboration)
-                        <flux:icon.check-circle color="blue" variant="mini" />
-                        @else
-                        <flux:icon.x-circle color="red" variant="mini" />
-                        @endif
-                    </div>
                     <div class="flex items-center justify-between gap-2">
                         <span>Giorni di lezione:</span>
                         <span class="font-medium">{{ $teacher->professionalProfile->day_course ?? '-' }}</span>

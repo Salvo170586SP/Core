@@ -4,7 +4,7 @@
         <!-- Div con conteggio elementi selezionati -->
         <x-div-selection :selected="$selected" function="deleteSelection" />
         <flux:button variant="primary" class="font-semibold cursor-pointer" icon="plus" wire:navigate
-            href="tutti-corsi/crea">
+            href="corsi/crea">
             Aggiungi Corso
         </flux:button>
     </div>
@@ -78,40 +78,11 @@
                 
                 <td class="px-1">
                     <div class="flex justify-end gap-2">
-                        <flux:modal.trigger name="module-{{$course->id}}">
-                            <flux:button variant="primary" color="teal" size="sm" icon="envelope" class="cursor-pointer">Invia Modulo
-                            </flux:button>
-                        </flux:modal.trigger>
-                        <flux:modal name="module-{{$course->id}}" class="md:w-96">
-                            <div class="space-y-6">
-                                <div>
-                                    <flux:heading size="lg" class="pb-5">Invia modulo a...</flux:heading>
-                          
-                                    <flux:input type="email" label="Email" wire:model="email" placeholder="example@example.com" variant="filled"  />
-                                </div>
-                                <div class="flex gap-2">
-                                    <flux:spacer />
-                                    <flux:modal.close>
-                                        <flux:button variant="ghost">Cancel</flux:button>
-                                    </flux:modal.close>
-
-                                    <flux:button variant="primary" wire:click="sendSubscriptionMail({{ $course->id }})"
-                                        class="btn btn-primary" wire:loading.attr="disabled">
-                                        <span wire:loading.remove wire:target="sendSubscriptionMail({{ $course->id }})">
-                                            Invia Mail
-                                        </span>
-                                        <span wire:loading wire:target="sendSubscriptionMail({{ $course->id }})">
-                                            Invio in corso...
-                                        </span>
-                                    </flux:button>
-                                </div>
-                            </div>
-                        </flux:modal>
                         <flux:button wire:navigate icon="eye" variant="filled" size="sm"
-                            href="/tutti-corsi/{{$course->id}}">Dettagli
+                            href="/corsi/{{$course->id}}">Dettagli
                         </flux:button>
                         <flux:button wire:navigate icon="pencil" variant="filled" size="sm"
-                            href="/tutti-corsi/{{$course->id}}/modifica">Modifica
+                            href="/corsi/{{$course->id}}/modifica">Modifica
                         </flux:button>
                         <flux:modal.trigger name="delete-course-{{$course->id}}">
                             <flux:button icon="trash" variant="danger" size="sm" class="cursor-pointer">Elimina
@@ -138,7 +109,7 @@
             </tr>
             @empty
             <tr>
-                <td colspan="5" class="p-2 text-sm text-center italic">
+                <td colspan="10" class="p-5 text-center italic">
                     Non ci sono Corsi
                 </td>
             </tr>

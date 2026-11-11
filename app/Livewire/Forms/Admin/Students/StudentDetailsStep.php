@@ -2,11 +2,14 @@
 
 namespace App\Livewire\Forms\Admin\Students;
 
+use App\Mail\SuccessSubscribeMail;
 use App\Models\Document;
 use App\Models\User;
 use App\Models\UserDetail;
+use App\Services\RegistrationModuleGenerator;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Mail;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 
@@ -111,6 +114,8 @@ class StudentDetailsStep extends Form
             'phone_number' => $this->phone_number,
             'note' => $this->note,
         ]);
+
+        app(RegistrationModuleGenerator::class)->generate($student);
 
         $filePath = null;
         if ($this->url_file) {

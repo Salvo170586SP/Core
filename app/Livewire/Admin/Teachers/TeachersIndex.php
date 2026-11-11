@@ -27,13 +27,6 @@ class TeachersIndex extends Component
         }
     }
 
-    public function toggle($teacher_id)
-    {
-        $teacher = User::findOrFail($teacher_id);
-        $teacher->professionalProfile->direct_collaboration = !$teacher->professionalProfile->direct_collaboration;
-        $teacher->professionalProfile->save();
-    }
-
     public function clearSelection()
     {
         $this->selected = [];

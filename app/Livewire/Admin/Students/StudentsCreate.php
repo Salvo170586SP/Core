@@ -41,6 +41,7 @@ class StudentsCreate extends Component
         $this->coursesAddStep->validate();
         $student_id = $this->studentDetailsStep->save();
         $this->coursesAddStep->save($student_id);
+        
         return  $this->redirect('/allievi', navigate: true);
     }
 

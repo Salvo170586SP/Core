@@ -1,7 +1,7 @@
 <x-mail::message>
 # Ciao Candidato,
 
-Hai ricevuto il link per iscriverti al corso **{{ $course->name }}**.
+Hai ricevuto il link per tesserarti e iscriverti a Core.
 
 Clicca sul pulsante qui sotto per completare la tua iscrizione:
 

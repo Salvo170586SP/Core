@@ -15,9 +15,10 @@ class CoursesCreate extends Component
     public $min_students = 5;
     public $max_students = 10;
     public $duration_hours = 200;
-    public $description = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore neque iste tempora, dolorem optio modi unde doloribus rerum";
+    public $description = '';
     public $start_date;
     public $end_date;
+    public $type;
     public $center = 'sdasdfsadf';
     public $price = 300;
     public $certification = true;
@@ -88,8 +89,8 @@ class CoursesCreate extends Component
         $course = Course::create([
             'code' => $this->generateUniqueCode(),
             'name' => $this->name,
-            'type' => 'all',
-            'url' =>  '',
+            'type' => $this->type,
+           /*  'url' =>  '', */
             'description' => $this->description,
             'level' => $this->level,
             'duration_hours' => $this->duration_hours,
@@ -104,21 +105,25 @@ class CoursesCreate extends Component
         ]);
 
         // Genera l'URL per la pagina di iscrizione
-        $url = route('module-course', ['course' => $course->id]);
-        $course->url = $url;
+     /*    $url = route('module-course', [
+            'course' => $course->id,
+            'token' => encrypt($course->id),
+        ]);
+        $course->url = $url; */
         $course->save();
 
         // Sincronizza le materie con la relazione many-to-many
         $course->subjects()->attach($this->subjects_selected);
 
-        return $this->redirect('/tutti-corsi', navigate: true);
+        return $this->redirect('/corsi', navigate: true);
     }
 
     public function render()
     {
         $levels_course = config('Core.levels_course');
         $status_course = config('Core.status_course');
+        $types = config('Core.types');
         $subjects = Subject::all();
-        return view('livewire.admin.courses.courses-create', compact('levels_course', 'status_course', 'subjects'));
+        return view('livewire.admin.courses.courses-create', compact('levels_course', 'status_course', 'types', 'subjects'));
     }
 }

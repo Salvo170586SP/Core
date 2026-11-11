@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class Feedback extends Model
 {
     protected $fillable = [
-        'course_id',
         'student_id',
         'social',
         'you_tube',
@@ -16,12 +15,6 @@ class Feedback extends Model
         'google',
         'other',
     ];
-
-
-    public function course()
-    {
-        return $this->belongsTo(Course::class, 'course_id');
-    }
 
     //ha un studente (user)
     public function student()

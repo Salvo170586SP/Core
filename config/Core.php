@@ -1,7 +1,7 @@
 <?php
 
 return  [
-    "types_course" => [
+    "types" => [
         [
             "id" => "all",
             "label" => "Tutti"

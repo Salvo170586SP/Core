@@ -22,6 +22,7 @@ class CoursesEdit extends Component
     public $max_students;
     public $duration_hours;
     public $description;
+    public $type;
     public $start_date;
     public $end_date;
     public $center;
@@ -74,6 +75,7 @@ class CoursesEdit extends Component
         $this->name = $this->course->name;
         $this->level = $this->course->level;
         $this->status = $this->course->status;
+        $this->type = $this->course->type;
         $this->recruitment_status = $this->course->recruitment_status;
         $this->min_students = $this->course->min_students;
         $this->max_students = $this->course->max_students;
@@ -108,6 +110,7 @@ class CoursesEdit extends Component
             'start_date' => $this->start_date,
             'end_date' => $this->end_date,
             'status' => $this->status,
+            'type' => $this->type,
             'recruitment_status' => $this->recruitment_status,
             'center' => $this->center,
             'price' => $this->price,
@@ -117,7 +120,7 @@ class CoursesEdit extends Component
         // Sincronizza le materie con la relazione many-to-many
         $this->course->subjects()->sync($this->subjects_selected);
 
-        return $this->redirect('/tutti-corsi', navigate: true);
+        return $this->redirect('/corsi', navigate: true);
     }
 
 
@@ -125,9 +128,10 @@ class CoursesEdit extends Component
     {
         $levels_course = config('Core.levels_course');
         $status_course = config('Core.status_course');
+        $types = config('Core.types');
         $recruitments_state = config('Core.recruitments_state');
         $subjects = Subject::all();
 
-        return view('livewire.admin.courses.courses-edit', compact('levels_course', 'status_course', 'recruitments_state', 'subjects'));
+        return view('livewire.admin.courses.courses-edit', compact('levels_course', 'status_course', 'recruitments_state', 'types', 'subjects'));
     }
 }

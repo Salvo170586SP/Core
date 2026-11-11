@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Livewire\Admin\EveningCourses;
+namespace App\Livewire\Admin\Courses;
 
 use App\Mail\SubscribeLinkMail;
 use App\Models\Course;
-use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -67,7 +66,7 @@ class EveningCoursesIndex extends Component
         $this->selected = [];
     }
 
-    public function sendSubscriptionMail($courseId)
+    public function sendSubscriptionMail()
     {
         $this->validate([
             'email' => 'required|email|max:255',
@@ -77,18 +76,14 @@ class EveningCoursesIndex extends Component
             'email.max' => 'L\'email non può superare 255 caratteri.',
         ]);
 
-
-        $course = Course::where('type', 'evening')->findOrFail($courseId);
-
         // Genera il link di iscrizione (adatta questo URL alla tua applicazione)
-        $subscribeLink = route('module-course', [
-            'course' => $course->id,
-            'token' => encrypt($course->id)
+        $subscribeLink = route('module-courses', [
+            'token' => encrypt($this->email)
         ]);
 
         // Invia la mail
         Mail::to($this->email)->send(
-            new SubscribeLinkMail($course, $subscribeLink)
+            new SubscribeLinkMail($subscribeLink)
         );
 
         // Reset del campo
@@ -102,6 +97,6 @@ class EveningCoursesIndex extends Component
     {
         $evening_courses = Course::where('type', 'evening')->with('subjects')->latest()->paginate(10);
         $recruitments_state = config('Core.recruitments_state');
-        return view('livewire.admin.evening-courses.evening-courses-index', compact('evening_courses', 'recruitments_state'));
+        return view('livewire.admin.courses.evening-courses-index', compact('evening_courses', 'recruitments_state'));
     }
 }

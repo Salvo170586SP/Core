@@ -12,7 +12,6 @@ class ProfessionalProfile extends Model
         'file_professional',
         'original_name',
         'level_coach',
-        'direct_collaboration',
         'day_course',
         'hour_start',
         'hour_end',
@@ -37,6 +36,4 @@ class ProfessionalProfile extends Model
         Carbon::setLocale('it');
         return Carbon::parse($this->updated_at)->isoFormat('D MMM YYYY');
     }
-
-   
 }

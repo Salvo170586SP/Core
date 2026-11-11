@@ -5,23 +5,19 @@ namespace App\Livewire\Admin;
 use App\Events\StudentRegistered;
 use App\Mail\SendOtpMail;
 use App\Mail\SuccessSubscribeMail;
-use App\Models\Course;
-use App\Models\Document;
 use App\Models\Feedback;
 use App\Models\User;
 use App\Models\UserDetail;
 use App\Notifications\NewStudentRegistered;
-use Dompdf\Dompdf;
-use Dompdf\Options;
+use App\Services\RegistrationModuleGenerator;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
 
 #[Layout('components.layouts.guest')]
-class CourseModule extends Component
+class CoursesModule extends Component
 {
-    public Course $course;
     public $formSubmitted = false;
 
     public $name;
@@ -52,23 +48,57 @@ class CourseModule extends Component
     public $confirmSubmission = false;
     public $otpError = null;
 
-    public function mount(Course $course)
+
+    public function updatedFiscalCode($value)
     {
-        $this->course = $course;
+        $this->fiscal_code = strtoupper(trim($value));
+        $this->email = $this->findExistingStudent()?->email;
+        $this->otpSent = false;
+        $this->isVerified = false;
+        $this->enteredOtp = null;
+        session()->forget('otp');
     }
 
-    protected $rules = [
-        'name' => 'required',
-        'city_birth' => 'required',
-        'date_birth' => 'required|date|date_format:Y-m-d',
-        'city' => 'required',
-        'cap' => 'required',
-        'fiscal_code' => 'required|string|unique:user_details,fiscal_code|regex:/^[A-Z0-9]+$/i',
-        // 'fiscal_code' => 'required|string|size:16|unique:users,fiscal_code|regex:/^[A-Z0-9]+$/i',
-        'phone_number' => 'required',
-        'email' => 'required|email|unique:users,email',
-        'autorizza' => 'required|in:yes',
-    ];
+    private function findExistingStudent(): ?User
+    {
+        if (blank($this->fiscal_code)) {
+            return null;
+        }
+
+        $fiscalCode = strtoupper(preg_replace('/\s+/', '', (string) $this->fiscal_code));
+
+        return User::query()
+            ->whereHas('detailsAsStudent', function ($query) use ($fiscalCode) {
+                $query->whereRaw(
+                    "UPPER(REPLACE(fiscal_code, ' ', '')) = ?",
+                    [$fiscalCode]
+                );
+            })
+            ->first();
+    }
+
+    protected function rules()
+    {
+        $existingStudent = $this->findExistingStudent();
+
+        return [
+            'name' => 'required',
+            'city_birth' => 'required',
+            'date_birth' => 'required|date|date_format:Y-m-d',
+            'city' => 'required',
+            'cap' => 'required',
+            'fiscal_code' => [
+                'required',
+                Rule::unique('user_details', 'fiscal_code')->ignore($existingStudent?->detailsAsStudent?->id),
+                'regex:/^[A-Z0-9]+$/i',
+            ],
+            'phone_number' => 'required',
+            'email' => $existingStudent
+                ? ['nullable', 'email', Rule::in([$existingStudent->email])]
+                : ['required', 'email', 'unique:users,email'],
+            'autorizza' => 'required|in:yes',
+        ];
+    }
 
     protected $messages = [
         'name.required' => 'il campo è obbligatorio',
@@ -79,7 +109,6 @@ class CourseModule extends Component
         'city.required' => 'il campo è obbligatorio',
         'cap.required' => 'il campo è obbligatorio',
         'fiscal_code.required' => 'il campo è obbligatorio',
-        /*  'fiscal_code.size' => 'Il codice fiscale deve essere di 16 caratteri', */
         'fiscal_code.regex' => 'Il codice fiscale può contenere solo lettere e numeri',
         'fiscal_code.unique' => 'Il codice fiscale esiste già nel nostro archivio',
         'phone_number.required' => 'il campo è obbligatorio',
@@ -92,6 +121,7 @@ class CourseModule extends Component
 
     public function sendOtp()
     {
+        $this->email = $this->findExistingStudent()?->email ?? $this->email;
         $this->validate();
 
         $this->otp = rand(100000, 999999); // Genera OTP
@@ -133,39 +163,33 @@ class CourseModule extends Component
 
         $this->isSubmitting = true;
 
+        $existingStudent = $this->findExistingStudent();
+        $this->email = $existingStudent?->email ?? $this->email;
         $this->validate();
 
-        $student = User::create([
-            'code' => $this->generateUniqueCode(),
-            'name' => $this->name,
-            'email' => $this->email,
-            'password' => bcrypt('password'),
-        ])->assignRole('allievo');
+        $student = $existingStudent;
 
-        UserDetail::create([
-            'student_id' => $student->id,
-            'city_birth' => $this->city_birth,
-            'date_birth' => $this->date_birth,
-            'city' => $this->city,
-            'cap' => $this->cap,
-            'fiscal_code' => $this->fiscal_code,
-            'phone_number' => $this->phone_number,
-        ]);
+        if (!$student) {
+            $student = User::create([
+                'code' => $this->generateUniqueCode(),
+                'name' => $this->name,
+                'email' => $this->email,
+                'password' => bcrypt('password'),
+            ])->assignRole('allievo');
 
-        //AGGIUNGE ALLIEVO AL CORSO
-        if ($this->course->id && $student) {
-            $student->coursesStudents()->attach($this->course->id, [
-                'issued_at' => $student->created_at,
-                'is_active' => 0,
-                'badge_number' => null,
+            UserDetail::create([
+                'student_id' => $student->id,
+                'city_birth' => $this->city_birth,
+                'date_birth' => $this->date_birth,
+                'city' => $this->city,
+                'cap' => $this->cap,
+                'fiscal_code' => $this->fiscal_code,
+                'phone_number' => $this->phone_number,
             ]);
         }
 
-
-
         /*    Mail::to($this->email)->send(new SuccessSubscribeMail($this->name, $this->course)); */
 
-        //Prepara i dati da passare alla vista del PDF
         $data = [
             'name' => $this->name,
             'email' => $this->email,
@@ -183,40 +207,9 @@ class CourseModule extends Component
             'other' => $this->other,
         ];
 
-        // Configura Dompdf
-        $options = new Options();
-        $options->set('defaultFont', 'DejaVu Sans');
-        $dompdf = new Dompdf($options);
-        // Genera l'HTML della vista
-        $html = view('livewire.admin.pdf.module-trainee', $data)->render();
-
-        // Carica l'HTML in Dompdf
-        $dompdf->loadHtml($html);
-
-        // Imposta il formato della pagina
-        $dompdf->setPaper('A4', 'portrait');
-
-        // Renderizza il PDF
-        $dompdf->render();
-
-        // Ottieni il contenuto del PDF generato
-        $pdfContent = $dompdf->output();
-
-        // Definisci il nome del file e la directory di salvataggio
-        $fileName = 'modulo-iscrizione-' . $this->name . '.pdf';
-        $filePath = 'documents_student/' . $fileName;
-        Storage::disk('public')->put($filePath, $pdfContent);
-
-
-        Document::create([
-            'student_id' => $student->id,
-            'type' => Document::TYPE_MODULO_PDF,
-            'name' => $fileName,
-            'url_file' => $filePath,
-        ]);
+        app(RegistrationModuleGenerator::class)->generate($student, $data);
 
         Feedback::create([
-            'course_id' => $this->course->id,
             'student_id' => $student->id,
             'social' => $this->social,
             'you_tube' => $this->youTube,
@@ -231,7 +224,7 @@ class CourseModule extends Component
         // Eventuale messaggio di successo (opzionale)
         $this->dispatch('messageUploadMoudule');
 
-        if (auth()->user()->notification_preferences == true) {
+        if (auth()->user()?->notification_preferences === true) {
             // Invia notifica all'amministratore
             $admin = User::role('amministratore')->first();
             $admin->notify(new NewStudentRegistered($student));
@@ -256,6 +249,8 @@ class CourseModule extends Component
 
     public function render()
     {
-        return view('livewire.admin.course-module');
+        $existingStudent = $this->findExistingStudent();
+
+        return view('livewire.admin.courses-module', compact('existingStudent'));
     }
 }

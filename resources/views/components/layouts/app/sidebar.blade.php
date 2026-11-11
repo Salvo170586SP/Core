@@ -20,8 +20,10 @@
             <flux:navlist.group :heading="__('Anagrafiche')" class="grid">
                 <flux:navlist.item icon="home" :href="route('teachers')" :current="request()->routeIs('teachers')"
                     wire:navigate>{{ __('Insegnanti') }}</flux:navlist.item>
+                @if(\App\Models\Course::query()->exists())
                 <flux:navlist.item icon="academic-cap" :href="route('students')"
                     :current="request()->routeIs('students')" wire:navigate>{{ __('Allievi') }}</flux:navlist.item>
+                @endif
             </flux:navlist.group>
             <flux:navlist.group :heading="__('Corsi')" class="grid">
                 <flux:navlist.item icon="computer-desktop" :href="route('courses')"
@@ -65,7 +67,7 @@
         <flux:spacer />
 
         <div class="flex gap-7 mx-18 text-zinc-500">
-         
+
             <button class="cursor-pointer">
                 <flux:icon.chat-bubble-left-right class="size-5" />
             </button>

@@ -50,7 +50,7 @@
             </tr>
             @empty
             <tr>
-                <td colspan="5" class="p-2 text-sm text-center italic">
+                <td colspan="6" class="p-5 text-center italic">
                     Non ci sono Tesserati
                 </td>
             </tr>

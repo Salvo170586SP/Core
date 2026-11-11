@@ -1,8 +1,8 @@
 <div class="p-1">
     <div class="flex justify-between items-center">
-        <h2 class="font-bold text-lg uppercase">Tutti i corsi / Modifica</h2>
+        <h2 class="font-bold text-lg uppercase">Modifica Corso</h2>
         <flux:button variant="filled" class="font-semibold cursor-pointer" icon="arrow-left" wire:navigate
-            href="/tutti-corsi">
+            href="/corsi">
             Torna Indietro
         </flux:button>
     </div>
@@ -38,6 +38,16 @@
                     <flux:select label="Stato" id="status" wire:model="status" class="bg-zinc-100">
                         <flux:select.option label="-" value="" />
                         @foreach($status_course as $key => $s)
+                        <flux:select.option wire:key="s-{{$key}}-{{$s['id']}}" label="{{$s['label']}}"
+                            value="{{$s['id']}}" />
+                        @endforeach
+                    </flux:select>
+                    <flux:input label="Centro Scolastico" id="center" wire:model="center" variant="filled" />
+                </div>
+                  <div class="space-y-3">
+                    <flux:select label="Tipo" id="types_course" wire:model="type" class="bg-zinc-100">
+                        <flux:select.option label="-" value="" />
+                        @foreach($types as $key => $s)
                         <flux:select.option wire:key="s-{{$key}}-{{$s['id']}}" label="{{$s['label']}}"
                             value="{{$s['id']}}" />
                         @endforeach
