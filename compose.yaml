@@ -1,11 +1,11 @@
 services:
     laravel.test:
         build:
-            context: './vendor/laravel/sail/runtimes/8.5'
+            context: ./vendor/laravel/sail/runtimes/8.5
             dockerfile: Dockerfile
             args:
                 WWWGROUP: '${WWWGROUP}'
-        image: 'sail-8.5/app'
+        image: sail-8.5/app
         extra_hosts:
             - 'host.docker.internal:host-gateway'
         ports:
@@ -49,21 +49,21 @@ services:
             retries: 3
             timeout: 5s
     phpmyadmin:
-       image: phpmyadmin:latest
-       container_name: pmac
-       environment:
+        image: 'phpmyadmin:latest'
+        container_name: pmac
+        environment:
             PMA_HOST: mysql
             PMA_PORT: 3306
             PMA_USER: sail
             PMA_PASSWORD: password
             PMA_ARBITRARY: 1
-       restart: always
-       ports:
-          - 8082:80      
-       depends_on:
-           - mysql
-       networks:
-           - sail
+        restart: always
+        ports:
+            - '8082:80'
+        depends_on:
+            - mysql
+        networks:
+            - sail
 networks:
     sail:
         driver: bridge
