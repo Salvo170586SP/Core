@@ -180,21 +180,21 @@ new class extends Component {
 <section class="w-full">
     @include('partials.settings-heading')
 
-    <flux:heading class="sr-only">Two-Factor Authentication Settings</flux:heading>
+    <flux:heading class="sr-only">Impostazioni di autenticazione a due fattori</flux:heading>
 
     <x-settings.layout
-        :heading="__('Two Factor Authentication')"
+        :heading="__('Impostazioni di autenticazione a due fattori')"
         :subheading="__('Manage your two-factor authentication settings')"
     >
         <div class="flex flex-col w-full mx-auto space-y-6 text-sm" wire:cloak>
             @if ($twoFactorEnabled)
                 <div class="space-y-4">
                     <div class="flex items-center gap-3">
-                        <flux:badge color="green">{{ __('Enabled') }}</flux:badge>
+                        <flux:badge color="green">{{ __('Abilitato') }}</flux:badge>
                     </div>
 
                     <flux:text>
-                        {{ __('With two-factor authentication enabled, you will be prompted for a secure, random pin during login, which you can retrieve from the TOTP-supported application on your phone.') }}
+                        {{ __('Se è abilitata l\'autenticazione a due fattori, durante l\'accesso ti verrà richiesto un PIN sicuro e casuale, che puoi recuperare dall\'applicazione supportata da TOTP sul tuo telefono.') }}
                     </flux:text>
 
                     <livewire:settings.two-factor.recovery-codes :$requiresConfirmation/>
@@ -206,18 +206,18 @@ new class extends Component {
                             icon:variant="outline"
                             wire:click="disable"
                         >
-                            {{ __('Disable 2FA') }}
+                            {{ __('Disabilita 2FA') }}
                         </flux:button>
                     </div>
                 </div>
             @else
                 <div class="space-y-4">
                     <div class="flex items-center gap-3">
-                        <flux:badge color="red">{{ __('Disabled') }}</flux:badge>
+                        <flux:badge color="red">{{ __('Disabilitato') }}</flux:badge>
                     </div>
 
                     <flux:text variant="subtle">
-                        {{ __('When you enable two-factor authentication, you will be prompted for a secure pin during login. This pin can be retrieved from a TOTP-supported application on your phone.') }}
+                        {{ __('Quando attivi l\'autenticazione a due fattori, ti verrà richiesto un PIN di sicurezza durante l\'accesso. Questo PIN può essere recuperato da un\'applicazione supportata da TOTP sul tuo telefono.') }}
                     </flux:text>
 
                     <flux:button
@@ -226,7 +226,7 @@ new class extends Component {
                         icon:variant="outline"
                         wire:click="enable"
                     >
-                        {{ __('Enable 2FA') }}
+                        {{ __('Abilita 2FA') }}
                     </flux:button>
                 </div>
             @endif
@@ -336,7 +336,7 @@ new class extends Component {
                     <div class="relative flex items-center justify-center w-full">
                         <div class="absolute inset-0 w-full h-px top-1/2 bg-stone-200 dark:bg-stone-600"></div>
                         <span class="relative px-2 text-sm bg-white dark:bg-stone-800 text-stone-600 dark:text-stone-400">
-                            {{ __('or, enter the code manually') }}
+                            {{ __('oppure inserisci il codice manualmente') }}
                         </span>
                     </div>
 

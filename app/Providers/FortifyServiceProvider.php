@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Laravel\Fortify\Fortify;
+use Laravel\Fortify\Events\TwoFactorAuthenticationChallenged;
+use Illuminate\Auth\Events\Login;
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -29,6 +31,30 @@ class FortifyServiceProvider extends ServiceProvider
         $this->configureActions();
         $this->configureViews();
         $this->configureRateLimiting();
+        $this->configureRedirects();
+    }
+
+    /**
+     * Configure post-login redirects based on user role.
+     */
+    private function configureRedirects(): void
+    {
+        Fortify::authenticateUsing(function (Request $request) {
+            $authenticated = \Illuminate\Support\Facades\Auth::attempt(
+                $request->only('email', 'password'),
+                $request->boolean('remember')
+            );
+
+            if ($authenticated) {
+                $user = \Illuminate\Support\Facades\Auth::user();
+                if ($user->hasRole('istruttore') || $user->hasRole('allievo')) {
+                    session(['redirect_to' => '/mia-bacheca']);
+                }
+                return $user;
+            }
+
+            return null;
+        });
     }
 
     /**
