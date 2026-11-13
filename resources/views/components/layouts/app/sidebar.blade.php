@@ -68,9 +68,9 @@
 
         <div class="flex gap-7 mx-18 text-zinc-500">
 
-            <button class="cursor-pointer">
+           {{--  <button class="cursor-pointer">
                 <flux:icon.chat-bubble-left-right class="size-5" />
-            </button>
+            </button> --}}
 
             @role('amministratore')
             <livewire:admin.admin-notifications />

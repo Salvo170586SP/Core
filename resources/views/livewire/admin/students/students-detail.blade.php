@@ -137,7 +137,7 @@
                         <td class="px-2">
                             <div class="flex justify-center">
                                 <flux:button wire:navigate icon="eye" variant="filled" size="sm"
-                                    href="/tutti-corsi/{{$course->id}}">Dettagli
+                                    href="/corsi/{{$course->id}}">Dettagli
                                 </flux:button>
                             </div>
                         </td>
